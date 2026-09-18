@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business, Pricing & SaaS Revenue Model — Autonomous B2B Multi-Agent Platform</title>
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & CSS VARIABLES
+       ========================================================================== */
+    :root {
+      --bg-base: #0B0F19;
+      --bg-surface: #111827;
+      --bg-elevated: #1F2937;
+      --bg-card: rgba(17, 24, 39, 0.75);
+      --bg-card-hover: rgba(31, 41, 55, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-active: rgba(99, 102, 241, 0.4);
+      --border-emerald: rgba(16, 185, 129, 0.4);
+
+      --accent-indigo: #6366F1;
+      --accent-indigo-light: #818CF8;
+      --accent-emerald: #10B981;
+      --accent-emerald-light: #34D399;
+      --accent-cyan: #06B6D4;
+      --accent-amber: #F59E0B;
+      --accent-rose: #F43F5E;
+      --accent-purple: #A855F7;
+
+      --text-primary: #F9FAFB;
+      --text-secondary: #9CA3AF;
+      --text-muted: #6B7280;
+
+      --font-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+      --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+      --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.2);
+      --shadow-glow-emerald: 0 0 30px rgba(16, 185, 129, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-heading);
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==========================================================================
+       16:9 VIEWPORT SCALING CONTAINER
+       ========================================================================== */
+    #viewport {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: radial-gradient(circle at 50% 10%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+                  radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
+                  var(--bg-base);
+    }
+
+    .slide-deck {
+      width: 1600px;
+      height: 900px;
+      position: relative;
+      transform-origin: center center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      background: var(--bg-base);
+      overflow: hidden;
+    }
+
+    /* ==========================================================================
+       SLIDE COMPONENT & TRANSITIONS
+       ========================================================================== */
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1600px;
+      height: 900px;
+      padding: 48px 64px 80px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      transform: scale(0.98);
+      z-index: 1;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+      transform: scale(1);
+      z-index: 10;
+    }
+
+    /* Header & Navigation Bar */
+    .slide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+
+    .brand-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .deck-title {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .slide-number-indicator {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--accent-cyan);
+      background: rgba(6, 182, 212, 0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(6, 182, 212, 0.2);
+    }
+
+    /* Slide Titles */
+    .title-group {
+      margin-bottom: 20px;
+    }
+
+    .slide-category {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent-indigo-light);
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slide-category::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 8px var(--accent-emerald);
+    }
+
+    .slide-h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--text-primary);
+    }
+
+    .slide-subtitle {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
+
+    /* ==========================================================================
+       GLASSMORPHISM CARDS & CONTAINERS
+       ========================================================================== */
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+    }
+
+    .glass-card-highlight {
+      border-color: var(--border-active);
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+    }
+
+    .glass-card-emerald {
+      border-color: var(--border-emerald);
+      box-shadow: var(--shadow-card), var(--shadow-glow-emerald);
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      height: 100%;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      height: 100%;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      height: 100%;
+    }
+
+    /* Slide Content Viewport */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 0;
+    }
+
+    /* ==========================================================================
+       TABLES & DATA DISPLAYS
+       ========================================================================== */
+    .data-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 13.5px;
+      margin-top: 8px;
+    }
+
+    .data-table th {
+      background: rgba(31, 41, 55, 0.6);
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .data-table th:first-child { border-top-left-radius: 8px; }
+    .data-table th:last-child { border-top-right-radius: 8px; }
+
+    .data-table td {
+      padding: 11px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-primary);
+    }
+
+    .data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .data-table .font-mono {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald-light);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-indigo {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--accent-indigo-light);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .badge-cyan {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .badge-amber {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    /* ==========================================================================
+       FOOTER & NAVIGATION CONTROLS
+       ========================================================================== */
+    .deck-footer {
+      position: absolute;
+      bottom: 20px;
+      left: 64px;
+      right: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      pointer-events: auto;
+    }
+
+    .footer-metadata {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      background: rgba(31, 41, 55, 0.8);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .nav-btn:hover {
+      background: var(--accent-indigo);
+      border-color: var(--accent-indigo);
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+    }
+
+    .key-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 3px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Progress bar */
+    .progress-track {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: 200;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 10%;
+      background: linear-gradient(90deg, var(--accent-indigo), var(--accent-emerald));
+      transition: width 0.3s ease;
+    }
+
+    /* ==========================================================================
+       INTERACTIVE TOGGLE & CALCULATOR STYLES
+       ========================================================================== */
+    .toggle-pill-group {
+      display: inline-flex;
+      background: rgba(31, 41, 55, 0.8);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      gap: 4px;
+    }
+
+    .toggle-pill {
+      padding: 6px 14px;
+      border-radius: 7px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+      border: 1px solid transparent;
+    }
+
+    .toggle-pill.active {
+      background: var(--accent-indigo);
+      color: white;
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    }
+
+    .calc-slider-box {
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid var(--border-subtle);
+      padding: 16px 20px;
+      border-radius: 10px;
+      margin-top: 14px;
+    }
+
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--accent-emerald);
+      height: 6px;
+      border-radius: 3px;
+      background: #374151;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Overview modal grid */
+    #overview-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(11, 15, 25, 0.96);
+      backdrop-filter: blur(20px);
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    #overview-modal.open {
+      display: flex;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .thumb-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .thumb-card:hover, .thumb-card.active-thumb {
+      border-color: var(--accent-indigo);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-glow);
+    }
+
+    /* ==========================================================================
+       PRINT STYLESHEET (@media print) — ZERO BLEED PDF EXPORT
+       ========================================================================== */
+    @media print {
+      @page {
+        size: 16in 9in landscape;
+        margin: 0;
+      }
+
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      html, body {
+        width: 16in !important;
+        height: auto !important;
+        min-height: 100% !important;
+        background-color: var(--bg-base) !important;
+        overflow: visible !important;
+        font-size: 13pt !important;
+      }
+
+      #viewport {
+        width: 16in !important;
+        height: auto !important;
+        display: block !important;
+        background: var(--bg-base) !important;
+      }
+
+      .slide-deck {
+        width: 16in !important;
+        height: auto !important;
+        transform: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        display: block !important;
+      }
+
+      .slide {
+        position: relative !important;
+        width: 16in !important;
+        height: 9in !important;
+        max-height: 9in !important;
+        top: auto !important;
+        left: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        padding: 0.6in 0.8in !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+      }
+
+      .deck-footer,
+      .nav-controls,
+      .progress-track,
+      .key-hint,
+      .toggle-pill-group,
+      .calc-slider-box,
+      #overview-modal {
+        display: none !important;
+      }
+
+      .glass-card {
+        background: rgba(17, 24, 39, 0.95) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        box-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="viewport">
+  <div class="slide-deck" id="deck">
+
+    <!-- ========================================================================
+         SLIDE 1: COVER SLIDE / STRATEGIC OVERVIEW
+         ======================================================================== -->
+    <section class="slide active" data-slide="1">
+      <div class="slide-header">
+        <div class="brand-meta">
+          <span class="brand-badge">Milestone M3</span>
+          <span class="deck-title">Autonomous B2B Multi-Agent Platform &bull; Financial Study</span>
+        </div>
+        <div class="slide-number-indicator">01 / 10</div>
+      </div>
+
+      <div class="slide-body" style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+          <span class="badge-pill badge-emerald">Proprietary Strategic Blueprint</span>
+          <span class="badge-pill badge-indigo">Temporal + LangGraph + n8n</span>
+          <span class="badge-pill badge-cyan">SaaS Revenue Model</span>
+        </div>
+        <h1 style="font-size: 48px; font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; max-width: 1200px; margin-bottom: 16px;">
+          Business, Pricing &amp; SaaS Revenue Model
+        </h1>
+        <p style="font-size: 20px; color: var(--text-secondary); max-width: 1050px; line-height: 1.5; margin-bottom: 36px;">
+          Financial architecture, subscription tier economics, credit abstraction, and 3-year P&amp;L pro-forma replacing traditional $5,000–$15,000/mo human agency retainers with 90.8% to 96.9% software gross margins.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%;">
+          <div class="glass-card glass-card-emerald">
+            <div style="font-size: 12px; color: var(--accent-emerald-light); font-weight: 700; text-transform: uppercase;">Tier Gross Margins</div>
+            <div style="font-size: 34px; font-weight: 800; color: var(--text-primary); margin: 6px 0;">90.8% – 96.9%</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">$4.00 – $60.00 COGS across Standard, Pro, and Ultra tiers</div>
+          </div>
+          <div class="glass-card glass-card-highlight">
+            <div style="font-size: 12px; color: var(--accent-indigo-light); font-weight: 700; text-transform: uppercase;">Credit Top-Up Margin</div>
+            <div style="font-size: 34px; font-weight: 800; color: var(--text-primary); margin: 6px 0;">90.7% – 97.5%</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">Exceeds >70% mandate with $0.0245 blended compute cost</div>
+          </div>
+          <div class="glass-card">
+            <div style="font-size: 12px; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase;">Unit Economics</div>
+            <div style="font-size: 34px; font-weight: 800; color: var(--text-primary); margin: 6px 0;">11.2x – 43.7x</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">LTV/CAC ratio with rapid 1.9 to 2.6 month capital payback</div>
+          </div>
+          <div class="glass-card">
+            <div style="font-size: 12px; color: var(--accent-amber); font-weight: 700; text-transform: uppercase;">Year 3 Scale &amp; Breakeven</div>
+            <div style="font-size: 34px; font-weight: 800; color: var(--text-primary); margin: 6px 0;">$22.5M ARR</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">$7.66M EBITDA (51.8% margin) &bull; Month 9 cash-flow breakeven</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
+        <span style="font-size: 12px; color: var(--text-muted);">Confidential &bull; Nexus Autonomous Agent OS Strategy &bull; September 2026</span>
+        <span style="font-size: 12px; color: var(--text-muted); font-family: var(--font-mono);">Use [&#8594;] or Space to advance</span>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SLIDE 2: THE MACRO DISRUPTION & AGENCY ARBITRAGE
+         ======================================================================== -->
+    <section class="slide" data-slide="2">
+      <div class="slide-header">
+        <div class="brand-meta">
+          <span class="brand-badge">Market Disruption</span>
+          <span class="deck-title">Autonomous B2B Multi-Agent Platform &bull; Financial Study</span>
+        </div>
+        <div class="slide-number-indicator">02 / 10</div>
+      </div>
+
+      <div class="title-group">
+        <div class="slide-category">The Economic Paradox</div>
+        <h2 class="slide-h1">The Human Agency Arbitrage: 90%+ Cost Reduction with Instant Execution</h2>
+        <div class="slide-subtitle">Replacing high-friction human labor retainers with cyclical multi-agent software infrastructure.</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <!-- Left: Traditional Human Agency -->
+          <div class="glass-card" style="border-left: 4px solid var(--accent-rose);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="font-size: 18px; font-weight: 700; color: #FDA4AF;">Traditional Human Marketing Agency</h3>
+              <span class="badge-pill" style="background: rgba(244,63,94,0.15); color: #FDA4AF; border: 1px solid rgba(244,63,94,0.3);">High Friction</span>
+            </div>
+            <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 16px;">
+              Requires maintaining a bloated team of account managers, copywriters, visual designers, front-end devs, and media planners.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(0,0,0,0.25); border-radius: 8px;">
+                <span style="font-size: 13px; color: var(--text-secondary);">Monthly Retainer Cost:</span>
+                <span style="font-size: 13px; font-weight: 700; color: #FDA4AF;">$5,000 – $15,000 / month</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(0,0,0,0.25); border-radius: 8px;">
+                <span style="font-size: 13px; color: var(--text-secondary);">Landing Page Turnaround:</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">3 to 6 weeks</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(0,0,0,0.25); border-radius: 8px;">
+                <span style="font-size: 13px; color: var(--text-secondary);">Content Publishing Rhythm:</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">2–3 posts / week</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(0,0,0,0.25); border-radius: 8px;">
+                <span style="font-size: 13px; color: var(--text-secondary);">Analytics &amp; Optimization:</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">Static monthly PDF review</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(0,0,0,0.25); border-radius: 8px;">
+                <span style="font-size: 13px; color: var(--text-secondary);">Agency Gross Margin:</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-muted);">30% – 45% (Eaten by payroll)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Autonomous Multi-Agent Platform -->
+          <div class="glass-card glass-card-emerald" style="border-left: 4px solid var(--accent-emerald);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h3 style="font-size: 18px; font-weight: 700; color: var(--accent-emerald-light);">Autonomous Multi-Agent SaaS</h3>
+              <span class="badge-pill badge-emerald">10x–25x ROI Arbitrage</span>
+            </div>
+            <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 16px;">
+              Continuous 9-agent autonomous corporate team executing intake, Next.js web coding, multimodal asset synthesis, and closed-loop optimization.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(16,185,129,0.08); border-radius: 8px;">
+                <span style="font-size: 13px; color: var(--text-secondary);">Subscription Rate:</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--accent-emerald-light);">$129 – $899 / mo (90%+ savings)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(0,0,0,0.25); border-radius: 8px;">
+                <span style="font-size: 13px; color: var(--text-secondary);">Landing Page Turnaround:</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">&lt; 60 seconds (Automated SSL deploy)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(0,0,0,0.25); border-radius: 8px;">
+                <span style="font-size: 13px; color: var(--text-secondary);">Content Publishing Rhythm:</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">Daily omnichannel (LI, X, IG, FB, WA)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(0,0,0,0.25); border-radius: 8px;">
+                <span style="font-size: 13px; color: var(--text-secondary);">Analytics &amp; Optimization:</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--accent-cyan);">Autonomous closed-loop prompt recalibration</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(16,185,129,0.08); border-radius: 8px;">
+                <span style="font-size: 13px; color: var(--text-secondary);">Platform Gross Margin:</span>
+                <span style="font-size: 13px; font-weight: 700; color: var(--accent-emerald-light);">90.8% – 96.9% (Pure software leverage)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SLIDE 3: SUBSCRIPTION TIERS & BILLING CYCLES
+         ======================================================================== -->
+    <section class="slide" data-slide="3">
+      <div class="slide-header">
+        <div class="brand-meta">
+          <span class="brand-badge">Pricing Architecture</span>
+          <span class="deck-title">Autonomous B2B Multi-Agent Platform &bull; Financial Study</span>
+        </div>
+        <div class="slide-number-indicator">03 / 10</div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px;">
+        <div class="title-group" style="margin-bottom: 0;">
+          <div class="slide-category">Predictable Subscription Model</div>
+          <h2 class="slide-h1">Subscription Tiers &amp; Discounted Multi-Duration Cycles</h2>
+        </div>
+        
+        <!-- Interactive Billing Cycle Selector -->
+        <div class="toggle-pill-group" id="billing-selector">
+          <span class="toggle-pill active" onclick="setBillingCycle('monthly')">Monthly</span>
+          <span class="toggle-pill" onclick="setBillingCycle('quarterly')">Quarterly (-8%)</span>
+          <span class="toggle-pill" onclick="setBillingCycle('semi')">Semi-Annual (-16%)</span>
+          <span class="toggle-pill" onclick="setBillingCycle('yearly')">Yearly (-22%)</span>
+        </div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-4" id="pricing-cards-container">
+          <!-- Card 1: Standard -->
+          <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="font-size: 18px; font-weight: 700;">Standard</h3>
+                <span class="badge-pill badge-indigo">SMBs</span>
+              </div>
+              <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 6px;">
+                <span class="plan-price" id="price-std" style="font-size: 36px; font-weight: 800; color: var(--text-primary);">$129</span>
+                <span style="font-size: 13px; color: var(--text-secondary);">/ month</span>
+              </div>
+              <div id="billed-std" style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 16px;">Billed monthly</div>
+              
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px; color: var(--text-secondary);">
+                <li>&bull; <strong style="color: var(--text-primary);">100 Agent Credits</strong> / month</li>
+                <li>&bull; 60 Text Posts + 4 Carousels</li>
+                <li>&bull; 200 WhatsApp Conversations</li>
+                <li>&bull; Landing Page: Add-on (50 cr)</li>
+                <li>&bull; LinkedIn, X, Facebook channels</li>
+                <li>&bull; 1 Custom Domain SSL</li>
+              </ul>
+            </div>
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 12px; margin-top: 12px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11.5px;">
+                <span style="color: var(--text-muted);">COGS / Margin:</span>
+                <span style="color: var(--accent-emerald); font-weight: 700;">$4.00 / 96.9%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Pro (Featured) -->
+          <div class="glass-card glass-card-highlight" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="font-size: 18px; font-weight: 700; color: var(--accent-indigo-light);">Pro</h3>
+                <span class="badge-pill badge-indigo">Most Popular</span>
+              </div>
+              <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 6px;">
+                <span class="plan-price" id="price-pro" style="font-size: 36px; font-weight: 800; color: var(--text-primary);">$349</span>
+                <span style="font-size: 13px; color: var(--text-secondary);">/ month</span>
+              </div>
+              <div id="billed-pro" style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 16px;">Billed monthly</div>
+
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px; color: var(--text-secondary);">
+                <li>&bull; <strong style="color: var(--text-primary);">350 Agent Credits</strong> / month</li>
+                <li>&bull; <strong style="color: var(--accent-indigo-light);">1 Landing Page Build</strong> included</li>
+                <li>&bull; 100 Posts + 15 Carousels + 4 Videos</li>
+                <li>&bull; 250 WhatsApp Conversations</li>
+                <li>&bull; LinkedIn, X, Facebook, Instagram</li>
+                <li>&bull; 3 Custom Domains + Daily Tuning</li>
+              </ul>
+            </div>
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 12px; margin-top: 12px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11.5px;">
+                <span style="color: var(--text-muted);">COGS / Margin:</span>
+                <span style="color: var(--accent-emerald); font-weight: 700;">$14.40 / 95.8%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Ultra -->
+          <div class="glass-card glass-card-emerald" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="font-size: 18px; font-weight: 700; color: var(--accent-emerald-light);">Ultra</h3>
+                <span class="badge-pill badge-emerald">Growth Scale</span>
+              </div>
+              <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 6px;">
+                <span class="plan-price" id="price-ultra" style="font-size: 36px; font-weight: 800; color: var(--text-primary);">$899</span>
+                <span style="font-size: 13px; color: var(--text-secondary);">/ month</span>
+              </div>
+              <div id="billed-ultra" style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 16px;">Billed monthly</div>
+
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px; color: var(--text-secondary);">
+                <li>&bull; <strong style="color: var(--text-primary);">1,100 Agent Credits</strong> / month</li>
+                <li>&bull; <strong style="color: var(--accent-emerald-light);">4 Landing Page Builds</strong> included</li>
+                <li>&bull; <strong style="color: var(--accent-emerald-light);">WhatsApp CRM Integration</strong> (1k convs)</li>
+                <li>&bull; 200 Posts + 30 Carousels + 20 Videos</li>
+                <li>&bull; Real-time Closed-Loop Feedback</li>
+                <li>&bull; 10 Custom Domains + 10 Seats</li>
+              </ul>
+            </div>
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 12px; margin-top: 12px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11.5px;">
+                <span style="color: var(--text-muted);">COGS / Margin:</span>
+                <span style="color: var(--accent-emerald); font-weight: 700;">$60.00 / 93.3%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: Enterprise -->
+          <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h3 style="font-size: 18px; font-weight: 700; color: var(--accent-purple);">Enterprise</h3>
+                <span class="badge-pill" style="background: rgba(168,85,247,0.15); color: #C084FC;">Dedicated</span>
+              </div>
+              <div style="display: flex; align-items: baseline; gap: 4px; margin-bottom: 6px;">
+                <span class="plan-price" id="price-ent" style="font-size: 36px; font-weight: 800; color: var(--text-primary);">$2,499</span>
+                <span style="font-size: 13px; color: var(--text-secondary);">+/mo</span>
+              </div>
+              <div id="billed-ent" style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 16px;">Custom contracts</div>
+
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 8px; font-size: 12.5px; color: var(--text-secondary);">
+                <li>&bull; <strong style="color: var(--text-primary);">4,000+ Credits</strong> / Custom quota</li>
+                <li>&bull; <strong style="color: var(--accent-purple);">Unlimited Landing Page</strong> generations</li>
+                <li>&bull; Custom LoRA Voice/Asset Fine-Tuning</li>
+                <li>&bull; Dedicated Single-Tenant VPC / BYOK</li>
+                <li>&bull; Unlimited Custom Domains &amp; Seats</li>
+                <li>&bull; Dedicated CSM + 15-min SLA</li>
+              </ul>
+            </div>
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 12px; margin-top: 12px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11.5px;">
+                <span style="color: var(--text-muted);">COGS / Margin:</span>
+                <span style="color: var(--accent-emerald); font-weight: 700;">~$230 / 90.8%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SLIDE 4: COMPUTE BILL OF MATERIALS (BOM) PER DELIVERABLE
+         ======================================================================== -->
+    <section class="slide" data-slide="4">
+      <div class="slide-header">
+        <div class="brand-meta">
+          <span class="brand-badge">Compute Feasibility</span>
+          <span class="deck-title">Autonomous B2B Multi-Agent Platform &bull; Financial Study</span>
+        </div>
+        <div class="slide-number-indicator">04 / 10</div>
+      </div>
+
+      <div class="title-group">
+        <div class="slide-category">Sub-Penny Model Economics</div>
+        <h2 class="slide-h1">Cent-Accurate Unit Compute BOM per Autonomous Deliverable</h2>
+        <div class="slide-subtitle">Hierarchical model routing, prompt caching (up to 90% savings), and specialized visual renderers.</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="glass-card" style="padding: 16px 24px;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Deliverable</th>
+                <th>Model Architecture &amp; APIs</th>
+                <th>Token / Resource Profile</th>
+                <th>Compute BOM</th>
+                <th>Target Spec</th>
+                <th>Efficiency Mechanism</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color: var(--text-primary);">Text Thought Leadership Post</strong></td>
+                <td>Claude 3.5 Sonnet + GPT-4o mini</td>
+                <td class="font-mono">3.5k in / 550 out</td>
+                <td class="font-mono" style="color: var(--accent-emerald); font-weight: 700;">$0.01901</td>
+                <td class="font-mono">~$0.02</td>
+                <td><span class="badge-pill badge-emerald">90% Cache Discount</span></td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--text-primary);">7-Slide High-Converting PDF Carousel</strong></td>
+                <td>Sonnet 3.5 + FLUX dev/schnell + Lambda</td>
+                <td class="font-mono">4.5k in / 1.4k out + 3 imgs</td>
+                <td class="font-mono" style="color: var(--accent-emerald); font-weight: 700;">$0.08950</td>
+                <td class="font-mono">~$0.09</td>
+                <td><span class="badge-pill badge-cyan">Chromium Lambda (1.4s)</span></td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--text-primary);">20s Multimodal AI Video Reel</strong></td>
+                <td>Runway Gen-3 + ElevenLabs + FFmpeg</td>
+                <td class="font-mono">300 chars audio + 10s video</td>
+                <td class="font-mono" style="color: var(--accent-emerald); font-weight: 700;">$0.84925</td>
+                <td class="font-mono">~$0.85</td>
+                <td><span class="badge-pill badge-indigo">Hybrid Keyframe Synth</span></td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--text-primary);">Full AI Landing Page Generation</strong></td>
+                <td>Sonnet 3.5 + Gemini Flash + FLUX + CDN</td>
+                <td class="font-mono">23k in / 9k out + 4 assets</td>
+                <td class="font-mono" style="color: var(--accent-emerald); font-weight: 700;">$0.448 &ndash; $0.785</td>
+                <td class="font-mono">$0.45 &ndash; $0.80</td>
+                <td><span class="badge-pill badge-emerald">Next.js AST Lint Check</span></td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--text-primary);">WhatsApp Cloud API Conversation</strong></td>
+                <td>Meta Graph Cloud API + Gemini 2.0 Flash</td>
+                <td class="font-mono">5-turn dialog + Vector RAG</td>
+                <td class="font-mono" style="color: var(--accent-emerald); font-weight: 700;">$0.03575</td>
+                <td class="font-mono">$0.03 &ndash; $0.05</td>
+                <td><span class="badge-pill badge-amber">24h Meta Window Tariff</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 18px;">
+          <div class="glass-card" style="padding: 16px;">
+            <div style="font-size: 12px; color: var(--accent-indigo-light); font-weight: 700; text-transform: uppercase;">Fleet Prompt Caching</div>
+            <div style="font-size: 22px; font-weight: 800; color: var(--text-primary); margin: 4px 0;">76.5% Net Savings</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">Input token costs reduced from $4,500/mo to $1,057/mo across 1,000 active customer fleets.</div>
+          </div>
+          <div class="glass-card" style="padding: 16px;">
+            <div style="font-size: 12px; color: var(--accent-emerald); font-weight: 700; text-transform: uppercase;">Tri-Tier Memory Topology</div>
+            <div style="font-size: 22px; font-weight: 800; color: var(--text-primary); margin: 4px 0;">&lt; 600 Token Injections</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">Context windows trimmed via `pgvector` RAG top-k=3 to eliminate token exhaustion &amp; drift.</div>
+          </div>
+          <div class="glass-card" style="padding: 16px;">
+            <div style="font-size: 12px; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase;">Chromium &amp; Media Worker</div>
+            <div style="font-size: 22px; font-weight: 800; color: var(--text-primary); margin: 4px 0;">$0.0006 / PDF Render</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">Serverless AWS Lambda container with pre-warmed Chromium instance executing in 1.4s.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SLIDE 5: TIER COGS & GROSS PROFIT VERIFICATION
+         ======================================================================== -->
+    <section class="slide" data-slide="5">
+      <div class="slide-header">
+        <div class="brand-meta">
+          <span class="brand-badge">Financial Audit</span>
+          <span class="deck-title">Autonomous B2B Multi-Agent Platform &bull; Financial Study</span>
+        </div>
+        <div class="slide-number-indicator">05 / 10</div>
+      </div>
+
+      <div class="title-group">
+        <div class="slide-category">Rigorous Margin Verification</div>
+        <h2 class="slide-h1">Tier COGS &amp; Gross Margin Audit: 90.8% to 96.9% Validated</h2>
+        <div class="slide-subtitle">Mathematical proof matching project baseline targets to the basis point.</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-4">
+          <!-- Standard -->
+          <div class="glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 14px; font-weight: 700; color: var(--text-primary);">Standard Tier</span>
+              <span class="badge-pill badge-emerald">96.9% Margin</span>
+            </div>
+            <div style="margin: 16px 0;">
+              <div style="font-size: 12px; color: var(--text-muted);">Retail Subscription:</div>
+              <div style="font-size: 28px; font-weight: 800; color: var(--text-primary);">$129.00 <span style="font-size: 14px; color: var(--text-secondary);">/ mo</span></div>
+            </div>
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 10px; margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--text-secondary);">Posts (60x):</span>
+                <span class="font-mono">$1.14</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--text-secondary);">Carousels (4x):</span>
+                <span class="font-mono">$0.36</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--text-secondary);">WhatsApp (200x):</span>
+                <span class="font-mono">$2.00</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--text-secondary);">DB &amp; Infra:</span>
+                <span class="font-mono">$0.50</span>
+              </div>
+            </div>
+            <div style="background: rgba(16,185,129,0.08); padding: 10px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.2);">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700;">
+                <span style="color: var(--text-secondary);">Total COGS:</span>
+                <span class="font-mono" style="color: var(--text-primary);">$4.00</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-top: 4px;">
+                <span style="color: var(--accent-emerald);">Gross Profit:</span>
+                <span class="font-mono" style="color: var(--accent-emerald);">$125.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pro -->
+          <div class="glass-card glass-card-highlight">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 14px; font-weight: 700; color: var(--accent-indigo-light);">Pro Tier</span>
+              <span class="badge-pill badge-emerald">95.8% Margin</span>
+            </div>
+            <div style="margin: 16px 0;">
+              <div style="font-size: 12px; color: var(--text-muted);">Retail Subscription:</div>
+              <div style="font-size: 28px; font-weight: 800; color: var(--text-primary);">$349.00 <span style="font-size: 14px; color: var(--text-secondary);">/ mo</span></div>
+            </div>
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 10px; margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--text-secondary);">100 Posts + 15 Car.:</span>
+                <span class="font-mono">$3.25</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--text-secondary);">4 AI Videos (20s):</span>
+                <span class="font-mono">$3.40</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--accent-indigo-light); font-weight: 600;">1 Landing Page:</span>
+                <span class="font-mono">$0.65</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--text-secondary);">WhatsApp + Infra:</span>
+                <span class="font-mono">$7.10</span>
+              </div>
+            </div>
+            <div style="background: rgba(16,185,129,0.08); padding: 10px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.2);">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700;">
+                <span style="color: var(--text-secondary);">Total COGS:</span>
+                <span class="font-mono" style="color: var(--text-primary);">$14.40</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-top: 4px;">
+                <span style="color: var(--accent-emerald);">Gross Profit:</span>
+                <span class="font-mono" style="color: var(--accent-emerald);">$334.60</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ultra -->
+          <div class="glass-card glass-card-emerald">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 14px; font-weight: 700; color: var(--accent-emerald-light);">Ultra Tier</span>
+              <span class="badge-pill badge-emerald">93.3% Margin</span>
+            </div>
+            <div style="margin: 16px 0;">
+              <div style="font-size: 12px; color: var(--text-muted);">Retail Subscription:</div>
+              <div style="font-size: 28px; font-weight: 800; color: var(--text-primary);">$899.00 <span style="font-size: 14px; color: var(--text-secondary);">/ mo</span></div>
+            </div>
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 10px; margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--text-secondary);">200 Posts + 30 Car.:</span>
+                <span class="font-mono">$6.50</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--text-secondary);">20 AI Videos (20s):</span>
+                <span class="font-mono">$17.00</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--accent-emerald-light); font-weight: 600;">4 Landing Pages:</span>
+                <span class="font-mono">$2.80</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--accent-emerald-light); font-weight: 600;">WhatsApp CRM (1k):</span>
+                <span class="font-mono">$31.50</span>
+              </div>
+            </div>
+            <div style="background: rgba(16,185,129,0.08); padding: 10px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.2);">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700;">
+                <span style="color: var(--text-secondary);">Total COGS:</span>
+                <span class="font-mono" style="color: var(--text-primary);">$60.00</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-top: 4px;">
+                <span style="color: var(--accent-emerald);">Gross Profit:</span>
+                <span class="font-mono" style="color: var(--accent-emerald);">$839.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Enterprise -->
+          <div class="glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 14px; font-weight: 700; color: var(--accent-purple);">Enterprise</span>
+              <span class="badge-pill badge-emerald">90.8% Margin</span>
+            </div>
+            <div style="margin: 16px 0;">
+              <div style="font-size: 12px; color: var(--text-muted);">Starting Rate:</div>
+              <div style="font-size: 28px; font-weight: 800; color: var(--text-primary);">$2,499.00 <span style="font-size: 14px; color: var(--text-secondary);">/ mo</span></div>
+            </div>
+            <div style="border-top: 1px solid var(--border-subtle); padding-top: 10px; margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--text-secondary);">Dedicated Workers:</span>
+                <span class="font-mono">$120.00</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--text-secondary);">LLM API Compute:</span>
+                <span class="font-mono">$65.00</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--text-secondary);">Custom Model Host:</span>
+                <span class="font-mono">$45.00</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                <span style="color: var(--accent-purple); font-weight: 600;">BYOK Mode Option:</span>
+                <span class="font-mono" style="color: var(--accent-emerald);">&gt;99% Margin</span>
+              </div>
+            </div>
+            <div style="background: rgba(16,185,129,0.08); padding: 10px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.2);">
+              <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700;">
+                <span style="color: var(--text-secondary);">Total COGS:</span>
+                <span class="font-mono" style="color: var(--text-primary);">~$230.00</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-top: 4px;">
+                <span style="color: var(--accent-emerald);">Gross Profit:</span>
+                <span class="font-mono" style="color: var(--accent-emerald);">$2,269.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SLIDE 6: AGENT CREDIT ABSTRACTION & TOP-UP ECONOMICS (>70% MANDATE)
+         ======================================================================== -->
+    <section class="slide" data-slide="6">
+      <div class="slide-header">
+        <div class="brand-meta">
+          <span class="brand-badge">Credit Top-Ups</span>
+          <span class="deck-title">Autonomous B2B Multi-Agent Platform &bull; Financial Study</span>
+        </div>
+        <div class="slide-number-indicator">06 / 10</div>
+      </div>
+
+      <div class="title-group">
+        <div class="slide-category">Strict Margin Mandate Fulfillment</div>
+        <h2 class="slide-h1">Agent Credit Abstraction &amp; On-Demand Top-Up Economics</h2>
+        <div class="slide-subtitle">All top-up packages yield 90.71% to 97.49% gross profit margins, soundly exceeding the >70% requirement.</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <!-- Left: Credit Conversion & Top-Up Packages -->
+          <div class="glass-card">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px;">Top-Up Expansion Packages</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Pack Name</th>
+                  <th>Credits</th>
+                  <th>Price</th>
+                  <th>Price/Cr</th>
+                  <th>Blended Margin</th>
+                  <th>Worst-Case (Video)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong style="color: var(--text-primary);">Starter Boost</strong></td>
+                  <td class="font-mono">50 cr</td>
+                  <td class="font-mono" style="font-weight: 700;">$49.00</td>
+                  <td class="font-mono">$0.980</td>
+                  <td><span class="badge-pill badge-emerald">97.49%</span></td>
+                  <td><span class="badge-pill badge-emerald">96.53%</span></td>
+                </tr>
+                <tr>
+                  <td><strong style="color: var(--text-primary);">Growth Pack</strong></td>
+                  <td class="font-mono">175 cr</td>
+                  <td class="font-mono" style="font-weight: 700;">$149.00</td>
+                  <td class="font-mono">$0.851</td>
+                  <td><span class="badge-pill badge-emerald">97.12%</span></td>
+                  <td><span class="badge-pill badge-emerald">96.01%</span></td>
+                </tr>
+                <tr>
+                  <td><strong style="color: var(--text-primary);">Scale Expansion</strong></td>
+                  <td class="font-mono">450 cr</td>
+                  <td class="font-mono" style="font-weight: 700;">$349.00</td>
+                  <td class="font-mono">$0.776</td>
+                  <td><span class="badge-pill badge-emerald">96.84%</span></td>
+                  <td><span class="badge-pill badge-emerald">95.62%</span></td>
+                </tr>
+                <tr>
+                  <td><strong style="color: var(--text-primary);">Enterprise Surge</strong></td>
+                  <td class="font-mono">1,300 cr</td>
+                  <td class="font-mono" style="font-weight: 700;">$899.00</td>
+                  <td class="font-mono">$0.692</td>
+                  <td><span class="badge-pill badge-emerald">96.46%</span></td>
+                  <td><span class="badge-pill badge-emerald">95.08%</span></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div style="margin-top: 14px; padding: 10px 14px; background: rgba(0,0,0,0.3); border-radius: 8px; font-size: 12px; color: var(--text-secondary);">
+              <strong>Unified Currency Abstraction:</strong> 1 Post = 1 cr &bull; 1 Carousel = 5 cr &bull; 1 AI Video = 25 cr &bull; 1 Landing Page = 50 cr &bull; 10 WhatsApp convs = 1 cr.
+            </div>
+          </div>
+
+          <!-- Right: Interactive Top-Up Simulator -->
+          <div class="glass-card glass-card-highlight">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="font-size: 16px; font-weight: 700; color: var(--accent-indigo-light);">Interactive Top-Up Simulator</h3>
+              <span class="badge-pill badge-cyan">Live Model</span>
+            </div>
+
+            <div class="calc-slider-box">
+              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+                <span style="font-size: 13px; color: var(--text-secondary);">Select Credits to Purchase:</span>
+                <span style="font-size: 20px; font-weight: 800; font-family: var(--font-mono); color: var(--accent-emerald);" id="calc-credits-val">200 Credits</span>
+              </div>
+              <input type="range" min="50" max="1500" step="25" value="200" id="credit-slider" oninput="updateCreditSim(this.value)">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;">
+              <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px;">
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Retail Price</div>
+                <div style="font-size: 24px; font-weight: 800; color: var(--text-primary); margin: 4px 0;" id="calc-price-val">$112.00</div>
+                <div style="font-size: 11.5px; color: var(--text-secondary);" id="calc-rate-val">$0.560 / credit</div>
+              </div>
+
+              <div style="background: rgba(16,185,129,0.08); padding: 12px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.2);">
+                <div style="font-size: 11px; color: var(--accent-emerald-light); text-transform: uppercase;">Gross Profit Margin</div>
+                <div style="font-size: 24px; font-weight: 800; color: var(--accent-emerald); margin: 4px 0;" id="calc-margin-val">95.6%</div>
+                <div style="font-size: 11.5px; color: var(--accent-emerald-light);" id="calc-profit-val">Profit: +$107.10</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 12px; padding: 10px; background: rgba(99,102,241,0.08); border-radius: 8px; font-size: 12px; color: var(--text-secondary);">
+              <span style="color: var(--accent-indigo-light); font-weight: 600;">Agency Cost Equivalent:</span> 
+              Delivers <span id="calc-equiv-val" style="color: var(--text-primary); font-weight: 700;">200 posts or 4 landing pages</span> (~$3,500 human agency billing).
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SLIDE 7: UNIT ECONOMICS: CAC, LTV & PAYBACK
+         ======================================================================== -->
+    <section class="slide" data-slide="7">
+      <div class="slide-header">
+        <div class="brand-meta">
+          <span class="brand-badge">Unit Economics</span>
+          <span class="deck-title">Autonomous B2B Multi-Agent Platform &bull; Financial Study</span>
+        </div>
+        <div class="slide-number-indicator">07 / 10</div>
+      </div>
+
+      <div class="title-group">
+        <div class="slide-category">Hyper-Efficient Capital Allocation</div>
+        <h2 class="slide-h1">CAC, LTV &amp; Capital Payback: 11.2x to 43.7x Efficiency Multiples</h2>
+        <div class="slide-subtitle">Industry-leading payback velocity (1.9 to 2.6 months) driven by sub-5% churn and negative working capital.</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="glass-card" style="padding: 16px 24px; margin-bottom: 20px;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Tier</th>
+                <th>Monthly ARPU</th>
+                <th>Monthly Gross Margin</th>
+                <th>Fully Loaded CAC</th>
+                <th>Direct Paid CAC</th>
+                <th>Customer Lifetime LTV</th>
+                <th>LTV / CAC Multiple</th>
+                <th>Payback Period</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color: var(--text-primary);">Standard Tier</strong></td>
+                <td class="font-mono">$129.00</td>
+                <td class="font-mono" style="color: var(--accent-emerald);">96.9% ($125.00)</td>
+                <td class="font-mono" style="color: var(--accent-amber);">$800.00</td>
+                <td class="font-mono">$320.00</td>
+                <td class="font-mono" style="font-weight: 700; color: var(--accent-emerald);">$8,960.00</td>
+                <td><span class="badge-pill badge-emerald">11.2x LTV/CAC</span></td>
+                <td class="font-mono" style="font-weight: 700;">2.56 months</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--accent-indigo-light);">Pro Tier</strong></td>
+                <td class="font-mono">$349.00</td>
+                <td class="font-mono" style="color: var(--accent-emerald);">95.8% ($334.34)</td>
+                <td class="font-mono" style="color: var(--accent-amber);">$1,400.00</td>
+                <td class="font-mono">$750.00</td>
+                <td class="font-mono" style="font-weight: 700; color: var(--accent-emerald);">$23,730.00</td>
+                <td><span class="badge-pill badge-emerald">17.0x LTV/CAC</span></td>
+                <td class="font-mono" style="font-weight: 700;">2.24 months</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--accent-emerald-light);">Ultra Tier</strong></td>
+                <td class="font-mono">$899.00</td>
+                <td class="font-mono" style="color: var(--accent-emerald);">93.3% ($838.77)</td>
+                <td class="font-mono" style="color: var(--accent-amber);">$2,400.00</td>
+                <td class="font-mono">$1,600.00</td>
+                <td class="font-mono" style="font-weight: 700; color: var(--accent-emerald);">$104,900.00</td>
+                <td><span class="badge-pill badge-emerald">43.7x LTV/CAC</span></td>
+                <td class="font-mono" style="font-weight: 700;">1.91 months</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--accent-purple);">Enterprise Tier</strong></td>
+                <td class="font-mono">$2,499.00</td>
+                <td class="font-mono" style="color: var(--accent-emerald);">90.8% ($2,269.09)</td>
+                <td class="font-mono" style="color: var(--accent-amber);">$4,500.00</td>
+                <td class="font-mono">$2,800.00</td>
+                <td class="font-mono" style="font-weight: 700; color: var(--accent-emerald);">$135,000.00</td>
+                <td><span class="badge-pill badge-emerald">30.0x LTV/CAC</span></td>
+                <td class="font-mono" style="font-weight: 700;">1.98 months</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid-3">
+          <div class="glass-card" style="padding: 18px;">
+            <div style="font-size: 12px; color: var(--accent-indigo-light); font-weight: 700; text-transform: uppercase;">Net Revenue Retention (NRR)</div>
+            <div style="font-size: 30px; font-weight: 800; color: var(--text-primary); margin: 6px 0;">128%</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">Powered by recurring credit top-ups, landing page expansions, and team seat additions.</div>
+          </div>
+          <div class="glass-card" style="padding: 18px;">
+            <div style="font-size: 12px; color: var(--accent-emerald); font-weight: 700; text-transform: uppercase;">Benchmark Comparison</div>
+            <div style="font-size: 30px; font-weight: 800; color: var(--text-primary); margin: 6px 0;">5x – 8x Above Median</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">SaaS industry median LTV/CAC is 3.0x to 5.0x. Our 17x–43x ratio reflects radical labor arbitrage.</div>
+          </div>
+          <div class="glass-card" style="padding: 18px;">
+            <div style="font-size: 12px; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase;">Annual Cash Acceleration</div>
+            <div style="font-size: 30px; font-weight: 800; color: var(--text-primary); margin: 6px 0;">Day 1 Payback</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">Yearly plans ($3,228 collected upfront for Pro) immediately fund paid acquisition spend.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SLIDE 8: GTM CHANNELS & MARKETING BUDGET ALLOCATION
+         ======================================================================== -->
+    <section class="slide" data-slide="8">
+      <div class="slide-header">
+        <div class="brand-meta">
+          <span class="brand-badge">GTM Engine</span>
+          <span class="deck-title">Autonomous B2B Multi-Agent Platform &bull; Financial Study</span>
+        </div>
+        <div class="slide-number-indicator">08 / 10</div>
+      </div>
+
+      <div class="title-group">
+        <div class="slide-category">Scalable Customer Acquisition</div>
+        <h2 class="slide-h1">Go-To-Market Channels &amp; Capital Budget Allocation</h2>
+        <div class="slide-subtitle">A balanced multi-channel inbound and outbound acquisition engine optimized for high-intent B2B conversions.</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <!-- Left: Budget Allocation Breakdown -->
+          <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 14px;">Capital Allocation by Marketing Channel</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
+                  <strong style="color: var(--accent-indigo-light);">45% &bull; High-Intent Paid Search &amp; LinkedIn Ads</strong>
+                  <span class="font-mono">$85 &ndash; $140 CPA</span>
+                </div>
+                <div style="height: 8px; width: 100%; background: #1F2937; border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; width: 45%; background: var(--accent-indigo);"></div>
+                </div>
+                <span style="font-size: 11.5px; color: var(--text-muted);">Targeting CMOs, Heads of Growth, Agency Owners with high buyer intent.</span>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
+                  <strong style="color: var(--accent-cyan);">30% &bull; Outbound Account-Based Marketing (ABM) &amp; SDRs</strong>
+                  <span class="font-mono">$350 &ndash; $650 CPA</span>
+                </div>
+                <div style="height: 8px; width: 100%; background: #1F2937; border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; width: 30%; background: var(--accent-cyan);"></div>
+                </div>
+                <span style="font-size: 11.5px; color: var(--text-muted);">Series A-C funded startups, Apollo/Clay scraper, personalized AI video audits.</span>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
+                  <strong style="color: var(--accent-emerald);">15% &bull; Product-Led Growth (PLG) &amp; Viral Badging</strong>
+                  <span class="font-mono">K-Factor: 0.32</span>
+                </div>
+                <div style="height: 8px; width: 100%; background: #1F2937; border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; width: 15%; background: var(--accent-emerald);"></div>
+                </div>
+                <span style="font-size: 11.5px; color: var(--text-muted);">Free Landing Page Auditor tool + subtle "Generated by AI Team" footer badge.</span>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
+                  <strong style="color: var(--accent-amber);">10% &bull; Agency &amp; Consultancy Co-Op Partner Network</strong>
+                  <span class="font-mono">20% Rev-Share</span>
+                </div>
+                <div style="height: 8px; width: 100%; background: #1F2937; border-radius: 4px; overflow: hidden;">
+                  <div style="height: 100%; width: 10%; background: var(--accent-amber);"></div>
+                </div>
+                <span style="font-size: 11.5px; color: var(--text-muted);">Partner program migrating boutique agencies to high-margin white-label SaaS.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Conversion Funnel Performance -->
+          <div class="glass-card glass-card-highlight">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 14px; color: var(--accent-indigo-light);">Customer Conversion Funnel Economics</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; border-left: 3px solid var(--accent-indigo);">
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">1. Monthly Site Traffic:</span>
+                  <span class="font-mono" style="color: var(--accent-indigo-light);">100,000 Visitors</span>
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 2px;">Organic thought leadership, LinkedIn carousels, paid search.</div>
+              </div>
+
+              <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; border-left: 3px solid var(--accent-cyan);">
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">2. Instant Interactive Preview:</span>
+                  <span class="font-mono" style="color: var(--accent-cyan);">6,500 Audits (6.5%)</span>
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 2px;">Users input their company URL to see immediate generated landing page sample.</div>
+              </div>
+
+              <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; border-left: 3px solid var(--accent-emerald);">
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">3. 7-Day Interactive Sandbox:</span>
+                  <span class="font-mono" style="color: var(--accent-emerald);">1,170 Sign-Ups (18.0%)</span>
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 2px;">Hands-on trial connecting social channels and inspecting agent constellation.</div>
+              </div>
+
+              <div style="background: rgba(16,185,129,0.12); padding: 12px; border-radius: 8px; border: 1px solid rgba(16,185,129,0.3);">
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="font-size: 13px; font-weight: 800; color: var(--accent-emerald-light);">4. Paid Conversions:</span>
+                  <span class="font-mono" style="font-weight: 800; color: var(--accent-emerald);">250 Customers / mo (21.4%)</span>
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 2px;">Converting across Standard, Pro, and Ultra tiers ($286.50 initial blended ARPU).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SLIDE 9: 3-YEAR PRO-FORMA P&L & MONTH 9 BREAKEVEN
+         ======================================================================== -->
+    <section class="slide" data-slide="9">
+      <div class="slide-header">
+        <div class="brand-meta">
+          <span class="brand-badge">Financial Projections</span>
+          <span class="deck-title">Autonomous B2B Multi-Agent Platform &bull; Financial Study</span>
+        </div>
+        <div class="slide-number-indicator">09 / 10</div>
+      </div>
+
+      <div class="title-group">
+        <div class="slide-category">Scale &amp; Profitability Forecast</div>
+        <h2 class="slide-h1">3-Year Pro-Forma: Scaling to $22.5M ARR with $7.66M EBITDA</h2>
+        <div class="slide-subtitle">Operating leverage driven by 90%+ gross margins; cash-flow breakeven achieved in Month 9.</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="glass-card" style="padding: 16px 24px;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Financial Metric (USD)</th>
+                <th>Year 1 (Launch &amp; Land)</th>
+                <th>Year 2 (Wave 2 Expansion)</th>
+                <th>Year 3 (Global Enterprise)</th>
+                <th>Trajectory Rationale</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="color: var(--text-primary);">Active Paid Customers (EOY)</strong></td>
+                <td class="font-mono">250 customers</td>
+                <td class="font-mono">1,200 customers</td>
+                <td class="font-mono" style="font-weight: 700; color: var(--accent-cyan);">3,800 customers</td>
+                <td>US/UK Wave 1 &#8594; UAE/SG &#8594; Global</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--text-primary);">Ending Annualized ARR</strong></td>
+                <td class="font-mono" style="font-weight: 700; color: var(--accent-emerald);">$1,146,000</td>
+                <td class="font-mono" style="font-weight: 700; color: var(--accent-emerald);">$5,845,000</td>
+                <td class="font-mono" style="font-weight: 800; color: var(--accent-emerald); font-size: 15px;">$22,500,000</td>
+                <td>Blended ARPU expands $286 &#8594; $425</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--text-primary);">Total GAAP Net Revenue</strong></td>
+                <td class="font-mono">$680,000</td>
+                <td class="font-mono">$3,650,000</td>
+                <td class="font-mono" style="font-weight: 700;">$14,800,000</td>
+                <td>Includes subscriptions + top-ups</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--text-primary);">Cost of Goods Sold (COGS)</strong></td>
+                <td class="font-mono" style="color: var(--text-muted);">$67,280 (9.9%)</td>
+                <td class="font-mono" style="color: var(--text-muted);">$299,800 (8.2%)</td>
+                <td class="font-mono" style="color: var(--text-muted);">$1,168,800 (7.9%)</td>
+                <td>Compute, APIs, Meta, Cloudflare</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--text-primary);">Total Gross Profit</strong></td>
+                <td class="font-mono" style="color: var(--accent-emerald); font-weight: 700;">$612,720 (90.1%)</td>
+                <td class="font-mono" style="color: var(--accent-emerald); font-weight: 700;">$3,350,200 (91.8%)</td>
+                <td class="font-mono" style="color: var(--accent-emerald); font-weight: 700;">$13,631,200 (92.1%)</td>
+                <td>Industry-leading gross margin profile</td>
+              </tr>
+              <tr>
+                <td><strong style="color: var(--text-primary);">Total Operating Expenses (OpEx)</strong></td>
+                <td class="font-mono">$540,000</td>
+                <td class="font-mono">$1,910,000</td>
+                <td class="font-mono">$5,970,000</td>
+                <td>R&amp;D (24 FTE) + Paid Ads + G&amp;A</td>
+              </tr>
+              <tr style="background: rgba(16,185,129,0.08);">
+                <td><strong style="color: var(--accent-emerald-light); font-size: 14.5px;">EBITDA Operating Profit</strong></td>
+                <td class="font-mono" style="color: var(--accent-emerald); font-weight: 800;">+$72,720 (+10.7%)</td>
+                <td class="font-mono" style="color: var(--accent-emerald); font-weight: 800;">+$1,440,200 (+39.5%)</td>
+                <td class="font-mono" style="color: var(--accent-emerald); font-weight: 800; font-size: 15px;">+$7,661,200 (+51.8%)</td>
+                <td><span class="badge-pill badge-emerald">Cash-Flow Breakeven Month 9</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 14px;">
+          <div class="glass-card" style="padding: 12px 16px;">
+            <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Month 1 Burn</span>
+            <div style="font-size: 18px; font-weight: 700; color: var(--accent-rose);">-$38.0k / mo</div>
+          </div>
+          <div class="glass-card" style="padding: 12px 16px;">
+            <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Month 6 Burn</span>
+            <div style="font-size: 18px; font-weight: 700; color: var(--accent-amber);">-$8.5k / mo</div>
+          </div>
+          <div class="glass-card glass-card-emerald" style="padding: 12px 16px;">
+            <span style="font-size: 11px; color: var(--accent-emerald-light); text-transform: uppercase;">Month 9 Inflection</span>
+            <div style="font-size: 18px; font-weight: 800; color: var(--accent-emerald);">+$11.0k Breakeven</div>
+          </div>
+          <div class="glass-card" style="padding: 12px 16px;">
+            <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">Month 12 Exit</span>
+            <div style="font-size: 18px; font-weight: 700; color: var(--accent-emerald);">+$38.4k / mo</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         SLIDE 10: ENTERPRISE ADD-ONS & STRATEGIC DIRECTIVES
+         ======================================================================== -->
+    <section class="slide" data-slide="10">
+      <div class="slide-header">
+        <div class="brand-meta">
+          <span class="brand-badge">Enterprise &amp; Roadmap</span>
+          <span class="deck-title">Autonomous B2B Multi-Agent Platform &bull; Financial Study</span>
+        </div>
+        <div class="slide-number-indicator">10 / 10</div>
+      </div>
+
+      <div class="title-group">
+        <div class="slide-category">Enterprise Expansion &amp; Directives</div>
+        <h2 class="slide-h1">High-Margin Expansion Levers &amp; Board Execution Directives</h2>
+        <div class="slide-subtitle">Capturing enterprise procurement budgets with BYOK, custom LoRA models, and isolated VPC clusters.</div>
+      </div>
+
+      <div class="slide-body">
+        <div class="grid-2">
+          <!-- Left: Enterprise Expansion Levers -->
+          <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px;">Enterprise Architectural Add-Ons</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between;">
+                  <strong style="font-size: 13px; color: var(--accent-purple);">1. Bring-Your-Own-Key (BYOK) Mode</strong>
+                  <span class="font-mono" style="color: var(--accent-emerald); font-weight: 700;">+$999 / mo</span>
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">
+                  Enterprise connects own Anthropic/OpenAI/Bedrock keys. Platform incurs zero compute COGS (99.2% gross margin).
+                </div>
+              </div>
+
+              <div style="background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between;">
+                  <strong style="font-size: 13px; color: var(--accent-indigo-light);">2. Dedicated LoRA &amp; Voice Clone Suite</strong>
+                  <span class="font-mono" style="color: var(--accent-emerald); font-weight: 700;">$3.5k setup + $450/mo</span>
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">
+                  Fine-tuned visual diffusion weights on brand assets + custom synthetic voice cloning for executive thought leaders.
+                </div>
+              </div>
+
+              <div style="background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between;">
+                  <strong style="font-size: 13px; color: var(--accent-cyan);">3. Single-Tenant Dedicated VPC Cluster</strong>
+                  <span class="font-mono" style="color: var(--accent-emerald); font-weight: 700;">+$1,500 / mo</span>
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">
+                  Isolated Temporal workers and PostgreSQL vector databases deployed within customer AWS/GCP perimeter.
+                </div>
+              </div>
+
+              <div style="background: rgba(0,0,0,0.25); padding: 10px 14px; border-radius: 8px;">
+                <div style="display: flex; justify-content: space-between;">
+                  <strong style="font-size: 13px; color: var(--accent-amber);">4. Custom Domain Enterprise SSL Packs</strong>
+                  <span class="font-mono" style="color: var(--accent-emerald); font-weight: 700;">$49 / mo per 5 domains</span>
+                </div>
+                <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 3px;">
+                  Managed Cloudflare Enterprise edge routing, DNS failover, and DDoS mitigation for generated landing pages.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Strategic Directives -->
+          <div class="glass-card glass-card-emerald" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--accent-emerald-light); margin-bottom: 12px;">Board &amp; Executive Directives</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <span style="background: rgba(16,185,129,0.2); color: var(--accent-emerald); border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0;">1</span>
+                <div>
+                  <strong style="font-size: 13px; color: var(--text-primary);">Lock in Annual Billing Upfront:</strong>
+                  <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                    Target minimum 30% annual plan penetration across Wave 1 to achieve Day-1 CAC recoup and maintain negative working capital.
+                  </p>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <span style="background: rgba(16,185,129,0.2); color: var(--accent-emerald); border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0;">2</span>
+                <div>
+                  <strong style="font-size: 13px; color: var(--text-primary);">Defend Credit Top-Up Margins:</strong>
+                  <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                    Maintain strict credit denomination (1 cr = $0.019–$0.034 compute) to ensure every expansion dollar delivers &gt;90% margin.
+                  </p>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <span style="background: rgba(16,185,129,0.2); color: var(--accent-emerald); border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0;">3</span>
+                <div>
+                  <strong style="font-size: 13px; color: var(--text-primary);">Execute Wave 2 Expansion in Month 6:</strong>
+                  <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                    Scale into UAE/GCC to exploit high-ticket WhatsApp Business Cloud API conversion velocity at $899/mo ARPU.
+                  </p>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <span style="background: rgba(16,185,129,0.2); color: var(--accent-emerald); border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0;">4</span>
+                <div>
+                  <strong style="font-size: 13px; color: var(--text-primary);">Prepare for EU Wave 3 Compliance:</strong>
+                  <p style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">
+                    Complete SOC 2 Type II and EU data residency localization by Month 12 prior to entering DACH / Germany.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-bar"></div>
+  </div>
+
+  <!-- Bottom Navigation HUD -->
+  <div class="deck-footer">
+    <div class="footer-metadata">
+      <span>Autonomous B2B Multi-Agent Platform</span>
+      <span>&bull;</span>
+      <span>Document M3 Deck</span>
+      <span>&bull;</span>
+      <span class="key-hint">Press [F] Fullscreen</span>
+      <span class="key-hint">Press [O] Overview</span>
+      <span class="key-hint">Press [Ctrl+P] Export PDF</span>
+    </div>
+
+    <div class="nav-controls">
+      <button class="nav-btn" onclick="prevSlide()" title="Previous Slide (&#8592;)">&#8592;</button>
+      <button class="nav-btn" onclick="nextSlide()" title="Next Slide (&#8594;)">&#8594;</button>
+      <button class="nav-btn" onclick="toggleOverview()" title="Slide Overview Grid (O)">&#9638;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================================
+     OVERVIEW MODAL (LIGHTBOX GRID)
+     ======================================================================== -->
+<div id="overview-modal" onclick="toggleOverview(false)">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <h2 style="font-size: 24px; font-weight: 800;">Slide Overview Navigator</h2>
+    <span style="font-size: 13px; color: var(--text-muted); cursor: pointer;" onclick="toggleOverview(false)">Click anywhere or press [Esc] to exit</span>
+  </div>
+  <div class="overview-grid" id="overview-grid" onclick="event.stopPropagation()">
+    <!-- Populated by JS -->
+  </div>
+</div>
+
+<!-- ========================================================================
+     CLIENT-SIDE INTERACTIVE ENGINE
+     ======================================================================== -->
+<script>
+  let currentSlide = 1;
+  const totalSlides = 10;
+  const slides = document.querySelectorAll('.slide');
+  const progressBar = document.getElementById('progress-bar');
+  const deck = document.getElementById('deck');
+
+  // Viewport Scaling Engine (Fit 1600x900 into any resolution)
+  function scaleDeck() {
+    const targetWidth = 1600;
+    const targetHeight = 900;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    const scale = Math.min(windowWidth / targetWidth, windowHeight / targetHeight);
+    deck.style.transform = `scale(${scale})`;
+  }
+
+  window.addEventListener('resize', scaleDeck);
+  window.addEventListener('DOMContentLoaded', () => {
+    scaleDeck();
+    updateSlideView();
+    populateOverview();
+  });
+
+  // Slide Switcher
+  function goToSlide(n) {
+    if (n < 1) n = 1;
+    if (n > totalSlides) n = totalSlides;
+    currentSlide = n;
+    updateSlideView();
+  }
+
+  function nextSlide() {
+    if (currentSlide < totalSlides) {
+      currentSlide++;
+      updateSlideView();
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 1) {
+      currentSlide--;
+      updateSlideView();
+    }
+  }
+
+  function updateSlideView() {
+    slides.forEach((s, idx) => {
+      if (idx + 1 === currentSlide) {
+        s.classList.add('active');
+      } else {
+        s.classList.remove('active');
+      }
+    });
+
+    // Update Progress Bar
+    const progressPct = (currentSlide / totalSlides) * 100;
+    progressBar.style.width = `${progressPct}%`;
+  }
+
+  // Keyboard Navigation
+  window.addEventListener('keydown', (e) => {
+    if (document.getElementById('overview-modal').classList.contains('open')) {
+      if (e.key === 'Escape' || e.key === 'o' || e.key === 'O') {
+        toggleOverview(false);
+      }
+      return;
+    }
+
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      nextSlide();
+    } else if (e.key === 'ArrowLeft' || e.key === 'Backspace' || e.key === 'PageUp') {
+      prevSlide();
+    } else if (e.key === 'Home') {
+      goToSlide(1);
+    } else if (e.key === 'End') {
+      goToSlide(totalSlides);
+    } else if (e.key === 'f' || e.key === 'F') {
+      toggleFullscreen();
+    } else if (e.key === 'o' || e.key === 'O') {
+      toggleOverview(true);
+    }
+  });
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {});
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  }
+
+  function toggleOverview(forceOpen) {
+    const modal = document.getElementById('overview-modal');
+    if (forceOpen === undefined) {
+      modal.classList.toggle('open');
+    } else if (forceOpen) {
+      modal.classList.add('open');
+    } else {
+      modal.classList.remove('open');
+    }
+  }
+
+  function populateOverview() {
+    const grid = document.getElementById('overview-grid');
+    grid.innerHTML = '';
+    const titles = [
+      "1. Title & Executive Overview",
+      "2. The Agency Arbitrage",
+      "3. Subscription Tiers & Cycles",
+      "4. Compute BOM per Deliverable",
+      "5. Tier COGS & Gross Margin Audit",
+      "6. Credit Abstraction & Top-Ups",
+      "7. CAC, LTV & Payback Dynamics",
+      "8. GTM Engine & Marketing Spend",
+      "9. 3-Year Pro-Forma P&L",
+      "10. Enterprise Levers & Directives"
+    ];
+
+    titles.forEach((t, i) => {
+      const card = document.createElement('div');
+      card.className = `thumb-card ${i + 1 === currentSlide ? 'active-thumb' : ''}`;
+      card.innerHTML = `
+        <div style="font-size: 11px; color: var(--accent-indigo-light); font-weight: 700; margin-bottom: 6px;">SLIDE ${i+1}</div>
+        <div style="font-size: 13px; font-weight: 600; color: var(--text-primary);">${t}</div>
+      `;
+      card.onclick = () => {
+        goToSlide(i + 1);
+        toggleOverview(false);
+      };
+      grid.appendChild(card);
+    });
+  }
+
+  // Interactive Billing Cycle Switcher (Slide 3)
+  const billingData = {
+    monthly: {
+      std: { price: "$129", billed: "Billed monthly" },
+      pro: { price: "$349", billed: "Billed monthly" },
+      ultra: { price: "$899", billed: "Billed monthly" },
+      ent: { price: "$2,499", billed: "Custom monthly contract" }
+    },
+    quarterly: {
+      std: { price: "$119", billed: "Billed $357 quarterly (Save 8%)" },
+      pro: { price: "$319", billed: "Billed $957 quarterly (Save 8%)" },
+      ultra: { price: "$819", billed: "Billed $2,457 quarterly (Save 8%)" },
+      ent: { price: "$2,349", billed: "Billed quarterly (Save 8%)" }
+    },
+    semi: {
+      std: { price: "$109", billed: "Billed $654 semi-annually (Save 16%)" },
+      pro: { price: "$289", billed: "Billed $1,734 semi-annually (Save 16%)" },
+      ultra: { price: "$749", billed: "Billed $4,494 semi-annually (Save 16%)" },
+      ent: { price: "$2,199", billed: "Billed semi-annually (Save 16%)" }
+    },
+    yearly: {
+      std: { price: "$99", billed: "Billed $1,188 yearly (Save 22%)" },
+      pro: { price: "$269", billed: "Billed $3,228 yearly (Save 22%)" },
+      ultra: { price: "$699", billed: "Billed $8,388 yearly (Save 22%)" },
+      ent: { price: "$1,999", billed: "Billed $23,988 yearly (Save 22%)" }
+    }
+  };
+
+  function setBillingCycle(cycle) {
+    const pills = document.querySelectorAll('#billing-selector .toggle-pill');
+    pills.forEach(p => p.classList.remove('active'));
+    if (event && event.target) {
+      event.target.classList.add('active');
+    }
+
+    const data = billingData[cycle];
+    document.getElementById('price-std').textContent = data.std.price;
+    document.getElementById('billed-std').textContent = data.std.billed;
+
+    document.getElementById('price-pro').textContent = data.pro.price;
+    document.getElementById('billed-pro').textContent = data.pro.billed;
+
+    document.getElementById('price-ultra').textContent = data.ultra.price;
+    document.getElementById('billed-ultra').textContent = data.ultra.billed;
+
+    document.getElementById('price-ent').textContent = data.ent.price;
+    document.getElementById('billed-ent').textContent = data.ent.billed;
+  }
+
+  // Interactive Credit Top-Up Simulator (Slide 6)
+  function updateCreditSim(val) {
+    const credits = parseInt(val, 10);
+    document.getElementById('calc-credits-val').textContent = `${credits} Credits`;
+
+    // Pricing formula with volume discount
+    // $0.98/cr at 50, down to $0.45/cr at 1500
+    let rate = 0.98 - (credits / 1500) * 0.53;
+    if (rate < 0.45) rate = 0.45;
+
+    const retailPrice = credits * rate;
+    const computeCOGS = credits * 0.0245; // Blended compute BOM
+    const profit = retailPrice - computeCOGS;
+    const marginPct = (profit / retailPrice) * 100;
+
+    document.getElementById('calc-price-val').textContent = `$${retailPrice.toFixed(2)}`;
+    document.getElementById('calc-rate-val').textContent = `$${rate.toFixed(3)} / credit`;
+    document.getElementById('calc-margin-val').textContent = `${marginPct.toFixed(1)}%`;
+    document.getElementById('calc-profit-val').textContent = `Profit: +$${profit.toFixed(2)}`;
+
+    // Deliverable equivalents
+    const posts = credits;
+    const pages = Math.floor(credits / 50);
+    const videos = Math.floor(credits / 25);
+    document.getElementById('calc-equiv-val').textContent = `${posts} text posts, or ${pages} landing pages, or ${videos} AI videos`;
+  }
+</script>
+
+</body>
+</html>

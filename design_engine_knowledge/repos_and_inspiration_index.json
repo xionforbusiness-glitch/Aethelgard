@@ -1,0 +1,136 @@
+{
+  "version": "1.3.0",
+  "last_updated": "2026-09-17T19:30:00Z",
+  "session": "Session-04",
+  "categories": [
+    {
+      "name": "Animation & Physics Engines",
+      "items": [
+        {
+          "name": "Spatial 3D Tilt & Specular Glare",
+          "url": "https://github.com/micku/vanilla-tilt.js",
+          "description": "3D perspective transforms with mouse-following dynamic glare overlays and multi-layer Z-index parallax depth.",
+          "key_patterns": [
+            "perspective(1000px)",
+            "transform-style: preserve-3d",
+            "translateZ(30px)",
+            "dynamic specular glare"
+          ]
+        },
+        {
+          "name": "Anime.js v4",
+          "url": "https://github.com/juliangarnier/anime",
+          "description": "Next-gen modular animation engine with named imports, WAAPI acceleration, scroll-linked animations, and SVG stroke morphing.",
+          "key_patterns": [
+            "modular animate()",
+            "createTimeline()",
+            "strokeDashoffset choreography",
+            "additive animations"
+          ]
+        },
+        {
+          "name": "Emil Kowalski Interaction Physics",
+          "url": "https://emilkowal.ski",
+          "description": "Canonical spring physics constants and micro-interaction tactile rules for world-class web applications.",
+          "key_patterns": [
+            "Snappy Micro: { stiffness: 450, damping: 35, mass: 0.8 }",
+            "Fluid Gentle: { stiffness: 280, damping: 28, mass: 1.0 }",
+            "Hover Tilt: { stiffness: 220, damping: 22, mass: 0.5 }",
+            "50% Faster Exits: 150-200ms exits vs 300-400ms entrances"
+          ]
+        },
+        {
+          "name": "Procedural Shader Gradients & WebGL Meshes",
+          "url": "https://github.com/mrdoob/three.js / shadergradient.co",
+          "description": "Hardware-accelerated procedural canvas shaders with trigonometric turbulence and dynamic cursor attraction.",
+          "key_patterns": [
+            "requestAnimationFrame 60fps",
+            "radial gradient mesh",
+            "cursor attraction vector",
+            "iridescent chromatic aberration"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Component Systems & Generative UI",
+      "items": [
+        {
+          "name": "Streaming Generative UI Architecture",
+          "url": "https://v0.dev",
+          "description": "Token-buffered streaming code renderer with typing cursor and progressive syntax assembly.",
+          "key_patterns": [
+            "token streaming buffer",
+            "debounced syntax highlight",
+            "typing cursor animation",
+            "polyphonic completion chord"
+          ]
+        },
+        {
+          "name": "Magic UI - Border Beam",
+          "url": "https://magicui.design/docs/components/border-beam",
+          "description": "CSS @property registered angle property driving continuous conic-gradient laser beams along container perimeters.",
+          "key_patterns": [
+            "@property --beam-angle",
+            "conic-gradient masking",
+            "GPU compositor rendering"
+          ]
+        },
+        {
+          "name": "Apple Continuous Curvature (Squircle)",
+          "url": "https://developer.apple.com/design/human-interface-guidelines/",
+          "description": "Continuous curvature geometry where inner radius must equal outer radius minus padding.",
+          "key_patterns": [
+            "R_inner = R_outer - Padding",
+            "dual specular rim lighting",
+            "glassmorphism backdrop blurs"
+          ]
+        },
+        {
+          "name": "W3C View Transitions API & Top-Layer Popovers",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API",
+          "description": "Native same-document morphing transitions and zero-z-index popovers with @starting-style entry/exit animations.",
+          "key_patterns": [
+            "document.startViewTransition()",
+            "popover attribute",
+            "@starting-style",
+            "transition-behavior: allow-discrete"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Auditory & Canvas Interaction APIs",
+      "items": [
+        {
+          "name": "Polyphonic Web Audio Chord Arpeggiator",
+          "description": "Zero-asset acoustic harmonic feedback synthesizing multi-oscillator major triad chords on action completion.",
+          "key_patterns": [
+            "staggered oscillator arpeggio C5-E5-G5-C6",
+            "exponential gain envelope",
+            "AudioContext scheduler"
+          ]
+        },
+        {
+          "name": "HTML5 Canvas Gravity Vortex",
+          "description": "Celestial gravity well and orbital particle physics responding to cursor velocity.",
+          "key_patterns": [
+            "orbital velocity cross-product",
+            "velocity dampening",
+            "inter-particle filament meshes"
+          ]
+        },
+        {
+          "name": "4-Tier Procedural Web Audio Micro-Haptics v2",
+          "description": "Synthesized zero-latency acoustic feedback: micro-tap sweep, pitch-scrub ticks, dual-harmonic chimes, and major triad arpeggio.",
+          "key_patterns": [
+            "AudioContext scheduler",
+            "exponentialRampToValueAtTime",
+            "dynamic frequency scrub tick",
+            "major triad C5-E5-G5-C6"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Aethelgard — Autonomous Intelligence Cast in Sovereign Loyalty</title>
+  
+  <!-- Fonts & Material Symbols -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Anybody:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Comfortaa:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+  
+  <!-- Three.js CDN for 1300s Gothic AI Clockwork Astrarium -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "background": "#141313",
+            "surface-dim": "#141313",
+            "surface": "#141313",
+            "surface-container-lowest": "#0e0e0e",
+            "surface-container-low": "#1c1b1b",
+            "surface-container": "#201f1f",
+            "surface-container-high": "#2b2a2a",
+            "surface-container-highest": "#363434",
+            "surface-variant": "#363434",
+            "surface-bright": "#3a3939",
+            "on-surface": "#e5e2e1",
+            "on-surface-variant": "#cdc4c8",
+            "outline": "#968f92",
+            "outline-variant": "#4b4548",
+            "primary": "#c9c6c5",
+            "on-primary": "#313030",
+            "primary-container": "#252424",
+            "on-primary-container": "#8d8b8a",
+            "primary-fixed": "#e6e1e1",
+            "primary-fixed-dim": "#c9c6c5",
+            "secondary": "#d4c4b5",
+            "on-secondary": "#382f24",
+            "secondary-container": "#504539",
+            "on-secondary-container": "#c2b2a4",
+            "secondary-fixed": "#f1e0d0",
+            "secondary-fixed-dim": "#d4c4b5",
+            "tertiary": "#c8c6c5",
+            "on-tertiary": "#313030",
+            "tertiary-container": "#242424",
+            "on-tertiary-container": "#8c8b8a",
+            "tertiary-fixed": "#e5e2e1",
+            "tertiary-fixed-dim": "#c8c6c5"
+          },
+          fontFamily: {
+            "body": ["Anybody", "Inter", "sans-serif"],
+            "headline": ["Comfortaa", "sans-serif"],
+            "editorial": ["Playfair Display", "serif"],
+            "cinzel": ["Cinzel", "serif"],
+            "label": ["Arimo", "sans-serif"],
+            "mono": ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #141313;
+        color: #e5e2e1;
+        font-family: 'Anybody', sans-serif;
+      }
+      ::-webkit-scrollbar { display: none; }
+    }
+    
+    /* Background Coordinate Grid eliminated per user directive for pure dark cosmic atmosphere */
+    .bg-architectural-grid {
+      background-image: none;
+    }
+
+    /* Tactile slabs with dual specular rim lighting & Session 06 Luminous Cursor Spotlight */
+    .tactile-slab-3d {
+      background: rgba(28, 27, 27, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(150, 143, 146, 0.28);
+      box-shadow: 
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 -1px 2px 0 rgba(212, 196, 181, 0.08),
+        0 18px 45px -12px rgba(0, 0, 0, 0.88);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .tactile-slab-3d::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(380px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(212, 196, 181, 0.16), transparent 75%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .tactile-slab-3d:hover::before {
+      opacity: 1;
+    }
+    .tactile-slab-3d:hover {
+      transform: translateY(-4px) scale(1.005);
+      border-color: rgba(212, 196, 181, 0.55);
+      box-shadow: 
+        inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.25),
+        inset 0 0 18px 0 rgba(212, 196, 181, 0.15),
+        0 24px 60px -12px rgba(0, 0, 0, 0.95),
+        0 0 28px -2px rgba(212, 196, 181, 0.32);
+    }
+
+    .monolith-recess {
+      box-shadow: 
+        inset 0 3px 12px 0 rgba(0, 0, 0, 0.85),
+        inset 0 0 0 1px rgba(150, 143, 146, 0.18),
+        0 1px 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    /* Gothic illuminated medallion styling */
+    .illuminated-medallion {
+      position: relative;
+      border: 2px solid rgba(212, 196, 181, 0.35);
+      box-shadow: 0 0 20px rgba(212, 196, 181, 0.15), inset 0 0 15px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+    }
+    .illuminated-medallion img {
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+    }
+    .illuminated-medallion:hover img {
+      transform: scale(1.08);
+      filter: brightness(1.1);
+    }
+
+    /* Smooth vertical timeline laser pulse */
+    @keyframes timelineLaser {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(450%); }
+    }
+    .animate-timeline-laser {
+      animation: timelineLaser 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    /* Letter-by-Letter Typography Reveal Animation */
+    @keyframes letterReveal {
+      0% {
+        opacity: 0;
+        transform: translateY(8px) scale(0.96);
+        filter: blur(3px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+    .letter-char {
+      display: inline-block;
+      opacity: 0;
+      animation: letterReveal 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Magic UI Animated Conic Border Beam (Citadel Sovereign Flagship Tier) */
+    @property --beam-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+    @keyframes spinLaser {
+      0% { --beam-angle: 0deg; }
+      100% { --beam-angle: 360deg; }
+    }
+    .neon-laser-card {
+      position: relative;
+      border-radius: 1.5rem;
+      background: #1C1B1B;
+      isolation: isolate;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+    }
+    .neon-laser-card:hover {
+      transform: translateY(-6px) scale(1.008);
+      box-shadow: 
+        0 28px 65px -12px rgba(0, 0, 0, 0.95),
+        0 0 45px rgba(212, 196, 181, 0.35) !important;
+    }
+    .neon-laser-card::before {
+      content: '';
+      position: absolute;
+      inset: -1.5px;
+      border-radius: inherit;
+      padding: 1.5px;
+      background: conic-gradient(
+        from var(--beam-angle),
+        transparent 60%,
+        #D4C4B5 78%,
+        #F1E0D0 88%,
+        #D4C4B5 95%,
+        transparent 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      animation: spinLaser 3.6s linear infinite;
+      z-index: 2;
+    }
+    .neon-laser-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(212, 196, 181, 0.16), transparent 75%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .neon-laser-card:hover::after {
+      opacity: 1;
+    }
+    .neon-laser-card-inner {
+      position: relative;
+      z-index: 1;
+      background: #1C1B1B;
+      border-radius: calc(1.5rem - 1.5px);
+      height: 100%;
+    }
+
+    /* Scroll-Driven Timeline Dot Ignition */
+    .timeline-dot {
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .timeline-dot-active {
+      background-color: #D4C4B5 !important;
+      border-color: #F1E0D0 !important;
+      box-shadow: 0 0 8px rgba(212, 196, 181, 0.8), 0 0 16px rgba(241, 224, 208, 0.3) !important;
+      transform: scale(1.2);
+    }
+    .timeline-ping-active {
+      opacity: 0.5 !important;
+      transform: scale(1.4);
+    }
+  </style>
+</head>
+
+<body class="bg-background text-on-surface antialiased selection:bg-secondary/20 selection:text-secondary-fixed relative overflow-x-hidden">
+
+  <!-- GLOBAL CELESTIAL STARDUST & AMBIENT ATMOSPHERE (PERSISTS ACROSS ENTIRE PAGE) -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <!-- Atmospheric Specular Glow Gradients -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[750px] bg-[radial-gradient(ellipse_at_center,rgba(212,196,181,0.07)_0%,rgba(46,229,157,0.03)_35%,transparent_70%)] blur-3xl"></div>
+    <div class="absolute top-[35%] left-1/4 -translate-x-1/2 w-[900px] h-[650px] bg-[radial-gradient(ellipse_at_center,rgba(212,196,181,0.05)_0%,transparent_65%)] blur-3xl"></div>
+    <div class="absolute top-[70%] right-1/4 translate-x-1/2 w-[1100px] h-[750px] bg-[radial-gradient(ellipse_at_center,rgba(212,196,181,0.06)_0%,rgba(46,229,157,0.025)_40%,transparent_70%)] blur-3xl"></div>
+    <!-- Drifting Global Stardust Particle Canvas -->
+    <canvas id="global-stardust-canvas" class="absolute inset-0 w-full h-full block opacity-70"></canvas>
+  </div>
+
+  <!-- 6 Full-Height Architectural Hairlines in Antique Platinum -->
+  <div class="fixed inset-0 pointer-events-none z-10 flex justify-between px-6 md:px-16 lg:px-24">
+    <div class="w-px h-full bg-gradient-to-b from-transparent via-[rgba(212,196,181,0.08)] to-transparent"></div>
+    <div class="w-px h-full bg-gradient-to-b from-transparent via-[rgba(212,196,181,0.08)] to-transparent hidden sm:block"></div>
+    <div class="w-px h-full bg-gradient-to-b from-transparent via-[rgba(212,196,181,0.08)] to-transparent"></div>
+    <div class="w-px h-full bg-gradient-to-b from-transparent via-[rgba(212,196,181,0.08)] to-transparent hidden md:block"></div>
+    <div class="w-px h-full bg-gradient-to-b from-transparent via-[rgba(212,196,181,0.08)] to-transparent hidden lg:block"></div>
+    <div class="w-px h-full bg-gradient-to-b from-transparent via-[rgba(212,196,181,0.08)] to-transparent"></div>
+  </div>
+
+  <!-- FLOATING MINIMALIST CAPSULE PILL HEADER (Version 3 Red Circle Spec) -->
+  <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none transition-all duration-300" id="smart-navbar-container">
+    <header class="pointer-events-auto flex items-center justify-between gap-4 lg:gap-8 px-6 md:px-10 py-2.5 rounded-full bg-[#1C1B1B]/85 backdrop-blur-xl border border-[rgba(212,196,181,0.22)] shadow-[0_8px_32px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)] max-w-6xl w-full">
+      
+      <!-- Brand Effigy -->
+      <a class="flex items-center gap-3 group text-decoration-none shrink-0" href="#storyline-stage">
+        <div class="w-7 h-7 rounded-full bg-surface-container-highest border border-[rgba(212,196,181,0.4)] flex items-center justify-center text-secondary shadow-[0_0_12px_rgba(212,196,181,0.3)] group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-sm">token</span>
+        </div>
+        <span class="font-headline font-semibold text-sm tracking-tight text-on-surface group-hover:text-secondary transition-colors">
+          Aethelgard
+        </span>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center gap-4 lg:gap-6 font-mono text-xs font-normal shrink-0">
+        <a class="text-xs text-on-surface-variant hover:text-secondary tracking-widest uppercase transition-colors" href="#storyline-stage">PLATFORM</a>
+        <a class="text-xs text-on-surface-variant hover:text-secondary tracking-widest uppercase transition-colors" href="#architecture">ARCHITECTURE</a>
+        <a class="text-xs text-on-surface-variant hover:text-secondary tracking-widest uppercase transition-colors" href="#ingestion">DATA PIPELINE</a>
+        <a class="text-xs text-on-surface-variant hover:text-secondary tracking-widest uppercase transition-colors" href="#solutions">SOLUTIONS</a>
+        <a class="text-xs text-on-surface-variant hover:text-secondary tracking-widest uppercase transition-colors" href="#agents">AGENTS</a>
+        <a class="text-xs text-on-surface-variant hover:text-secondary tracking-widest uppercase transition-colors" href="#pricing">PRICING</a>
+      </nav>
+
+      <!-- Minimalist Action CTA with Generous Pill Boundary Clearance -->
+      <div class="flex items-center gap-3 shrink-0 mr-1 sm:mr-2">
+        <div class="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#201F1F] border border-[rgba(212,196,181,0.2)] font-mono text-[10px] text-secondary shrink-0">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#2EE59D] animate-pulse"></span>
+          <span>9 ACTIVE AGENTS</span>
+        </div>
+        <a class="px-5 py-1.5 rounded-full bg-secondary hover:bg-secondary-fixed text-[#141313] font-label text-xs font-semibold uppercase tracking-wider transition-all shadow-[0_0_16px_rgba(212,196,181,0.3)] hover:scale-105 shrink-0 whitespace-nowrap" href="#pricing">
+          GET STARTED
+        </a>
+      </div>
+    </header>
+  </div>
+
+  <main class="w-full relative min-h-screen">
+    
+    <!-- SECTION 1: PINNED SPATIAL 3D HERO & 4-ACT STORYLINE STAGE (1300s GOTHIC AI ASTRARIUM) -->
+    <section class="relative w-full h-[3200px]" id="storyline-stage">
+      <div class="sticky top-0 h-screen w-full overflow-hidden bg-transparent flex items-center justify-center [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)]">
+        
+        <!-- MINIMALIST SYNCHRONIZED SIDE RAIL (Acts Navigation - Encapsulated inside Hero Sticky Viewport) -->
+        <aside id="storyline-side-rail" aria-label="Storyline Acts" class="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-center gap-3.5 py-4 px-1.5 rounded-full bg-[#1C1B1B]/90 backdrop-blur-xl border border-[rgba(150,143,146,0.22)] shadow-2xl transition-all duration-300 w-10">
+          <button class="act-nav relative flex items-center justify-center group focus:outline-none w-7 h-7" data-act="0" title="Act I: Inception">
+            <span class="indicator-bar w-1.5 h-6 rounded-full bg-[#D4C4B5] transition-all duration-300 shadow-[0_0_12px_rgba(212,196,181,0.8)]"></span>
+            <span class="act-tooltip absolute left-12 px-2.5 py-1 rounded-md bg-[#1C1B1B]/95 backdrop-blur-md border border-[rgba(212,196,181,0.3)] text-[10px] font-mono text-secondary tracking-widest uppercase font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-2xl z-50">01 // INCEPTION</span>
+          </button>
+          <button class="act-nav relative flex items-center justify-center group focus:outline-none w-7 h-7" data-act="1" title="Act II: Specs">
+            <span class="indicator-bar w-1.5 h-2 rounded-full bg-outline-variant group-hover:bg-secondary transition-all duration-300"></span>
+            <span class="act-tooltip absolute left-12 px-2.5 py-1 rounded-md bg-[#1C1B1B]/95 backdrop-blur-md border border-[rgba(212,196,181,0.3)] text-[10px] font-mono text-secondary tracking-widest uppercase font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-2xl z-50">02 // SPECS</span>
+          </button>
+          <button class="act-nav relative flex items-center justify-center group focus:outline-none w-7 h-7" data-act="2" title="Act III: Attribution">
+            <span class="indicator-bar w-1.5 h-2 rounded-full bg-outline-variant group-hover:bg-secondary transition-all duration-300"></span>
+            <span class="act-tooltip absolute left-12 px-2.5 py-1 rounded-md bg-[#1C1B1B]/95 backdrop-blur-md border border-[rgba(212,196,181,0.3)] text-[10px] font-mono text-secondary tracking-widest uppercase font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-2xl z-50">03 // ATTRIBUTION</span>
+          </button>
+          <button class="act-nav relative flex items-center justify-center group focus:outline-none w-7 h-7" data-act="3" title="Act IV: Security">
+            <span class="indicator-bar w-1.5 h-2 rounded-full bg-outline-variant group-hover:bg-secondary transition-all duration-300"></span>
+            <span class="act-tooltip absolute left-12 px-2.5 py-1 rounded-md bg-[#1C1B1B]/95 backdrop-blur-md border border-[rgba(212,196,181,0.3)] text-[10px] font-mono text-secondary tracking-widest uppercase font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 shadow-2xl z-50">04 // SECURITY</span>
+          </button>
+        </aside>
+
+        <!-- 3D Three.js Container: 1300s Celestial Clockwork AI Astrarium (Materializes upon scrolling into Act II) -->
+        <div class="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none z-0 transition-opacity duration-700 ease-out" id="threejs-spatial-stage" style="opacity: 0;">
+          <canvas id="gothic-astrarium-canvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <!-- Atmospheric Specular Glows -->
+        <div class="absolute w-[640px] h-[640px] rounded-full bg-secondary/5 blur-[140px] pointer-events-none -top-32 -left-20"></div>
+        <div class="absolute w-[500px] h-[500px] rounded-full bg-secondary-fixed/5 blur-[120px] pointer-events-none bottom-10 right-10"></div>
+
+        <!-- ACT I: INCEPTION (Centered — DEFAULT PROMINENT STATE, GUARANTEED NEVER HIDDEN) -->
+        <div class="act-view absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center pt-28 sm:pt-32 pb-8 transition-all duration-700 pointer-events-auto opacity-100" id="act-1-view">
+          
+          <!-- Status Pill with Generous Header Clearance (Zero Navbar Collision) -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1C1B1B]/90 border border-[rgba(212,196,181,0.25)] shadow-[0_4px_16px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] mb-6 backdrop-blur-xl mt-2 sm:mt-4">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#2EE59D] animate-pulse"></span>
+            <span class="font-mono text-xs text-on-surface-variant tracking-wider uppercase font-medium">AUTONOMOUS ENTERPRISE PLATFORM // ZERO DRIFT</span>
+          </div>
+
+          <!-- Monumental Headline Harmoniously Framed Above Subtitle -->
+          <h1 class="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-on-surface max-w-4xl leading-[1.12] drop-shadow-sm mb-5" data-reveal-title="true">
+            Autonomous Intelligence.
+          </h1>
+
+          <!-- Clean Open Subtitle with Zero 3D Occlusion & Pristine Investor Readability -->
+          <p class="font-body text-base md:text-lg text-on-surface-variant max-w-2xl mx-auto font-light leading-relaxed mb-8">
+            Aethelgard replaces bloated agency retainers with an autonomous platform of 9 specialized agents executing web synthesis, 142ms duplex voice, and Bayesian ROI calibration.
+          </p>
+
+          <!-- Dual CTAs -->
+          <div class="flex flex-wrap items-center justify-center gap-4 mb-12">
+            <a class="px-7 py-3.5 rounded-full bg-secondary text-[#141313] font-semibold text-xs uppercase tracking-widest transition-all shadow-[0_0_24px_rgba(212,196,181,0.28),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_0_36px_rgba(212,196,181,0.45)] hover:scale-[1.02] font-label inline-flex items-center justify-center" href="#pricing">
+              Get Started
+            </a>
+            <a class="px-7 py-3.5 rounded-full bg-surface-container border border-[rgba(150,143,146,0.28)] text-xs font-semibold uppercase tracking-widest text-on-surface hover:text-secondary-fixed hover:border-secondary/50 transition-all hover:bg-[#2B2A2A] shadow-[0_8px_20px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)] font-label inline-flex items-center justify-center" href="#solutions">
+              Explore Solutions
+            </a>
+          </div>
+
+          <!-- 4 Horizon Count-Up Metrics Bar with Tabular Numerics & Ascension Reveal -->
+          <div id="hero-metrics-bar" class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 max-w-4xl w-full border-y border-[rgba(150,143,146,0.3)] py-6 bg-surface-container/50 backdrop-blur-md rounded-2xl px-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_30px_rgba(0,0,0,0.6)] transform transition-all duration-1000 translate-y-6 opacity-0">
+            <div class="text-left px-2">
+              <span class="font-label text-[11px] text-outline block mb-1 uppercase tracking-widest">Alignment</span>
+              <div class="font-mono text-2xl lg:text-3xl text-secondary font-semibold tabular-nums"><span class="counter" data-target="100">0</span>%</div>
+              <span class="font-label text-xs text-on-surface-variant block mt-0.5">Zero Drift Verified</span>
+            </div>
+            <div class="text-left px-2">
+              <span class="font-label text-[11px] text-outline block mb-1 uppercase tracking-widest">Deployment</span>
+              <div class="font-mono text-2xl lg:text-3xl text-primary font-semibold tabular-nums">&lt;<span class="counter" data-target="60">0</span>s</div>
+              <span class="font-label text-xs text-on-surface-variant block mt-0.5">Edge AST Coldstart</span>
+            </div>
+            <div class="text-left px-2">
+              <span class="font-label text-[11px] text-outline block mb-1 uppercase tracking-widest">Duplex Latency</span>
+              <div class="font-mono text-2xl lg:text-3xl text-secondary font-semibold tabular-nums"><span class="counter" data-target="142">0</span>ms</div>
+              <span class="font-label text-xs text-on-surface-variant block mt-0.5">Direct SIP Carrier</span>
+            </div>
+            <div class="text-left px-2">
+              <span class="font-label text-[11px] text-outline block mb-1 uppercase tracking-widest">Cost Efficiency</span>
+              <div class="font-mono text-2xl lg:text-3xl text-primary font-semibold tabular-nums"><span class="counter" data-target="10">0</span>x</div>
+              <span class="font-label text-xs text-on-surface-variant block mt-0.5">Retainer Arbitrage</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ACT II: THE SPECIFICATIONS (Left Flank with generous space for 3D model on the right) -->
+        <div class="act-view absolute inset-0 z-20 flex items-center justify-start px-6 md:px-16 lg:px-24 pl-20 sm:pl-24 md:pl-32 lg:pl-36 pt-12 transition-all duration-700 opacity-0 pointer-events-none translate-x-12" id="act-2-view">
+          <div class="max-w-lg w-full space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1C1B1B]/80 border border-[rgba(212,196,181,0.25)]">
+              <span class="material-symbols-outlined text-sm text-secondary">memory</span>
+              <span class="font-mono text-xs text-secondary uppercase tracking-widest">Act II // Specifications</span>
+            </div>
+            <h2 class="font-headline text-3xl md:text-4xl text-on-surface" data-reveal-title="true">High-Performance Infrastructure</h2>
+            <p class="font-body text-sm text-on-surface-variant font-light">Three hardware-interlocked compute pillars operating within sub-millisecond coordination.</p>
+            
+            <div class="space-y-3 pt-2" id="tri-spectral-cards">
+              <div class="p-4 rounded-xl tactile-slab-3d tri-card transform transition-all duration-700 ease-out -translate-y-12 opacity-0" style="transition-delay: 120ms;">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-label text-sm font-semibold text-secondary">Duplex Voice Engine</span>
+                  <span class="font-mono text-xs text-outline">142ms Duplex</span>
+                </div>
+                <p class="font-body text-xs text-on-surface-variant leading-relaxed">Direct carrier-grade SIP streaming with millisecond interruptibility and zero WebRTC packet drag.</p>
+              </div>
+              <div class="p-4 rounded-xl tactile-slab-3d tri-card transform transition-all duration-700 ease-out -translate-y-12 opacity-0" style="transition-delay: 360ms;">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-label text-sm font-semibold text-secondary">Edge AST Compiler</span>
+                  <span class="font-mono text-xs text-outline">&lt;48s Rollout</span>
+                </div>
+                <p class="font-body text-xs text-on-surface-variant leading-relaxed">Natural intent converted to semantic AST trees deployed across 310+ global edge nodes.</p>
+              </div>
+              <div class="p-4 rounded-xl tactile-slab-3d tri-card transform transition-all duration-700 ease-out -translate-y-12 opacity-0" style="transition-delay: 600ms;">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="font-label text-sm font-semibold text-secondary">Enterprise Knowledge Vault</span>
+                  <span class="font-mono text-xs text-outline">85k Tok/s</span>
+                </div>
+                <p class="font-body text-xs text-on-surface-variant leading-relaxed">Air-gapped 3,072-dimensional embeddings sealed under client-controlled cryptographic keys.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACT III: ATTRIBUTION (Right Flank with generous space for 3D model on the left) -->
+        <div class="act-view absolute inset-0 z-20 flex items-center justify-end px-6 md:px-16 lg:px-24 pr-16 sm:pr-20 md:pr-28 lg:pr-36 pt-12 transition-all duration-700 opacity-0 pointer-events-none -translate-x-12" id="act-3-view">
+          <div class="max-w-lg w-full p-6 sm:p-8 rounded-2xl tactile-slab-3d space-y-4 ml-auto text-left">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.2)]">
+              <span class="material-symbols-outlined text-sm text-secondary">radar</span>
+              <span class="font-mono text-xs text-secondary uppercase tracking-widest">Act III // Performance Engine</span>
+            </div>
+            <h2 class="font-headline text-2xl md:text-3xl text-on-surface" data-reveal-title="true">Closed-Loop Attribution Engine</h2>
+            <p class="font-body text-xs md:text-sm text-on-surface-variant">Live Bayesian telemetry eliminating ad spend waste by correlating CRM closing outcomes to creative tokens.</p>
+            <div class="p-4 rounded-lg bg-[#0E0E0E] border border-[rgba(150,143,146,0.2)] font-mono text-xs text-secondary space-y-1.5 overflow-x-auto">
+              <div class="text-secondary font-semibold">P(θ | D) ∝ P(D | θ) · P(θ)</div>
+              <div class="text-outline text-[11px]"># Re-weighting attribution vectors across Meta Graph + SIP ingress</div>
+              <div class="text-[#F1E0D0] text-[11px]">Delta CAC: -41.2% | Verified Closed Value: +38.4% Net Lift</div>
+            </div>
+            <div class="flex items-center justify-between pt-2 font-mono text-xs">
+              <span class="text-outline">Real-Time Ingestion: Active</span>
+              <span class="text-secondary font-bold">LTV/CAC Arbitrage: 4.8x</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACT IV: ENTERPRISE SECURITY & SOVEREIGNTY (Left Flank with 3D model shining on the right) -->
+        <div class="act-view absolute inset-0 z-20 flex items-center justify-start px-6 md:px-16 lg:px-24 pl-20 sm:pl-24 md:pl-32 lg:pl-36 pt-12 transition-all duration-700 opacity-0 pointer-events-none translate-x-12" id="act-4-view">
+          <div class="max-w-lg w-full p-8 rounded-3xl tactile-slab-3d space-y-5 bg-[#1C1B1B] border border-[rgba(212,196,181,0.25)] shadow-2xl text-left">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.2)]">
+              <span class="material-symbols-outlined text-sm text-secondary">verified_user</span>
+              <span class="font-mono text-xs text-secondary uppercase tracking-widest">Act IV // Enterprise Security</span>
+            </div>
+            <h2 class="font-headline text-3xl md:text-4xl text-on-surface" data-reveal-title="true">
+              Enterprise Security &amp; Sovereignty
+            </h2>
+            <p class="font-body text-sm md:text-base text-on-surface-variant leading-relaxed font-light">
+              Zero model training leakage. No shared multi-tenant weights. Your enterprise data and customer intelligence remain sealed in your private VPC enclave.
+            </p>
+            <div class="grid grid-cols-3 gap-2 pt-1 font-mono text-[11px]">
+              <div class="p-2.5 rounded-lg bg-[#0E0E0E] border border-[rgba(150,143,146,0.2)] text-center">
+                <span class="text-secondary block font-semibold">SOC 2 Type II</span>
+                <span class="text-outline text-[10px]">Compliant</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-[#0E0E0E] border border-[rgba(150,143,146,0.2)] text-center">
+                <span class="text-secondary block font-semibold">Private VPC</span>
+                <span class="text-outline text-[10px]">Isolated</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-[#0E0E0E] border border-[rgba(150,143,146,0.2)] text-center">
+                <span class="text-secondary block font-semibold">Zero Egress</span>
+                <span class="text-outline text-[10px]">Encrypted</span>
+              </div>
+            </div>
+            <div class="pt-2">
+              <a class="px-7 py-3.5 rounded-full bg-secondary hover:bg-secondary-fixed text-[#141313] font-label text-xs font-bold tracking-widest uppercase transition-all shadow-[0_0_24px_rgba(212,196,181,0.35)] hover:scale-105 inline-flex items-center gap-2" href="#pricing">
+                Deploy Enterprise Platform
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: ARCHITECTURAL INFRASTRUCTURE -->
+    <section class="relative z-30 w-full px-6 md:px-12 max-w-7xl mx-auto py-24" id="architecture">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="font-mono text-xs text-secondary uppercase tracking-widest block mb-2 font-medium">Enterprise Foundation</span>
+        <h2 class="font-headline text-3xl md:text-4xl text-on-surface font-medium">Architectural Infrastructure</h2>
+        <p class="font-body text-sm md:text-base text-on-surface-variant mt-2 font-light">Engineered from clean silicon to outperform traditional dev agencies and manual lead operators.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Pillar 1: Web Synthesis Engine -->
+        <div class="group p-8 rounded-2xl tactile-slab-3d flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <span class="font-mono text-xs text-secondary tracking-widest font-semibold">01 / SYNTHESIS</span>
+              <div class="w-12 h-12 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                <span class="material-symbols-outlined text-[20px]">architecture</span>
+              </div>
+            </div>
+            <h3 class="font-headline text-xl text-on-surface font-semibold mb-3">Web Synthesis Engine</h3>
+            <p class="font-body text-xs md:text-sm text-on-surface-variant leading-relaxed mb-6 font-light">
+              Compiles vector brand tokens into clean, performant Tailwind AST in under 60 seconds. Instant global distribution via V8 Edge CDNs with perfect Lighthouse metrics.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-[rgba(150,143,146,0.2)] flex items-center justify-between font-mono text-xs">
+            <span class="text-outline">Cold Start: 38ms</span>
+            <span class="text-secondary font-semibold">&lt;60s Edge Compile</span>
+          </div>
+        </div>
+
+        <!-- Pillar 2: Duplex Voice Telephony -->
+        <div class="group p-8 rounded-2xl tactile-slab-3d flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <span class="font-mono text-xs text-secondary tracking-widest font-semibold">02 / TELEPHONY</span>
+              <div class="w-12 h-12 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                <span class="material-symbols-outlined text-[20px]">phone_in_talk</span>
+              </div>
+            </div>
+            <h3 class="font-headline text-xl text-on-surface font-semibold mb-3">Duplex Voice Telephony</h3>
+            <p class="font-body text-xs md:text-sm text-on-surface-variant leading-relaxed mb-6 font-light">
+              Duplex telephony with 142ms turnaround. Operates with natural voice interruption, enterprise cadence, and direct calendar dispatch without robotic delays.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-[rgba(150,143,146,0.2)] flex items-center justify-between font-mono text-xs">
+            <span class="text-outline">Carrier Ping</span>
+            <span class="text-secondary font-semibold">142ms SIP Duplex</span>
+          </div>
+        </div>
+
+        <!-- Pillar 3: Closed-Loop Attribution -->
+        <div class="group p-8 rounded-2xl tactile-slab-3d flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <span class="font-mono text-xs text-secondary tracking-widest font-semibold">03 / ATTRIBUTION</span>
+              <div class="w-12 h-12 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                <span class="material-symbols-outlined text-[20px]">query_stats</span>
+              </div>
+            </div>
+            <h3 class="font-headline text-xl text-on-surface font-semibold mb-3">Closed-Loop Attribution</h3>
+            <p class="font-body text-xs md:text-sm text-on-surface-variant leading-relaxed mb-6 font-light">
+              Closed-loop Bayesian tracking correlates real closed deals to inbound traffic vectors, autonomously recalibrating copy and call cadences for maximum ROI.
+            </p>
+          </div>
+          <div class="pt-4 border-t border-[rgba(150,143,146,0.2)] flex items-center justify-between font-mono text-xs">
+            <span class="text-outline">Optimization</span>
+            <span class="text-secondary font-semibold">Bayesian Closed-Loop</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3: ENTERPRISE DATA PIPELINE -->
+    <section class="relative z-30 w-full px-6 md:px-12 max-w-7xl mx-auto py-16" id="ingestion">
+      <div class="p-8 md:p-14 rounded-3xl tactile-slab-3d">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- Left Column: Executive Air-Gapped Ingestion Telemetry Terminal -->
+          <div class="lg:col-span-5 flex flex-col justify-between p-6 sm:p-8 rounded-2xl bg-[#0E0E0E] border border-[rgba(150,143,146,0.22)] shadow-[inset_0_2px_12px_rgba(0,0,0,0.85)] relative overflow-hidden">
+            <div>
+              <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-[#2EE59D] animate-pulse shadow-[0_0_8px_#2EE59D]"></span>
+                  <span class="font-mono text-[11px] text-secondary tracking-widest uppercase font-semibold">AIR-GAPPED TELEMETRY</span>
+                </div>
+                <span class="font-mono text-[11px] text-outline">AES-256 ENCLAVE</span>
+              </div>
+              
+              <div class="space-y-4 mb-6">
+                <div>
+                  <div class="flex items-center justify-between font-mono text-xs mb-1.5">
+                    <span class="text-on-surface font-medium">Ingestion Throughput</span>
+                    <span class="text-secondary font-bold tabular-nums">85,420 Tok/sec</span>
+                  </div>
+                  <div class="w-full h-1.5 bg-[#1C1B1B] rounded-full overflow-hidden">
+                    <div class="h-full bg-secondary w-full rounded-full"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex items-center justify-between font-mono text-xs mb-1.5">
+                    <span class="text-on-surface font-medium">Corpus Sanitization</span>
+                    <span class="text-secondary font-bold">100% Deterministic</span>
+                  </div>
+                  <div class="w-full h-1.5 bg-[#1C1B1B] rounded-full overflow-hidden">
+                    <div class="h-full bg-secondary w-full rounded-full"></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex items-center justify-between font-mono text-xs mb-1.5">
+                    <span class="text-on-surface font-medium">Voice Model Calibration</span>
+                    <span class="text-secondary font-bold tabular-nums">142ms Locked</span>
+                  </div>
+                  <div class="w-full h-1.5 bg-[#1C1B1B] rounded-full overflow-hidden">
+                    <div class="h-full bg-secondary w-full rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-[#141313] border border-[rgba(150,143,146,0.15)] space-y-1.5 font-mono text-[11px]">
+                <div class="text-secondary font-semibold flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm text-[#2EE59D]">verified_user</span>
+                  <span>Zero Algorithmic Drift Guarantee</span>
+                </div>
+                <p class="text-outline text-[11px] font-body font-light leading-relaxed">
+                  Your enterprise data never leaves your dedicated VPC or trains shared public weights.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-[rgba(150,143,146,0.15)] flex items-center justify-between font-mono text-xs">
+              <span class="text-outline">Onboarding SLA</span>
+              <span class="text-secondary font-semibold">24h Platform Activation</span>
+            </div>
+          </div>
+
+          <!-- Right Column: 4 Timeline Milestones with Scroll-Driven Radar Activation -->
+          <div class="lg:col-span-7 space-y-8 relative" id="timeline-milestones-container">
+            <!-- Vertical Line with Animated Glowing Laser Tracer -->
+            <div class="absolute left-3 top-2 bottom-2 w-0.5 bg-[rgba(212,196,181,0.15)] overflow-hidden rounded-full">
+              <div class="w-full h-24 bg-gradient-to-b from-transparent via-[#F1E0D0] to-transparent animate-timeline-laser"></div>
+            </div>
+            
+            <!-- Milestone 1 -->
+            <div class="timeline-milestone relative pl-10 group cursor-default" data-milestone="0">
+              <div class="absolute left-1.5 top-1.5 flex items-center justify-center">
+                <span class="timeline-dot w-3.5 h-3.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.4)] relative z-10"></span>
+                <span class="timeline-ping absolute w-5 h-5 rounded-full bg-secondary/40 opacity-0 pointer-events-none"></span>
+              </div>
+              <span class="font-mono text-xs text-secondary tracking-wider uppercase font-semibold">Hours 00 - 04 // Ingestion</span>
+              <h4 class="milestone-title font-headline text-lg md:text-xl text-on-surface mt-0.5 font-medium group-hover:text-secondary transition-colors">Corpus & Knowledge Base Extraction</h4>
+              <p class="font-body text-xs md:text-sm text-on-surface-variant mt-1 font-light leading-relaxed">
+                Complete scraping and sanitization of legacy product documentation, brand guidelines, pricing rules, and sales objection frameworks.
+              </p>
+            </div>
+
+            <!-- Milestone 2 -->
+            <div class="timeline-milestone relative pl-10 group cursor-default" data-milestone="1">
+              <div class="absolute left-1.5 top-1.5 flex items-center justify-center">
+                <span class="timeline-dot w-3.5 h-3.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.4)] relative z-10"></span>
+                <span class="timeline-ping absolute w-5 h-5 rounded-full bg-secondary/40 opacity-0 pointer-events-none"></span>
+              </div>
+              <span class="font-mono text-xs text-secondary tracking-wider uppercase font-semibold">Hours 04 - 10 // Synthesis</span>
+              <h4 class="milestone-title font-headline text-lg md:text-xl text-on-surface mt-0.5 font-medium group-hover:text-secondary transition-colors">Edge AST Synthesis & Vector Indexing</h4>
+              <p class="font-body text-xs md:text-sm text-on-surface-variant mt-1 font-light leading-relaxed">
+                Dynamic headless landing page compilation and vector clustering inside the isolated 3,072-dimension enclave.
+              </p>
+            </div>
+
+            <!-- Milestone 3 -->
+            <div class="timeline-milestone relative pl-10 group cursor-default" data-milestone="2">
+              <div class="absolute left-1.5 top-1.5 flex items-center justify-center">
+                <span class="timeline-dot w-3.5 h-3.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.4)] relative z-10"></span>
+                <span class="timeline-ping absolute w-5 h-5 rounded-full bg-secondary/40 opacity-0 pointer-events-none"></span>
+              </div>
+              <span class="font-mono text-xs text-secondary tracking-wider uppercase font-semibold">Hours 10 - 18 // Telephony Bridge</span>
+              <h4 class="milestone-title font-headline text-lg md:text-xl text-on-surface mt-0.5 font-medium group-hover:text-secondary transition-colors">Voice Latency & SIP Integration</h4>
+              <p class="font-body text-xs md:text-sm text-on-surface-variant mt-1 font-light leading-relaxed">
+                Neural acoustic voice modeling with calibrated conversational latency, custom tone pitch, and live SIP trunk integration.
+              </p>
+            </div>
+
+            <!-- Milestone 4 -->
+            <div class="timeline-milestone relative pl-10 group cursor-default" data-milestone="3">
+              <div class="absolute left-1.5 top-1.5 flex items-center justify-center">
+                <span class="timeline-dot w-3.5 h-3.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.4)] relative z-10"></span>
+                <span class="timeline-ping absolute w-5 h-5 rounded-full bg-secondary/40 opacity-0 pointer-events-none"></span>
+              </div>
+              <span class="font-mono text-xs text-secondary tracking-wider uppercase font-semibold">Hours 18 - 24 // Autonomous Go-Live</span>
+              <h4 class="milestone-title font-headline text-lg md:text-xl text-on-surface mt-0.5 font-medium group-hover:text-secondary transition-colors">Autonomous Platform Deployment</h4>
+              <p class="font-body text-xs md:text-sm text-on-surface-variant mt-1 font-light leading-relaxed">
+                Switchover of outbound dialers, inbound qualification lines, and closed-loop Meta conversion pixel handshakes.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: FOUR AUTONOMOUS SOLUTIONS (Interactive Bento Grid & Shadcn Area Chart) -->
+    <section class="relative z-30 w-full px-6 md:px-12 max-w-7xl mx-auto py-20" id="solutions">
+      <span id="sanctums" class="scroll-mt-24"></span>
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div>
+          <span class="font-mono text-xs text-secondary uppercase tracking-widest block mb-2 font-medium">Enterprise Solutions</span>
+          <h2 class="font-headline text-3xl md:text-4xl text-on-surface font-medium">Four Autonomous Solutions</h2>
+        </div>
+        <!-- Peel Mode Toggle Button -->
+        <div class="inline-flex p-1 rounded-xl bg-[#201F1F] border border-[rgba(150,143,146,0.25)] shadow-md">
+          <button class="px-4 py-1.5 rounded-lg bg-secondary text-[#141313] font-label text-xs font-bold transition-all" id="view-exec">
+            Executive Telemetry
+          </button>
+          <button class="px-4 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label text-xs font-medium transition-all" id="view-tech">
+            Under-The-Hood Peel
+          </button>
+        </div>
+      </div>
+
+      <!-- 12-Col Bento Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Solution I: Duplex Voice Telephony (7 cols) -->
+        <div class="lg:col-span-7 p-6 rounded-3xl tactile-slab-3d flex flex-col justify-between relative overflow-hidden transition-all duration-300">
+          <!-- Executive View (Clean Minimalist Luxury) -->
+          <div class="sanctum-exec-view space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                  <span class="material-symbols-outlined text-[18px]">phone_in_talk</span>
+                </div>
+                <div>
+                  <h3 class="font-headline text-lg sm:text-xl text-on-surface font-semibold">Solution I: Duplex Voice Telephony</h3>
+                  <div class="flex items-center gap-2 font-mono text-[11px] text-outline mt-0.5">
+                    <span class="text-secondary font-semibold">SIP ACTIVE</span>
+                    <span>•</span>
+                    <span class="text-on-surface tabular-nums">+1 (415) 890-2140</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.25)] shadow-inner">
+                <span class="w-2 h-2 rounded-full bg-[#2EE59D] animate-pulse shadow-[0_0_8px_#2EE59D]"></span>
+                <span class="font-mono text-xs text-secondary font-semibold tabular-nums">142ms DUPLEX</span>
+              </div>
+            </div>
+
+            <!-- Minimalist Acoustic Waveform Console -->
+            <div class="p-3.5 rounded-2xl bg-[#0E0E0E] border border-[rgba(150,143,146,0.2)]">
+              <div class="flex items-center justify-between mb-2 font-mono text-[10px]">
+                <span class="text-outline flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#D4C4B5]"></span>
+                  <span>CALLER CHANNEL</span>
+                </span>
+                <span class="text-secondary font-medium flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#F1E0D0] animate-pulse"></span>
+                  <span>NEURAL VOICE ENGINE</span>
+                </span>
+              </div>
+              <div class="h-10 flex items-center justify-between gap-1.5 py-1 px-3 bg-[#141313]/70 rounded-xl border border-[rgba(150,143,146,0.12)]" id="audio-waveform">
+                <!-- Calm harmonic bars animated via JS -->
+              </div>
+            </div>
+
+            <!-- Streamlined Live Call Transcript Bubble -->
+            <div class="p-3 rounded-xl bg-[#1C1B1B] border border-[rgba(150,143,146,0.18)] font-mono text-xs space-y-1.5">
+              <div class="flex items-center justify-between text-[10px] text-outline border-b border-[rgba(150,143,146,0.12)] pb-1">
+                <div class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-xs text-secondary">graphic_eq</span>
+                  <span>Deepgram Nova-2 Streaming Transcript</span>
+                </div>
+                <span class="text-[#2EE59D] font-medium">0.02s Lag</span>
+              </div>
+              <p class="font-body text-xs text-on-surface-variant leading-snug">
+                <span class="font-mono text-outline">[Caller]</span> "Can your agents handle inbound lead qualification with custom objection scripts?"<br/>
+                <span class="font-mono text-secondary font-semibold">[Voice Engine]</span> <span class="text-secondary-fixed">"Certainly. I triage objections against your enterprise knowledge base and lock qualified buyers to your calendar."</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Under-The-Hood Technical Peel View (Revealed when Under-The-Hood Peel is toggled) -->
+          <div class="sanctum-tech-view hidden font-mono text-xs space-y-3 p-4 rounded-2xl bg-[#0A0A0A] border border-[rgba(46,229,157,0.3)] shadow-inner">
+            <div class="flex items-center justify-between text-[11px] text-[#2EE59D] border-b border-[rgba(150,143,146,0.2)] pb-2">
+              <span class="font-bold flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-[#2EE59D] animate-ping"></span>
+                RAW CARRIER SIP TRACE // DIRECT DUPLEX
+              </span>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-[#1C1B1B] text-outline">TLS 1.3 ENCRYPTED</span>
+            </div>
+            <pre class="text-[11px] text-secondary font-mono leading-relaxed overflow-x-auto bg-[#141313] p-3 rounded-lg border border-[rgba(150,143,146,0.15)]">
+INVITE sip:+14158902140@carrier.internal:5061 SIP/2.0
+Via: SIP/2.0/TLS edge.aethelgard.internal:5061;branch=z9hG4bK-992
+Contact: &lt;sip:voice@internal:5060;transport=tls&gt;
+Content-Type: application/sdp
+a=rtpmap:111 opus/48000/2 | useinbandfec=1 | ptime=20</pre>
+            <div class="grid grid-cols-4 gap-2 pt-1 font-mono text-[10px] text-center">
+              <div class="p-2 rounded bg-[#1C1B1B] border border-[rgba(150,143,146,0.15)]"><span class="text-outline block text-[9px]">RTP JITTER</span><span class="text-secondary font-bold">0.38ms</span></div>
+              <div class="p-2 rounded bg-[#1C1B1B] border border-[rgba(150,143,146,0.15)]"><span class="text-outline block text-[9px]">PACKET LOSS</span><span class="text-[#2EE59D] font-bold">0.00%</span></div>
+              <div class="p-2 rounded bg-[#1C1B1B] border border-[rgba(150,143,146,0.15)]"><span class="text-outline block text-[9px]">VAD CUTOFF</span><span class="text-secondary font-bold">-42 dB</span></div>
+              <div class="p-2 rounded bg-[#1C1B1B] border border-[rgba(150,143,146,0.15)]"><span class="text-outline block text-[9px]">FIRST TOKEN</span><span class="text-[#2EE59D] font-bold">142ms</span></div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-[rgba(150,143,146,0.15)] flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
+            <div class="flex items-center gap-2 text-secondary font-medium">
+              <span class="material-symbols-outlined text-sm">event_available</span>
+              <span>Google Calendar Locked (Tue 2:00 PM EST)</span>
+            </div>
+            <div class="flex items-center gap-3 text-outline">
+              <span class="text-[#2EE59D] font-medium">• High Intent (94%)</span>
+              <span>SOC2 Type II Enclave</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Solution II: Edge AST Compiler (5 cols) -->
+        <div class="lg:col-span-5 p-6 rounded-3xl tactile-slab-3d flex flex-col justify-between transition-all duration-300">
+          <!-- Executive View (Clean Minimalist Luxury) -->
+          <div class="sanctum-exec-view space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                  <span class="material-symbols-outlined text-[18px]">developer_mode</span>
+                </div>
+                <div>
+                  <h3 class="font-headline text-lg sm:text-xl text-on-surface font-semibold">Solution II: Edge AST Compiler</h3>
+                  <span class="font-mono text-xs text-outline">Autonomous Edge Hydration</span>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-[#201F1F] border border-[rgba(212,196,181,0.2)] font-mono text-[10px] text-secondary font-semibold">CLOUDFLARE WORKERS</span>
+            </div>
+
+            <!-- Compact Lighthouse 100/100 Perfect Score Bar -->
+            <div class="p-3 rounded-2xl bg-[#0E0E0E] border border-[rgba(150,143,146,0.2)]">
+              <div class="flex items-center justify-between font-mono text-[10px] text-outline mb-2">
+                <span>LIGHTHOUSE AUDIT</span>
+                <span class="text-[#2EE59D] font-semibold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-[#2EE59D]"></span>PERFECT SCORE</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2 text-center font-mono">
+                <div class="p-2 rounded-lg bg-[#1C1B1B] border border-[rgba(212,196,181,0.15)]">
+                  <div class="text-lg text-secondary font-bold tabular-nums">100</div>
+                  <div class="text-[9px] text-outline">Performance</div>
+                </div>
+                <div class="p-2 rounded-lg bg-[#1C1B1B] border border-[rgba(212,196,181,0.15)]">
+                  <div class="text-lg text-secondary font-bold tabular-nums">100</div>
+                  <div class="text-[9px] text-outline">Best Practices</div>
+                </div>
+                <div class="p-2 rounded-lg bg-[#1C1B1B] border border-[rgba(212,196,181,0.15)]">
+                  <div class="text-lg text-secondary font-bold tabular-nums">100</div>
+                  <div class="text-[9px] text-outline">SEO Index</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Minimalist Reactive Hydration Pipeline Strip -->
+            <div class="p-3 rounded-xl bg-[#0E0E0E] border border-[rgba(150,143,146,0.18)]">
+              <div class="flex items-center justify-between text-[10px] font-mono text-outline mb-1.5">
+                <span>REACTIVE HYDRATION</span>
+                <span class="text-[#2EE59D] font-medium">0ms TBT (Zero Jitter)</span>
+              </div>
+              <div class="flex items-center justify-between gap-1 font-mono text-[10px] text-center">
+                <span class="flex-1 py-1 rounded bg-[#1C1B1B] border border-[rgba(212,196,181,0.15)] text-secondary">JSX Parse</span>
+                <span class="text-outline text-xs">→</span>
+                <span class="flex-1 py-1 rounded bg-[#1C1B1B] border border-[rgba(212,196,181,0.15)] text-secondary">AST Opt</span>
+                <span class="text-outline text-xs">→</span>
+                <span class="flex-1 py-1 rounded bg-[#1C1B1B] border border-[rgba(212,196,181,0.15)] text-secondary">WASM Exec</span>
+                <span class="text-outline text-xs">→</span>
+                <span class="flex-1 py-1 rounded bg-[#2B2A2A] border border-[rgba(46,229,157,0.4)] text-[#2EE59D] font-bold">EDGE Sync</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Under-The-Hood Technical Peel View (Revealed when Under-The-Hood Peel is toggled) -->
+          <div class="sanctum-tech-view hidden font-mono text-xs space-y-3 p-4 rounded-2xl bg-[#0A0A0A] border border-[rgba(212,196,181,0.3)] shadow-inner">
+            <div class="flex items-center justify-between text-[11px] text-secondary border-b border-[rgba(150,143,146,0.2)] pb-2">
+              <span class="font-bold flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-xs text-[#2EE59D]">terminal</span>
+                SWC RUST AST ENGINE // EDGE ISOLATE
+              </span>
+              <span class="text-[10px] text-[#2EE59D]">0ms TBT</span>
+            </div>
+            <pre class="text-[11px] text-secondary font-mono leading-relaxed overflow-x-auto bg-[#141313] p-3 rounded-lg border border-[rgba(150,143,146,0.15)]">
+Module {
+  AST_Nodes: 1,482 Semantic Tokens
+  Hydration: Zero-JS Resumable Islands
+  Edge_Target: Cloudflare V8 Isolate
+  Bundle_Gzip: 1.84 KB | TTFB: 14ms
+}</pre>
+            <div class="grid grid-cols-3 gap-2 pt-1 font-mono text-[10px] text-center">
+              <div class="p-2 rounded bg-[#1C1B1B] border border-[rgba(150,143,146,0.15)]"><span class="text-outline block text-[9px]">ENGINE</span><span class="text-secondary font-bold">SWC Rust</span></div>
+              <div class="p-2 rounded bg-[#1C1B1B] border border-[rgba(150,143,146,0.15)]"><span class="text-outline block text-[9px]">ISOLATES</span><span class="text-[#2EE59D] font-bold">310+ Nodes</span></div>
+              <div class="p-2 rounded bg-[#1C1B1B] border border-[rgba(150,143,146,0.15)]"><span class="text-outline block text-[9px]">COLD START</span><span class="text-secondary font-bold">38ms</span></div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-[rgba(150,143,146,0.15)] flex items-center justify-between font-mono text-xs">
+            <span class="text-outline">&lt;48s Rollout • 310+ Edge PoPs</span>
+            <span class="text-secondary font-medium">Cold Start: 38ms</span>
+          </div>
+        </div>
+
+        <!-- Solution III: Enterprise Vector Vault (5 cols) -->
+        <div class="lg:col-span-5 p-6 sm:p-8 rounded-3xl tactile-slab-3d flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                  <span class="material-symbols-outlined text-lg">shield</span>
+                </div>
+                <div>
+                  <h3 class="font-headline text-lg sm:text-xl text-on-surface font-semibold">Solution III: Enterprise Vector Vault</h3>
+                  <span class="font-mono text-xs text-outline">Air-Gapped Sovereign Embeddings</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-[#0E0E0E] border border-[rgba(150,143,146,0.2)] space-y-3">
+              <div class="flex items-center justify-between font-mono text-xs">
+                <span class="text-outline">EMBEDDING DIMENSION</span>
+                <span class="text-secondary">3,072 DIMS</span>
+              </div>
+              <div class="p-3 rounded-lg bg-[#1C1B1B] font-mono text-xs text-on-surface space-y-1">
+                <div class="text-secondary font-mono">[0.841, -0.192, 0.442, ..., 0.998]</div>
+                <div class="text-outline text-[11px]">ENCRYPTION: AES-256-GCM BYOK</div>
+                <div class="text-[#F1E0D0] text-[11px]">TRAINING LEAKAGE: 0.000000%</div>
+              </div>
+              <p class="font-body text-xs text-on-surface-variant font-light leading-relaxed">
+                Every enterprise customer's intellectual property resides in an isolated sovereign container, inaccessible by third parties.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-[rgba(150,143,146,0.15)] flex items-center justify-between font-mono text-xs">
+            <span class="text-secondary font-medium">Zero Model Leakage</span>
+            <span class="text-outline">SOC2 Compliant Enclave</span>
+          </div>
+        </div>
+
+        <!-- Solution IV: Attribution Analytics Radar (7 cols) with Shadcn/ui Area Chart -->
+        <div class="lg:col-span-7 p-6 sm:p-8 rounded-3xl tactile-slab-3d flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                  <span class="material-symbols-outlined text-lg">query_stats</span>
+                </div>
+                <div>
+                  <h3 class="font-headline text-lg sm:text-xl text-on-surface font-semibold">Solution IV: Attribution Analytics Radar</h3>
+                  <span class="font-mono text-xs text-outline">Bayesian Spend Optimization</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#2EE59D] animate-pulse"></span>
+                <span class="font-mono text-xs text-[#2EE59D] font-semibold">-41.2% SPEND WASTE</span>
+              </div>
+            </div>
+
+            <!-- Shadcn/ui-Grade Area Chart with Real Data, Dual Gradient & Floating Tooltip -->
+            <div class="p-5 rounded-2xl bg-[#0E0E0E] border border-[rgba(150,143,146,0.22)] relative group shadow-inner" id="chart-container">
+              <div class="flex items-center justify-between font-mono text-xs text-outline mb-3">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-secondary"></span>
+                  <span class="text-on-surface font-medium uppercase tracking-wider text-[11px]">Real-Time Conversion Efficiency</span>
+                </div>
+                <span class="text-secondary font-semibold" id="chart-hover-val">Day 28: +38.4% Lift • 4.8x ROAS</span>
+              </div>
+              
+              <!-- Chart SVG Canvas Wrapper with Relative Bounds -->
+              <div class="relative w-full h-36 flex items-center overflow-visible" id="chart-svg-wrapper">
+                <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 500 100" id="area-chart-svg">
+                  <defs>
+                    <linearGradient id="areaGradientPrimary" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0%" stop-color="#D4C4B5" stop-opacity="0.38"></stop>
+                      <stop offset="60%" stop-color="#D4C4B5" stop-opacity="0.10"></stop>
+                      <stop offset="100%" stop-color="#D4C4B5" stop-opacity="0.00"></stop>
+                    </linearGradient>
+                    <linearGradient id="areaGradientSecondary" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0%" stop-color="#2EE59D" stop-opacity="0.25"></stop>
+                      <stop offset="100%" stop-color="#2EE59D" stop-opacity="0.00"></stop>
+                    </linearGradient>
+                  </defs>
+
+                  <!-- Dotted Cartesian Grid Lines -->
+                  <line x1="0" y1="20" x2="500" y2="20" stroke="rgba(150,143,146,0.14)" stroke-dasharray="3,4" stroke-width="1"></line>
+                  <line x1="0" y1="50" x2="500" y2="50" stroke="rgba(150,143,146,0.14)" stroke-dasharray="3,4" stroke-width="1"></line>
+                  <line x1="0" y1="80" x2="500" y2="80" stroke="rgba(150,143,146,0.14)" stroke-dasharray="3,4" stroke-width="1"></line>
+
+                  <!-- Secondary Area & Curve (Baseline Model) -->
+                  <path d="M0,88 C80,84 140,78 220,68 C310,58 390,52 500,42 L500,100 L0,100 Z" fill="url(#areaGradientSecondary)"></path>
+                  <path d="M0,88 C80,84 140,78 220,68 C310,58 390,52 500,42" fill="none" stroke="#2EE59D" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.65"></path>
+
+                  <!-- Primary Area & Curve (Aethelgard Autonomous Feedback) -->
+                  <path d="M0,82 C90,76 150,62 240,46 C330,30 410,18 500,10 L500,100 L0,100 Z" fill="url(#areaGradientPrimary)"></path>
+                  <path d="M0,82 C90,76 150,62 240,46 C330,30 410,18 500,10" fill="none" stroke="#D4C4B5" stroke-width="2.6" stroke-linecap="round"></path>
+                </svg>
+
+                <!-- Zero-Latency Hardware-Accelerated Magnetic Crosshair -->
+                <div class="absolute top-0 bottom-0 w-px bg-secondary opacity-0 pointer-events-none transition-opacity duration-150 z-20" id="crosshair" style="left: 0;">
+                  <div class="w-2.5 h-2.5 -ml-1 rounded-full bg-secondary shadow-[0_0_10px_#D4C4B5] border-2 border-[#141313] absolute" id="crosshair-point" style="top: 10px;"></div>
+                </div>
+
+                <!-- Floating Shadcn Tooltip Card -->
+                <div id="chart-tooltip-card" class="absolute pointer-events-none opacity-0 transition-opacity duration-150 z-30 p-2.5 rounded-xl bg-[#1C1B1B]/95 border border-[rgba(212,196,181,0.3)] shadow-[0_8px_24px_rgba(0,0,0,0.85)] font-mono text-[11px] whitespace-nowrap">
+                  <div class="text-outline text-[10px] uppercase font-semibold mb-1" id="tooltip-day">Day 28 // Conversion Lift</div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-secondary font-bold text-sm" id="tooltip-lift">+38.4% Lift</span>
+                    <span class="text-[#2EE59D] font-semibold" id="tooltip-roas">4.8x ROAS</span>
+                  </div>
+                  <div class="text-[10px] text-outline mt-0.5" id="tooltip-cac">CAC Delta: -41.2%</div>
+                </div>
+              </div>
+
+              <!-- Chart X-Axis Legend -->
+              <div class="flex items-center justify-between font-mono text-[10px] text-outline mt-2 pt-2 border-t border-[rgba(150,143,146,0.1)]">
+                <span>Day 0 (Baseline)</span>
+                <span>Day 7 (SIP Calibrated)</span>
+                <span>Day 14 (AST Rollout)</span>
+                <span>Day 21 (Bayesian Convergence)</span>
+                <span class="text-secondary font-semibold">Day 30 (Sovereign Scale)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-[rgba(150,143,146,0.15)] flex items-center justify-between font-mono text-xs">
+            <span class="text-outline">Bayesian Recalibration: Every 30m</span>
+            <span class="text-secondary font-medium">Meta Graph Interlocked</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 5: SPECIALIZED ENTERPRISE AGENTS -->
+    <section class="relative z-30 w-full px-6 md:px-12 max-w-7xl mx-auto py-20" id="agents">
+      <span id="pantheon" class="scroll-mt-24"></span>
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="font-mono text-xs text-secondary uppercase tracking-widest block mb-2 font-medium">Autonomous Workforce</span>
+        <h2 class="font-headline text-3xl md:text-4xl text-on-surface font-medium">Specialized Enterprise Agents</h2>
+        <p class="font-body text-xs md:text-sm text-on-surface-variant font-light mt-2">Autonomous AI agents executing mission-critical corporate marketing and sales operations.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+        
+        <!-- Agent 01: Governance & Compliance Agent -->
+        <div class="p-6 rounded-2xl tactile-slab-3d flex flex-col justify-between">
+          <div>
+            <div class="w-full h-44 rounded-xl bg-[#1C1B1B] border border-[rgba(212,196,181,0.25)] flex flex-col items-center justify-center p-4 mb-4 text-center">
+              <span class="material-symbols-outlined text-4xl text-secondary mb-2">balance</span>
+              <span class="font-mono text-xs text-secondary">GOVERNANCE & COMPLIANCE</span>
+              <span class="font-mono text-[10px] text-outline mt-1">Deterministic Output Validation</span>
+            </div>
+            <span class="font-mono text-[11px] text-outline block uppercase tracking-wider">Agent 01</span>
+            <h4 class="font-headline text-base text-on-surface font-semibold mb-1">Chief Governance Agent</h4>
+            <p class="font-body text-xs text-on-surface-variant font-light leading-relaxed">
+              Enforces enterprise brand voice invariants, deterministic output guardrails, and compliance policy constraints across all channels.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-[rgba(150,143,146,0.2)] mt-4 font-mono text-[11px] text-secondary">
+            Zero Drift Verified
+          </div>
+        </div>
+
+        <!-- Agent 02: Web Synthesis Agent -->
+        <div class="p-6 rounded-2xl tactile-slab-3d flex flex-col justify-between">
+          <div>
+            <div class="w-full h-44 rounded-xl bg-[#1C1B1B] border border-[rgba(212,196,181,0.25)] flex flex-col items-center justify-center p-4 mb-4 text-center">
+              <span class="material-symbols-outlined text-4xl text-secondary mb-2">architecture</span>
+              <span class="font-mono text-xs text-secondary">EDGE AST COMPILER</span>
+              <span class="font-mono text-[10px] text-outline mt-1">Vector Web Synthesis</span>
+            </div>
+            <span class="font-mono text-[11px] text-outline block uppercase tracking-wider">Agent 02</span>
+            <h4 class="font-headline text-base text-on-surface font-semibold mb-1">Web Synthesis Agent</h4>
+            <p class="font-body text-xs text-on-surface-variant font-light leading-relaxed">
+              Transmutes intake briefs into clean 100/100 Lighthouse AST code deployed to Cloudflare Edge in under 60 seconds.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-[rgba(150,143,146,0.2)] mt-4 font-mono text-[11px] text-secondary">
+            &lt;60s Edge Compile
+          </div>
+        </div>
+
+        <!-- Agent 03: Voice Telephony Agent -->
+        <div class="p-6 rounded-2xl tactile-slab-3d flex flex-col justify-between">
+          <div>
+            <div class="w-full h-44 rounded-xl bg-[#1C1B1B] border border-[rgba(212,196,181,0.25)] flex flex-col items-center justify-center p-4 mb-4 text-center">
+              <span class="material-symbols-outlined text-4xl text-secondary mb-2">graphic_eq</span>
+              <span class="font-mono text-xs text-secondary">DUPLEX CONCIERGE</span>
+              <span class="font-mono text-[10px] text-outline mt-1">142ms Duplex Telephony</span>
+            </div>
+            <span class="font-mono text-[11px] text-outline block uppercase tracking-wider">Agent 03</span>
+            <h4 class="font-headline text-base text-on-surface font-semibold mb-1">Voice Telephony Agent</h4>
+            <p class="font-body text-xs text-on-surface-variant font-light leading-relaxed">
+              Carrier-grade SIP duplex voice telephony with 142ms response latency, live objection triage, and executive calendar scheduling.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-[rgba(150,143,146,0.2)] mt-4 font-mono text-[11px] text-secondary">
+            142ms SIP Carrier
+          </div>
+        </div>
+
+        <!-- Agent 04: Attribution Analytics Agent -->
+        <div class="p-6 rounded-2xl tactile-slab-3d flex flex-col justify-between">
+          <div>
+            <div class="w-full h-44 rounded-xl bg-[#1C1B1B] border border-[rgba(212,196,181,0.25)] flex flex-col items-center justify-center p-4 mb-4 text-center">
+              <span class="material-symbols-outlined text-4xl text-secondary mb-2">monitoring</span>
+              <span class="font-mono text-xs text-secondary">BAYESIAN OPTIMIZATION</span>
+              <span class="font-mono text-[10px] text-outline mt-1">Closed-Loop Vector Ingress</span>
+            </div>
+            <span class="font-mono text-[11px] text-outline block uppercase tracking-wider">Agent 04</span>
+            <h4 class="font-headline text-base text-on-surface font-semibold mb-1">Attribution Analytics Agent</h4>
+            <p class="font-body text-xs text-on-surface-variant font-light leading-relaxed">
+              Bayesian ad-spend optimization directly correlated to verified CRM revenue outcomes, starving non-performing acquisition vectors.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-[rgba(150,143,146,0.2)] mt-4 font-mono text-[11px] text-secondary">
+            -41.2% Spend Waste
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Economic Comparison Banner -->
+      <div class="p-6 sm:p-8 rounded-2xl tactile-slab-3d mb-16 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div>
+          <span class="font-mono text-xs text-secondary uppercase tracking-widest block mb-1 font-medium">Economic Superiority</span>
+          <h3 class="font-headline text-xl md:text-2xl text-on-surface font-semibold">The Elimination of Agency Overhead</h3>
+          <p class="font-body text-xs md:text-sm text-on-surface-variant font-light mt-1">Replace bloated retainers, fragmented agency teams, and junior copywriters with 9 autonomous agents.</p>
+        </div>
+        <div class="flex items-center gap-8 text-right shrink-0">
+          <div>
+            <span class="font-mono text-xs text-outline block line-through">Legacy Agency Retainer</span>
+            <span class="font-mono text-xl md:text-2xl text-outline line-through tabular-nums">$18,500/mo</span>
+          </div>
+          <div class="w-px h-10 bg-outline-variant"></div>
+          <div>
+            <span class="font-mono text-xs text-secondary block font-semibold">Aethelgard Platform</span>
+            <span class="font-mono text-2xl md:text-3xl text-secondary font-bold tabular-nums">$899/mo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly / Quarterly / Yearly Billing Interval Toggle -->
+      <div class="flex flex-col items-center justify-center mb-10">
+        <div class="inline-flex p-1.5 rounded-full bg-[#1C1B1B] border border-[rgba(150,143,146,0.28)] shadow-[0_8px_24px_rgba(0,0,0,0.6)]">
+          <button id="btn-billing-monthly" class="billing-toggle-btn px-5 py-2 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all bg-secondary text-[#141313] shadow-md" data-interval="monthly">
+            Monthly
+          </button>
+          <button id="btn-billing-quarterly" class="billing-toggle-btn px-5 py-2 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex items-center gap-1.5" data-interval="quarterly">
+            <span>Quarterly</span>
+            <span class="px-2 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[10px] font-mono text-secondary font-bold">SAVE 10%</span>
+          </button>
+          <button id="btn-billing-yearly" class="billing-toggle-btn px-5 py-2 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex items-center gap-1.5" data-interval="yearly">
+            <span>Yearly</span>
+            <span class="px-2 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[10px] font-mono text-secondary font-bold">SAVE 20%</span>
+          </button>
+        </div>
+        <p class="font-mono text-[11px] text-outline mt-3" id="billing-guarantee-note">Cancel or pause any retainership with 14 days cryptographic notice.</p>
+      </div>
+
+      <!-- 3 Enterprise Pricing Tiers -->
+      <span id="consecration" class="scroll-mt-24"></span>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch" id="pricing">
+        
+        <!-- Tier 1: Growth Platform -->
+        <div class="p-8 rounded-3xl tactile-slab-3d flex flex-col justify-between hover:border-secondary/40 transition-all">
+          <div>
+            <span class="font-mono text-xs text-outline uppercase tracking-wider block mb-1">Tier I</span>
+            <h4 class="font-headline text-xl text-on-surface font-semibold mb-2">Growth Platform</h4>
+            <p class="font-body text-xs text-on-surface-variant font-light mb-6">For high-growth startups and boutique advisory firms.</p>
+            <div class="mb-6">
+              <span class="font-mono text-4xl text-on-surface font-bold tabular-nums" id="tier-1-price" data-monthly="349" data-quarterly="314" data-yearly="279">$349</span>
+              <span class="font-mono text-xs text-outline" id="tier-1-interval">/ month</span>
+              <span class="text-[11px] font-mono text-secondary block mt-1 transition-all opacity-0 h-0 overflow-hidden" id="tier-1-subtext">Billed quarterly ($942/qtr)</span>
+            </div>
+            <ul class="space-y-3 font-body text-xs text-on-surface-variant font-light mb-8">
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm text-secondary">check</span>
+                <span>1 Edge AST Web Synthesis Pipeline</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm text-secondary">check</span>
+                <span>Duplex Voice Telephony (1,000 Mins)</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm text-secondary">check</span>
+                <span>Knowledge Vault (100k Token Corpus)</span>
+              </li>
+            </ul>
+          </div>
+          <a class="w-full py-3 rounded-full bg-[#2B2A2A] text-on-surface text-center font-label text-xs font-semibold tracking-wider uppercase hover:bg-[#363434] transition-colors border border-[rgba(150,143,146,0.3)]" href="client_onboarding_product_dna_intake_portal/code.html">
+            Get Started
+          </a>
+        </div>
+
+        <!-- Tier 2: Enterprise Scale (Hero Flagship Tier with Spinning Neon Laser Perimeter) -->
+        <div class="neon-laser-card -mt-2 shadow-[0_0_40px_rgba(212,196,181,0.18)] flex flex-col justify-between relative">
+          <!-- Elevated Most Popular Badge: Sits safely above spinning laser border beam (z-30 vs z-2) -->
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-secondary text-[#141313] font-mono text-[11px] font-bold tracking-widest uppercase shadow-[0_4px_16px_rgba(0,0,0,0.9)] z-30 flex items-center gap-1.5 pointer-events-none">
+            <span class="material-symbols-outlined text-xs">verified</span>
+            <span>Most Popular</span>
+          </div>
+          <div class="neon-laser-card-inner p-8 flex flex-col justify-between relative">
+            <div>
+              <span class="font-mono text-xs text-secondary uppercase tracking-wider block mb-1 font-semibold">Tier II</span>
+              <h4 class="font-headline text-xl text-on-surface font-semibold mb-2">Enterprise Scale</h4>
+              <p class="font-body text-xs text-on-surface-variant font-light mb-6">Complete autonomous acquisition, web synthesis, and voice conversion.</p>
+              <div class="mb-6">
+                <span class="font-mono text-4xl text-secondary font-bold tabular-nums" id="tier-2-price" data-monthly="899" data-quarterly="809" data-yearly="719">$899</span>
+                <span class="font-mono text-xs text-outline" id="tier-2-interval">/ month</span>
+                <span class="text-[11px] font-mono text-secondary block mt-1 transition-all opacity-0 h-0 overflow-hidden" id="tier-2-subtext">Billed quarterly ($2,427/qtr)</span>
+              </div>
+              <ul class="space-y-3 font-body text-xs text-on-surface font-light mb-8">
+                <li class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-sm text-secondary">verified</span>
+                  <span>Unlimited Edge AST Deployments</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-sm text-secondary">verified</span>
+                  <span>Duplex Voice (5,000 SIP Minutes)</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-sm text-secondary">verified</span>
+                  <span>Closed-Loop Attribution Feedback</span>
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-sm text-secondary">verified</span>
+                  <span>Dedicated Support & SLA Guarantee</span>
+                </li>
+              </ul>
+            </div>
+            <a class="w-full py-3 rounded-full bg-secondary hover:bg-secondary-fixed text-[#141313] text-center font-label text-xs font-bold tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(212,196,181,0.3)] hover:scale-[1.02]" href="client_onboarding_product_dna_intake_portal/code.html">
+              Deploy Enterprise Platform
+            </a>
+          </div>
+        </div>
+
+        <!-- Tier 3: Custom Enclave -->
+        <div class="p-8 rounded-3xl tactile-slab-3d flex flex-col justify-between hover:border-secondary/40 transition-all">
+          <div>
+            <span class="font-mono text-xs text-outline uppercase tracking-wider block mb-1">Tier III</span>
+            <h4 class="font-headline text-xl text-on-surface font-semibold mb-2">Custom Enclave</h4>
+            <p class="font-body text-xs text-on-surface-variant font-light mb-6">Dedicated private cluster with custom weights & BYOK.</p>
+            <div class="mb-6">
+              <span class="font-mono text-4xl text-on-surface font-bold">Custom</span>
+              <span class="font-mono text-xs text-outline">/ bespoke enterprise SLA</span>
+            </div>
+            <ul class="space-y-3 font-body text-xs text-on-surface-variant font-light mb-8">
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm text-secondary">check</span>
+                <span>Private Air-Gapped AWS/GCP VPC</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm text-secondary">check</span>
+                <span>Bring-Your-Own-Key LLM Endpoints</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm text-secondary">check</span>
+                <span>Custom Voice Neural Fine-Tuning</span>
+              </li>
+            </ul>
+          </div>
+          <a class="w-full py-3 rounded-full bg-[#2B2A2A] text-on-surface text-center font-label text-xs font-semibold tracking-wider uppercase hover:bg-[#363434] transition-colors border border-[rgba(150,143,146,0.3)]" href="client_onboarding_product_dna_intake_portal/code.html">
+            Contact Enterprise Sales
+          </a>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-8">
+        <p class="font-mono text-xs text-outline">
+          • Enterprise SLA with guaranteed 99.99% uptime and zero multi-tenant data leakage.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ENTERPRISE FOOTER -->
+  <footer class="w-full bg-[#0E0E0E] border-t border-[rgba(150,143,146,0.2)] text-on-surface-variant py-16 relative z-30">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary">
+              <span class="material-symbols-outlined text-xs">token</span>
+            </span>
+            <span class="font-headline text-sm text-on-surface tracking-wider font-semibold uppercase">Aethelgard</span>
+          </div>
+          <p class="font-body text-xs text-outline leading-relaxed font-light">
+            An autonomous B2B AI agency platform executing edge web compilation, duplex voice telemetry, and Bayesian closed-loop attribution at enterprise scale.
+          </p>
+          <div class="font-mono text-[11px] text-secondary flex items-center gap-1.5 pt-2">
+            <span class="material-symbols-outlined text-sm">verified</span>
+            <span>ENTERPRISE PLATFORM 2025</span>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <span class="font-mono text-xs text-on-surface block uppercase tracking-widest font-semibold">Platform Architecture</span>
+          <ul class="space-y-2 font-body text-xs text-outline font-light">
+            <li><a class="hover:text-secondary transition-colors" href="#architecture">Web Synthesis Engine</a></li>
+            <li><a class="hover:text-secondary transition-colors" href="#architecture">Duplex Voice Telephony</a></li>
+            <li><a class="hover:text-secondary transition-colors" href="#architecture">Bayesian Attribution Radar</a></li>
+            <li><a class="hover:text-secondary transition-colors" href="#solutions">Air-Gapped Vector Vault</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <span class="font-mono text-xs text-on-surface block uppercase tracking-widest font-semibold">Governance & Trust</span>
+          <ul class="space-y-2 font-body text-xs text-outline font-light">
+            <li><a class="hover:text-secondary transition-colors" href="#">Zero Drift Guarantee</a></li>
+            <li><a class="hover:text-secondary transition-colors" href="#">SOC 2 Type II Compliance</a></li>
+            <li><a class="hover:text-secondary transition-colors" href="#">Private VPC Isolation</a></li>
+            <li><a class="hover:text-secondary transition-colors" href="#">Enterprise SLA Commitments</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <span class="font-mono text-xs text-on-surface block uppercase tracking-widest font-semibold">Security Enclave</span>
+          <div class="p-4 rounded-xl bg-[#1C1B1B] border border-[rgba(150,143,146,0.18)] space-y-2">
+            <div class="flex items-center justify-between font-mono text-[11px]">
+              <span class="text-secondary font-semibold">STATUS: SECURE</span>
+              <span class="text-outline">ENCLAVE #0941</span>
+            </div>
+            <p class="font-mono text-[11px] text-outline leading-relaxed">
+              Zero algorithmic drift verified across all autonomous dispatch channels.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-[rgba(150,143,146,0.12)] gap-4 font-mono text-[11px] text-outline">
+        <div>© 2025 AETHELGARD TECHNOLOGIES INC. ALL RIGHTS RESERVED.</div>
+        <div class="flex items-center gap-6">
+          <a class="hover:text-secondary transition-colors" href="#">PRIVACY POLICY</a>
+          <a class="hover:text-secondary transition-colors" href="#">SECURITY ENCLAVE</a>
+          <a class="hover:text-secondary transition-colors" href="#">TERMS OF SERVICE</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 1300s GOTHIC AI ASTRARIUM THREE.JS ENGINE & INTERACTION SCRIPT -->
+  <script>
+    (function() {
+      // 0. Global Drifting Celestial Stardust Background Animation
+      const globalStardustCanvas = document.getElementById('global-stardust-canvas');
+      if (globalStardustCanvas) {
+        const gCtx = globalStardustCanvas.getContext('2d');
+        let gWidth = 0, gHeight = 0;
+        const gParticles = [];
+        const numGParticles = 80;
+
+        function resizeGlobalCanvas() {
+          gWidth = globalStardustCanvas.width = window.innerWidth;
+          gHeight = globalStardustCanvas.height = window.innerHeight;
+        }
+        resizeGlobalCanvas();
+        window.addEventListener('resize', resizeGlobalCanvas);
+
+        for (let i = 0; i < numGParticles; i++) {
+          gParticles.push({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            radius: Math.random() * 1.4 + 0.6,
+            vx: (Math.random() - 0.5) * 0.22,
+            vy: -Math.random() * 0.35 - 0.08,
+            alpha: Math.random() * 0.5 + 0.2,
+            twinkleSpeed: Math.random() * 0.02 + 0.008,
+            twinkleOffset: Math.random() * Math.PI * 2
+          });
+        }
+
+        let gTime = 0;
+        function animateGlobalStardust() {
+          gCtx.clearRect(0, 0, gWidth, gHeight);
+          gTime += 0.03;
+
+          for (let i = 0; i < gParticles.length; i++) {
+            const p = gParticles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+
+            // Wrap around screen boundaries
+            if (p.y < 0) { p.y = gHeight; p.x = Math.random() * gWidth; }
+            if (p.x < 0) p.x = gWidth;
+            if (p.x > gWidth) p.x = 0;
+
+            const currentAlpha = Math.max(0.1, p.alpha + Math.sin(gTime * p.twinkleSpeed * 10 + p.twinkleOffset) * 0.25);
+            gCtx.fillStyle = 'rgba(212, 196, 181, ' + currentAlpha.toFixed(3) + ')';
+            gCtx.beginPath();
+            gCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            gCtx.fill();
+          }
+          requestAnimationFrame(animateGlobalStardust);
+        }
+        animateGlobalStardust();
+      }
+
+      // 1. Initial 3D Setup: 1300s Gothic AI Celestial Astrarium & Armillary Core
+      const canvas = document.getElementById('gothic-astrarium-canvas');
+      const container = document.getElementById('threejs-spatial-stage');
+      if (!canvas || !container) return;
+
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(container.clientWidth || window.innerWidth, container.clientHeight || window.innerHeight);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.18;
+      renderer.shadowMap.enabled = false; // Disabled for ultra-smooth 120fps with 1.86M poly model
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(40, (container.clientWidth || window.innerWidth) / (container.clientHeight || window.innerHeight), 0.1, 1000);
+      camera.position.set(0, 0.15, 5.6);
+
+      // Studio Lighting Rig: Radiant Celestial Chiaroscuro with Crisp 4K PBR Surface Definition
+      const ambientLight = new THREE.AmbientLight(0xfffaed, 0.9);
+      scene.add(ambientLight);
+
+      // Key Light: Warm Gilded Celestial Sunlight with Controlled Specular Highlights
+      const keyLight = new THREE.DirectionalLight(0xfff3db, 2.6);
+      keyLight.position.set(5, 8, 7);
+      scene.add(keyLight);
+
+      // Rim Light: Pure Radiant Ivory (#F1E0D0) defining astrolabe crown, moss, and gears
+      const rimLight = new THREE.DirectionalLight(0xf1e0d0, 2.2);
+      rimLight.position.set(-5, 7, -5);
+      scene.add(rimLight);
+
+      // Shield Aura Fill: Subtle Luminous Emerald-Mint (#2EE59D)
+      const shieldFill = new THREE.PointLight(0x2ee59d, 1.4, 15);
+      shieldFill.position.set(-2.8, 0.5, 3.5);
+      scene.add(shieldFill);
+
+      // Gear Cavity Specular Light: Warm amber accent focused on exposed internal clockwork gears
+      const gearLight = new THREE.PointLight(0xf1d2a9, 1.8, 5);
+      gearLight.position.set(0.6, -0.2, 0.8);
+      scene.add(gearLight);
+
+      // Master 3D Group for the Sovereign Noble Figure
+      const masterKnightGroup = new THREE.Group();
+      scene.add(masterKnightGroup);
+
+      // Celestial Corona Sprite for Optimistic Aura & Subtle Optical Specular Bloom
+      const coronaCanvas = document.createElement('canvas');
+      coronaCanvas.width = 256; coronaCanvas.height = 256;
+      const cCtx = coronaCanvas.getContext('2d');
+      const cGrad = cCtx.createRadialGradient(128, 128, 0, 128, 128, 128);
+      cGrad.addColorStop(0, 'rgba(241, 224, 208, 0.40)');
+      cGrad.addColorStop(0.35, 'rgba(212, 196, 181, 0.20)');
+      cGrad.addColorStop(0.7, 'rgba(46, 229, 157, 0.08)');
+      cGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      cCtx.fillStyle = cGrad;
+      cCtx.fillRect(0, 0, 256, 256);
+      const coronaTex = new THREE.CanvasTexture(coronaCanvas);
+      const coronaMat = new THREE.SpriteMaterial({
+        map: coronaTex,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        opacity: 0.35
+      });
+      const coronaSprite = new THREE.Sprite(coronaMat);
+      coronaSprite.scale.set(5.5, 5.5, 1);
+      coronaSprite.position.set(0, 0.0, -1.2);
+      masterKnightGroup.add(coronaSprite);
+
+      // Multi-Candidate GLTF Loading with High-Fidelity Procedural Gothic Armillary Fallback
+      const loader = new THREE.GLTFLoader();
+      let knightModel = null;
+      let proceduralFallbackGroup = null;
+
+      const relicGlbCandidatePaths = [
+        'assets/models/sovereign_celestial_relic_4k.glb',
+        '../assets/models/sovereign_celestial_relic_4k.glb',
+        'stitch_ai_agency_platform_website/assets/models/sovereign_celestial_relic_4k.glb',
+        'assets/models/celestial_clockwork_head.glb'
+      ];
+      const knightGlbCandidatePaths = [
+        'assets/models/sovereign_noble_knight.glb',
+        '../assets/models/sovereign_noble_knight.glb',
+        'stitch_ai_agency_platform_website/assets/models/sovereign_noble_knight.glb'
+      ];
+      const glbCandidatePaths = relicGlbCandidatePaths.concat(knightGlbCandidatePaths);
+
+      function createProceduralArmillaryFallback() {
+        if (proceduralFallbackGroup) return;
+        proceduralFallbackGroup = new THREE.Group();
+
+        // 3 Nested Concentric Gilded Astrolabe Armillary Rings
+        const ringMat1 = new THREE.MeshStandardMaterial({ color: 0xd4c4b5, metalness: 0.92, roughness: 0.2, emissive: 0x2b2216 });
+        const ringMat2 = new THREE.MeshStandardMaterial({ color: 0xf1e0d0, metalness: 0.88, roughness: 0.25, emissive: 0x3a3020 });
+        const ringMat3 = new THREE.MeshStandardMaterial({ color: 0x2ee59d, metalness: 0.9, roughness: 0.2, emissive: 0x07301c });
+
+        const r1 = new THREE.Mesh(new THREE.TorusGeometry(2.4, 0.04, 16, 100), ringMat1);
+        const r2 = new THREE.Mesh(new THREE.TorusGeometry(2.0, 0.035, 16, 100), ringMat2);
+        const r3 = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.03, 16, 100), ringMat3);
+        r2.rotation.x = Math.PI / 3;
+        r3.rotation.y = Math.PI / 3;
+
+        proceduralFallbackGroup.add(r1);
+        proceduralFallbackGroup.add(r2);
+        proceduralFallbackGroup.add(r3);
+
+        // Core Alchemical Octahedron
+        const octaGeo = new THREE.OctahedronGeometry(0.85, 0);
+        const octaMat = new THREE.MeshStandardMaterial({ color: 0xf1e0d0, metalness: 0.95, roughness: 0.15 });
+        const octaCore = new THREE.Mesh(octaGeo, octaMat);
+        proceduralFallbackGroup.add(octaCore);
+
+        // Surrounding Wireframe Cage
+        const wireGeo = new THREE.IcosahedronGeometry(1.2, 1);
+        const wireMat = new THREE.MeshBasicMaterial({ color: 0xd4c4b5, wireframe: true, transparent: true, opacity: 0.4 });
+        const wireCage = new THREE.Mesh(wireGeo, wireMat);
+        proceduralFallbackGroup.add(wireCage);
+
+        // Chivalric Damascene Blade Effigy
+        const bladeGeo = new THREE.ConeGeometry(0.2, 3.2, 4);
+        const bladeMat = new THREE.MeshStandardMaterial({ color: 0xd4c4b5, metalness: 0.95, roughness: 0.1 });
+        const blade = new THREE.Mesh(bladeGeo, bladeMat);
+        blade.position.y = 0.2;
+        proceduralFallbackGroup.add(blade);
+
+        proceduralFallbackGroup.scale.set(1.5, 1.5, 1.5);
+        masterKnightGroup.add(proceduralFallbackGroup);
+
+        // Unobtrusive helper toast if file:// protocol blocks local binary GLB
+        if (window.location.protocol === 'file:' && !document.getElementById('cors-helper-toast')) {
+          const toast = document.createElement('div');
+          toast.id = 'cors-helper-toast';
+          toast.className = 'fixed bottom-5 right-5 z-50 p-4 rounded-2xl bg-[#1C1B1B]/95 border border-[rgba(212,196,181,0.4)] shadow-[0_12px_40px_rgba(0,0,0,0.85)] max-w-sm backdrop-blur-xl transition-all duration-500 font-body';
+          toast.innerHTML = `
+            <div class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-secondary text-xl shrink-0 mt-0.5">info</span>
+              <div class="space-y-1 text-xs">
+                <div class="font-headline font-semibold text-on-surface">Local 3D File Notice</div>
+                <div class="text-on-surface-variant font-light leading-relaxed">
+                  Browser security blocks binary GLB loading on <code class="text-secondary font-mono text-[11px]">file:///</code>. 
+                  Run <code class="text-secondary font-mono text-[11px]">start_server.bat</code> or open <a href="http://localhost:8000/stitch_ai_agency_platform_website/aethelgard_1300s_gothic_ai_sovereign_landing_page.html" class="text-secondary underline font-medium" target="_blank">http://localhost:8000</a> to view the full 3D model.
+                </div>
+              </div>
+              <button onclick="document.getElementById('cors-helper-toast').remove()" class="text-outline hover:text-on-surface transition-colors p-1">
+                <span class="material-symbols-outlined text-sm">close</span>
+              </button>
+            </div>
+          `;
+          document.body.appendChild(toast);
+        }
+      }
+
+      function load3DModel(isRelic = true) {
+        if (knightModel) {
+          masterKnightGroup.remove(knightModel);
+          knightModel = null;
+        }
+        const paths = isRelic ? relicGlbCandidatePaths : knightGlbCandidatePaths;
+        function tryPaths(idx) {
+          if (idx >= paths.length) {
+            if (!knightModel) createProceduralArmillaryFallback();
+            return;
+          }
+          loader.load(
+            paths[idx],
+            function(gltf) {
+              if (proceduralFallbackGroup) {
+                masterKnightGroup.remove(proceduralFallbackGroup);
+                proceduralFallbackGroup = null;
+              }
+              knightModel = gltf.scene;
+              const bbox = new THREE.Box3().setFromObject(knightModel);
+              const center = bbox.getCenter(new THREE.Vector3());
+              const size = bbox.getSize(new THREE.Vector3());
+
+              const maxDim = Math.max(size.x, size.y, size.z);
+              const knightScale = 3.8 / maxDim;
+
+              // Direct scaling on knightModel: perfectly framed 3.8-unit height
+              knightModel.scale.set(knightScale, knightScale, knightScale);
+              // Center model bounding box at masterKnightGroup origin (0, 0, 0)
+              knightModel.position.set(-center.x * knightScale, -center.y * knightScale, -center.z * knightScale);
+              
+              if (isRelic) {
+                knightModel.rotation.y = 0; // 4K Celestial Relic faces directly forward (+Z)
+              } else {
+                knightModel.rotation.y = -Math.PI / 2; // Sovereign Knight oriented forward
+              }
+
+              masterKnightGroup.position.set(0, 0, 0);
+
+              knightModel.traverse((child) => {
+                if (child.isMesh) {
+                  if (child.material) {
+                    child.material.roughness = Math.max(child.material.roughness, 0.32);
+                    child.material.metalness = Math.min(child.material.metalness, 0.88);
+                  }
+                }
+              });
+
+              masterKnightGroup.add(knightModel);
+            },
+            undefined,
+            function(err) {
+              console.warn('Model load failed (' + paths[idx] + '):', err);
+              tryPaths(idx + 1);
+            }
+          );
+        }
+        tryPaths(0);
+      }
+
+      function tryLoadGLB(pathIdx) {
+        load3DModel(true);
+      }
+      tryLoadGLB(0);
+
+      // Pedestal Ring (Dark Obsidian with Warm Platinum Hairline directly under boots)
+      const ringGeo = new THREE.TorusGeometry(3.0, 0.02, 16, 120);
+      const ringMat = new THREE.MeshStandardMaterial({
+        color: 0xd4c4b5,
+        emissive: 0x504539,
+        metalness: 0.9,
+        roughness: 0.2
+      });
+      const pedestalRing = new THREE.Mesh(ringGeo, ringMat);
+      pedestalRing.rotation.x = Math.PI / 2;
+      pedestalRing.position.y = -4.0;
+      scene.add(pedestalRing);
+
+      // --- 4-ACT CAMERA STATE MACHINE CHOREOGRAPHY (SPATIAL STORYTELLING) ---
+      // Act I: Typographic Hero (3D model hidden) | Act II: Model Right Flank, Gazes Down-Left toward Cards (rotY: -0.88, rotX: 0.08, showcases Gears)
+      // Act III: Model Left Flank, Gazes Down-Right toward Chart (rotY: 0.88, rotX: 0.08, showcases Moss & Planets) | Act IV: Model Right Flank, Inward Gaze (rotY: -0.55, rotX: 0.04)
+      const actCamTargets = [
+        { camX: 0, camY: 0.15, camZ: 5.6, tarX: 0, tarY: 0.15, tarZ: 0, rotY: 0, rotX: 0 },              // Act I: Centered (model opacity 0)
+        { camX: -3.6, camY: 0.12, camZ: 5.4, tarX: -1.8, tarY: 0.12, tarZ: 0, rotY: -0.88, rotX: 0.08 },   // Act II: Model on Right Flank, looks DOWN-LEFT toward High-Performance Infrastructure cards (exposes bronze gears)
+        { camX: 3.6, camY: 0.05, camZ: 5.4, tarX: 1.8, tarY: 0.05, tarZ: 0, rotY: 0.88, rotX: 0.08 },     // Act III: Model on Left Flank, looks DOWN-RIGHT toward Closed-Loop Attribution Engine card (exposes moss & planets)
+        { camX: -2.8, camY: 0.0, camZ: 5.8, tarX: -1.2, tarY: 0.0, tarZ: 0, rotY: -0.55, rotX: 0.04 }      // Act IV: Model on Right Flank, looks inward toward Enterprise Security card
+      ];
+
+      let currentActIndex = 0;
+      window.setAethelgardAct = function(actIdx) {
+        if (actIdx >= 0 && actIdx < actCamTargets.length) {
+          currentActIndex = actIdx;
+          if (container) {
+            container.style.opacity = currentActIndex === 0 ? '0' : '1';
+          }
+        }
+      };
+
+      // Resize Handler
+      function onResize() {
+        const w = container.clientWidth || window.innerWidth;
+        const h = container.clientHeight || window.innerHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      }
+      window.addEventListener('resize', onResize);
+
+      // Render Loop with Centered Knight, Zero Jitter, and Cinematic Camera Lerping
+      let clock = new THREE.Clock();
+      let curCamX = 0, curCamY = 0.15, curCamZ = 5.6;
+      let curTarX = 0, curTarY = 0.15, curTarZ = 0;
+      let curKnightRotY = 0;
+      let curKnightRotX = 0;
+
+      function animate() {
+        requestAnimationFrame(animate);
+        const elapsed = clock.getElapsedTime();
+
+        const t = actCamTargets[currentActIndex];
+        const lerpSpeed = 0.055;
+        curCamX += (t.camX - curCamX) * lerpSpeed;
+        curCamY += (t.camY - curCamY) * lerpSpeed;
+        curCamZ += (t.camZ - curCamZ) * lerpSpeed;
+        curTarX += (t.tarX - curTarX) * lerpSpeed;
+        curTarY += (t.tarY - curTarY) * lerpSpeed;
+        curTarZ += (t.tarZ - curTarZ) * lerpSpeed;
+        curKnightRotY += (t.rotY - curKnightRotY) * lerpSpeed;
+        curKnightRotX += (((t.rotX !== undefined) ? t.rotX : 0) - curKnightRotX) * lerpSpeed;
+
+        // Rock-Solid Sovereign Stance (Zero Breathing Oscillation & Stable Position)
+        masterKnightGroup.position.set(0, 0, 0);
+        masterKnightGroup.scale.set(1.0, 1.0, 1.0);
+        masterKnightGroup.rotation.y = curKnightRotY;
+        masterKnightGroup.rotation.x = curKnightRotX;
+
+        // Camera smoothly glides along spatial storytelling arc with zero mouse jitter
+        camera.position.set(curCamX, curCamY, curCamZ);
+        camera.lookAt(curTarX, curTarY, curTarZ);
+
+        // Ambient animations & Subtle Corona Glow
+        pedestalRing.rotation.z = elapsed * 0.025;
+        if (coronaSprite) coronaSprite.material.opacity = 0.32 + Math.sin(elapsed * 1.5) * 0.05;
+        if (proceduralFallbackGroup) {
+          proceduralFallbackGroup.children[0].rotation.z = elapsed * 0.35;
+          proceduralFallbackGroup.children[1].rotation.x = elapsed * 0.25;
+          proceduralFallbackGroup.children[2].rotation.y = elapsed * 0.45;
+        }
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Letter-by-Letter Typography Reveal Animation
+      function triggerLetterReveal(containerEl) {
+        if (!containerEl) return;
+        const targets = containerEl.querySelectorAll('[data-reveal-title]');
+        targets.forEach(el => {
+          if (el.getAttribute('data-letters-done') === 'true') return;
+          el.setAttribute('data-letters-done', 'true');
+
+          const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+          const textNodes = [];
+          let node;
+          while (node = walker.nextNode()) {
+            if (node.nodeValue.trim().length > 0) {
+              textNodes.push(node);
+            }
+          }
+
+          let charGlobalIndex = 0;
+          textNodes.forEach(tNode => {
+            const words = tNode.nodeValue.split(' ');
+            const frag = document.createDocumentFragment();
+            words.forEach((word, wIdx) => {
+              const wordSpan = document.createElement('span');
+              wordSpan.style.display = 'inline-block';
+              wordSpan.style.whiteSpace = 'nowrap';
+              for (let i = 0; i < word.length; i++) {
+                const charSpan = document.createElement('span');
+                charSpan.className = 'letter-char';
+                charSpan.innerText = word[i];
+                charSpan.style.animationDelay = (charGlobalIndex * 24) + 'ms';
+                wordSpan.appendChild(charSpan);
+                charGlobalIndex++;
+              }
+              frag.appendChild(wordSpan);
+              if (wIdx < words.length - 1) {
+                frag.appendChild(document.createTextNode(' '));
+                charGlobalIndex++;
+              }
+            });
+            tNode.parentNode.replaceChild(frag, tNode);
+          });
+        });
+      }
+
+      // 2. Minimalist Luxury Telephony Waveform Animation
+      const waveformEl = document.getElementById('audio-waveform');
+      if (waveformEl) {
+        waveformEl.innerHTML = '<canvas id="valerius-wave-canvas" class="w-full h-full block"></canvas>';
+        const waveCanvas = document.getElementById('valerius-wave-canvas');
+        if (waveCanvas) {
+          const wCtx = waveCanvas.getContext('2d');
+          let phase = 0;
+          function renderWave() {
+            const w = waveCanvas.width = waveCanvas.parentElement.clientWidth || 320;
+            const h = waveCanvas.height = waveCanvas.parentElement.clientHeight || 48;
+            wCtx.clearRect(0, 0, w, h);
+
+            // Gilded baseline
+            wCtx.strokeStyle = 'rgba(212, 196, 181, 0.15)';
+            wCtx.lineWidth = 1;
+            wCtx.beginPath();
+            wCtx.moveTo(0, h / 2);
+            wCtx.lineTo(w, h / 2);
+            wCtx.stroke();
+
+            // Platinum Harmonic Primary Wave
+            wCtx.beginPath();
+            wCtx.strokeStyle = '#D4C4B5';
+            wCtx.lineWidth = 2.2;
+            wCtx.shadowColor = 'rgba(212, 196, 181, 0.6)';
+            wCtx.shadowBlur = 10;
+            for (let x = 0; x < w; x++) {
+              const nx = x / w;
+              const env = Math.sin(nx * Math.PI); // Windowing envelope
+              const y = (h / 2) + (Math.sin(nx * 14 + phase) * (h * 0.32) + Math.sin(nx * 28 - phase * 1.4) * (h * 0.12)) * env;
+              if (x === 0) wCtx.moveTo(x, y);
+              else wCtx.lineTo(x, y);
+            }
+            wCtx.stroke();
+            wCtx.shadowBlur = 0;
+
+            // Emerald Echo Wave
+            wCtx.beginPath();
+            wCtx.strokeStyle = 'rgba(46, 229, 157, 0.5)';
+            wCtx.lineWidth = 1.4;
+            for (let x = 0; x < w; x++) {
+              const nx = x / w;
+              const env = Math.sin(nx * Math.PI);
+              const y = (h / 2) + Math.sin(nx * 11 - phase * 0.9) * (h * 0.22) * env;
+              if (x === 0) wCtx.moveTo(x, y);
+              else wCtx.lineTo(x, y);
+            }
+            wCtx.stroke();
+
+            phase += 0.045;
+            requestAnimationFrame(renderWave);
+          }
+          renderWave();
+        }
+      }
+
+      // 3. Count-Up Horizon Metrics with Majestic Slow Easing & Ascension
+      const metricsBar = document.getElementById('hero-metrics-bar');
+      if (metricsBar) {
+        setTimeout(() => {
+          metricsBar.classList.remove('translate-y-6', 'opacity-0');
+          metricsBar.classList.add('translate-y-0', 'opacity-100');
+        }, 300);
+      }
+
+      const counters = document.querySelectorAll('.counter');
+      let counted = false;
+      const runCounters = () => {
+        if (counted) return;
+        counted = true;
+        const duration = 2400; // Slow, luxurious 2.4s count-up
+        const startTime = performance.now();
+        function updateCounters(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Cubic ease-out deceleration: fast start, slows gracefully to finish
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          counters.forEach(c => {
+            const target = +c.getAttribute('data-target');
+            c.innerText = Math.round(target * easeOut);
+          });
+          if (progress < 1) {
+            requestAnimationFrame(updateCounters);
+          } else {
+            counters.forEach(c => {
+              c.innerText = c.getAttribute('data-target');
+            });
+          }
+        }
+        requestAnimationFrame(updateCounters);
+      };
+      setTimeout(runCounters, 350);
+
+      // 4. Pinned Hero 4-Act Interpolation & Clean Side Rail Sync
+      const actViews = [
+        document.getElementById('act-1-view'),
+        document.getElementById('act-2-view'),
+        document.getElementById('act-3-view'),
+        document.getElementById('act-4-view')
+      ];
+      const navButtons = document.querySelectorAll('.act-nav');
+      const stage = document.getElementById('storyline-stage');
+      let currentActiveAct = -1;
+
+      const setAct = (activeIdx) => {
+        if (typeof window.setAethelgardAct === 'function') {
+          window.setAethelgardAct(activeIdx);
+        }
+
+        if (activeIdx === currentActiveAct) return;
+        currentActiveAct = activeIdx;
+
+        actViews.forEach((v, idx) => {
+          if (!v) return;
+          if (idx === activeIdx) {
+            v.classList.remove('opacity-0', 'pointer-events-none');
+            v.classList.add('opacity-100', 'pointer-events-auto');
+            if (idx === 1) v.classList.remove('translate-x-12');
+            if (idx === 2) v.classList.remove('-translate-x-12');
+            if (idx === 3) v.classList.remove('translate-x-12');
+            triggerLetterReveal(v);
+          } else {
+            v.classList.add('opacity-0', 'pointer-events-none');
+            v.classList.remove('opacity-100', 'pointer-events-auto');
+            if (idx === 1) v.classList.add('translate-x-12');
+            if (idx === 2) v.classList.add('-translate-x-12');
+            if (idx === 3) v.classList.add('translate-x-12');
+          }
+        });
+
+        // Staggered descending drop-down waterfall cascade for Tri-Spectral Engine cards in Act II
+        const triCards = document.querySelectorAll('.tri-card');
+        if (activeIdx === 1) {
+          // Reset cards to start position, then trigger cascading drop-down animation via rAF
+          triCards.forEach(c => {
+            c.classList.remove('translate-y-0', 'opacity-100');
+            c.classList.add('-translate-y-12', 'opacity-0');
+          });
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              triCards.forEach(c => {
+                c.classList.remove('-translate-y-12', 'opacity-0');
+                c.classList.add('translate-y-0', 'opacity-100');
+              });
+            });
+          });
+        } else {
+          // Reset cards when leaving Act II so they re-cascade seamlessly every time user returns
+          triCards.forEach(c => {
+            c.classList.remove('translate-y-0', 'opacity-100');
+            c.classList.add('-translate-y-12', 'opacity-0');
+          });
+        }
+
+        navButtons.forEach((btn, idx) => {
+          const bar = btn.querySelector('.indicator-bar');
+          if (idx === activeIdx) {
+            if (bar) {
+              bar.classList.add('h-6', 'bg-[#D4C4B5]', 'shadow-[0_0_12px_rgba(212,196,181,0.8)]');
+              bar.classList.remove('h-2', 'bg-outline-variant');
+            }
+          } else {
+            if (bar) {
+              bar.classList.remove('h-6', 'bg-[#D4C4B5]', 'shadow-[0_0_12px_rgba(212,196,181,0.8)]');
+              bar.classList.add('h-2', 'bg-outline-variant');
+            }
+          }
+        });
+      };
+
+      // Initial reveal on Act I
+      if (actViews[0]) triggerLetterReveal(actViews[0]);
+
+      // 5. Scroll-Driven Sequential Timeline Dot Activation
+      const milestoneElements = document.querySelectorAll('.timeline-milestone');
+      if (milestoneElements.length > 0) {
+        const milestoneObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const dot = entry.target.querySelector('.timeline-dot');
+            const ping = entry.target.querySelector('.timeline-ping');
+            const title = entry.target.querySelector('.milestone-title');
+            if (entry.isIntersecting) {
+              if (dot) dot.classList.add('timeline-dot-active');
+              if (ping) ping.classList.add('timeline-ping-active');
+              if (title) title.classList.add('text-secondary');
+            } else {
+              if (dot) dot.classList.remove('timeline-dot-active');
+              if (ping) ping.classList.remove('timeline-ping-active');
+              if (title) title.classList.remove('text-secondary');
+            }
+          });
+        }, { threshold: 0.6, rootMargin: '-10% 0px -10% 0px' });
+
+        milestoneElements.forEach(m => milestoneObserver.observe(m));
+      }
+
+      // 6. Billing Interval Switcher & Deceleration Price Count Animation
+      const billingButtons = document.querySelectorAll('.billing-toggle-btn');
+      const tier1PriceEl = document.getElementById('tier-1-price');
+      const tier2PriceEl = document.getElementById('tier-2-price');
+      const tier1IntervalEl = document.getElementById('tier-1-interval');
+      const tier2IntervalEl = document.getElementById('tier-2-interval');
+      const tier1SubtextEl = document.getElementById('tier-1-subtext');
+      const tier2SubtextEl = document.getElementById('tier-2-subtext');
+
+      let currentTier1Price = 349;
+      let currentTier2Price = 899;
+
+      function animatePriceDeceleration(element, startVal, endVal, duration = 650) {
+        if (element._animId) cancelAnimationFrame(element._animId);
+        const startTime = performance.now();
+        function update(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Cubic ease-out deceleration: fast start, slows gracefully to finish
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          const current = Math.round(startVal + (endVal - startVal) * easeOut);
+          element.innerText = '$' + current;
+          if (progress < 1) {
+            element._animId = requestAnimationFrame(update);
+          } else {
+            element.innerText = '$' + endVal;
+            element._animId = null;
+          }
+        }
+        element._animId = requestAnimationFrame(update);
+      }
+
+      if (billingButtons.length > 0) {
+        billingButtons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const interval = btn.getAttribute('data-interval');
+
+            // Toggle active button appearance
+            billingButtons.forEach(b => {
+              b.classList.remove('bg-secondary', 'text-[#141313]', 'shadow-md');
+              b.classList.add('text-on-surface-variant');
+            });
+            btn.classList.add('bg-secondary', 'text-[#141313]', 'shadow-md');
+            btn.classList.remove('text-on-surface-variant');
+
+            let t1Target = 349, t2Target = 899;
+            if (interval === 'monthly') {
+              t1Target = 349;
+              t2Target = 899;
+              if (tier1IntervalEl) tier1IntervalEl.innerText = '/ month';
+              if (tier2IntervalEl) tier2IntervalEl.innerText = '/ month';
+              if (tier1SubtextEl) { tier1SubtextEl.classList.add('opacity-0', 'h-0'); tier1SubtextEl.classList.remove('opacity-100', 'h-auto'); }
+              if (tier2SubtextEl) { tier2SubtextEl.classList.add('opacity-0', 'h-0'); tier2SubtextEl.classList.remove('opacity-100', 'h-auto'); }
+            } else if (interval === 'quarterly') {
+              t1Target = 314;
+              t2Target = 809;
+              if (tier1IntervalEl) tier1IntervalEl.innerText = '/ month';
+              if (tier2IntervalEl) tier2IntervalEl.innerText = '/ month';
+              if (tier1SubtextEl) {
+                tier1SubtextEl.innerText = 'Billed quarterly ($942/qtr)';
+                tier1SubtextEl.classList.remove('opacity-0', 'h-0');
+                tier1SubtextEl.classList.add('opacity-100', 'h-auto');
+              }
+              if (tier2SubtextEl) {
+                tier2SubtextEl.innerText = 'Billed quarterly ($2,427/qtr)';
+                tier2SubtextEl.classList.remove('opacity-0', 'h-0');
+                tier2SubtextEl.classList.add('opacity-100', 'h-auto');
+              }
+            } else if (interval === 'yearly') {
+              t1Target = 279;
+              t2Target = 719;
+              if (tier1IntervalEl) tier1IntervalEl.innerText = '/ month';
+              if (tier2IntervalEl) tier2IntervalEl.innerText = '/ month';
+              if (tier1SubtextEl) {
+                tier1SubtextEl.innerText = 'Billed annually ($3,348/yr — Save $840)';
+                tier1SubtextEl.classList.remove('opacity-0', 'h-0');
+                tier1SubtextEl.classList.add('opacity-100', 'h-auto');
+              }
+              if (tier2SubtextEl) {
+                tier2SubtextEl.innerText = 'Billed annually ($8,628/yr — Save $2,160)';
+                tier2SubtextEl.classList.remove('opacity-0', 'h-0');
+                tier2SubtextEl.classList.add('opacity-100', 'h-auto');
+              }
+            }
+
+            if (tier1PriceEl) {
+              animatePriceDeceleration(tier1PriceEl, currentTier1Price, t1Target);
+              currentTier1Price = t1Target;
+            }
+            if (tier2PriceEl) {
+              animatePriceDeceleration(tier2PriceEl, currentTier2Price, t2Target);
+              currentTier2Price = t2Target;
+            }
+          });
+        });
+      }
+
+      // Smart Scroll Navbar & Auto-Hiding Side Rail (Throttled with requestAnimationFrame for 120fps)
+      let lastScrollY = window.scrollY;
+      const smartNav = document.getElementById('smart-navbar-container');
+      const sideRail = document.getElementById('storyline-side-rail');
+      let isScrollTicking = false;
+
+      function onScrollPerform() {
+        const curY = window.scrollY;
+
+        // 1. Smart Scroll Header: Disappear when scrolling down, appear when scrolling up!
+        if (smartNav) {
+          if (curY > lastScrollY && curY > 90) {
+            smartNav.style.transform = 'translateY(-140%)';
+            smartNav.style.opacity = '0';
+            smartNav.style.pointerEvents = 'none';
+          } else {
+            smartNav.style.transform = 'translateY(0)';
+            smartNav.style.opacity = '1';
+            smartNav.style.pointerEvents = 'auto';
+          }
+        }
+        lastScrollY = curY;
+
+        // 2. Side Rail Auto-Hide: Fades out completely and unmounts once scrolled past the Storyline Hero!
+        if (stage && sideRail) {
+          const rect = stage.getBoundingClientRect();
+          if (rect.bottom < 120 || window.scrollY > (stage.offsetHeight - 150)) {
+            sideRail.style.opacity = '0';
+            sideRail.style.pointerEvents = 'none';
+            sideRail.style.display = 'none';
+          } else {
+            if (window.innerWidth >= 1280) {
+              sideRail.style.display = 'flex';
+              sideRail.style.opacity = '1';
+              sideRail.style.pointerEvents = 'auto';
+            }
+          }
+        }
+
+        // 3. Storyline Acts Evaluation
+        if (!stage) return;
+        const rect = stage.getBoundingClientRect();
+        const stageH = stage.offsetHeight - window.innerHeight;
+        
+        // If we are at top of page or negative top, strictly set Act I
+        if (window.scrollY < 80 || rect.top >= 0) {
+          setAct(0);
+          return;
+        }
+
+        const progress = Math.min(Math.max(-rect.top / stageH, 0), 1);
+        if (progress < 0.25) setAct(0);
+        else if (progress < 0.50) setAct(1);
+        else if (progress < 0.75) setAct(2);
+        else setAct(3);
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!isScrollTicking) {
+          requestAnimationFrame(() => {
+            onScrollPerform();
+            isScrollTicking = false;
+          });
+          isScrollTicking = true;
+        }
+      }, { passive: true });
+
+      // Side rail click navigation
+      navButtons.forEach((btn, idx) => {
+        btn.addEventListener('click', () => {
+          if (!stage) return;
+          const stageTop = stage.offsetTop;
+          const stageH = stage.offsetHeight - window.innerHeight;
+          const targetY = stageTop + (idx * (stageH / 3.05));
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        });
+      });
+
+      // 7. Interactive Shadcn Area Chart Tracking with Zero-Offset Hardware-Accelerated Physics
+      const chartWrapper = document.getElementById('chart-svg-wrapper');
+      const crosshair = document.getElementById('crosshair');
+      const crosshairPoint = document.getElementById('crosshair-point');
+      const chartTooltipCard = document.getElementById('chart-tooltip-card');
+      const chartHoverVal = document.getElementById('chart-hover-val');
+      const tooltipDay = document.getElementById('tooltip-day');
+      const tooltipLift = document.getElementById('tooltip-lift');
+      const tooltipRoas = document.getElementById('tooltip-roas');
+      const tooltipCac = document.getElementById('tooltip-cac');
+
+      if (chartWrapper && crosshair) {
+        let isChartTicking = false;
+
+        function updateChartTracking(e) {
+          // Measure against chartWrapper directly — eliminates any padding offset!
+          const rect = chartWrapper.getBoundingClientRect();
+          const rawX = e.clientX - rect.left;
+          const clampedX = Math.max(0, Math.min(rawX, rect.width));
+          const normX = clampedX / rect.width; // 0.0 to 1.0
+
+          // Cubic Spline Curve Approximation for Y coordinate:
+          // SVG curve: M0,82 C90,76 150,62 240,46 C330,30 410,18 500,10
+          // Normalised Y: Starts around 82% at x=0, descends to 10% at x=1 (height is inverted in SVG)
+          const normY = 0.82 - (normX * 0.58) - (Math.sin(normX * Math.PI) * 0.14);
+          const pixelY = normY * rect.height;
+
+          // Real Data Interpolations
+          const day = Math.min(30, Math.max(1, Math.round(normX * 30)));
+          const liftVal = (12.4 + Math.pow(normX, 0.85) * 26.0).toFixed(1);
+          const roasVal = (1.8 + Math.pow(normX, 0.9) * 3.0).toFixed(1);
+          const cacDelta = (14.0 + Math.pow(normX, 0.8) * 27.2).toFixed(1);
+
+          // Update Elements via GPU Transform
+          crosshair.style.opacity = '1';
+          crosshair.style.transform = 'translate3d(' + clampedX + 'px, 0, 0)';
+          if (crosshairPoint) {
+            crosshairPoint.style.transform = 'translate3d(0, ' + pixelY + 'px, 0)';
+          }
+
+          if (chartHoverVal) {
+            chartHoverVal.innerText = 'Day ' + day + ': +' + liftVal + '% Lift • ' + roasVal + 'x ROAS';
+          }
+
+          if (chartTooltipCard) {
+            chartTooltipCard.style.opacity = '1';
+            // Position card to the left of crosshair if cursor is on right half to prevent overflow
+            const tooltipWidth = 175;
+            let cardX = clampedX + 16;
+            if (clampedX > rect.width - tooltipWidth - 20) {
+              cardX = clampedX - tooltipWidth - 16;
+            }
+            const cardY = Math.max(0, Math.min(pixelY - 35, rect.height - 70));
+            chartTooltipCard.style.transform = 'translate3d(' + cardX + 'px, ' + cardY + 'px, 0)';
+
+            if (tooltipDay) tooltipDay.innerText = 'Day ' + day + ' // Performance';
+            if (tooltipLift) tooltipLift.innerText = '+' + liftVal + '% Net Lift';
+            if (tooltipRoas) tooltipRoas.innerText = roasVal + 'x ROAS';
+            if (tooltipCac) tooltipCac.innerText = 'CAC Delta: -' + cacDelta + '%';
+          }
+        }
+
+        chartWrapper.addEventListener('mousemove', (e) => {
+          if (!isChartTicking) {
+            requestAnimationFrame(() => {
+              updateChartTracking(e);
+              isChartTicking = false;
+            });
+            isChartTicking = true;
+          }
+        });
+
+        chartWrapper.addEventListener('mouseleave', () => {
+          crosshair.style.opacity = '0';
+          if (chartTooltipCard) chartTooltipCard.style.opacity = '0';
+          if (chartHoverVal) chartHoverVal.innerText = 'Day 28: +38.4% Lift • 4.8x ROAS';
+        });
+      }
+
+      // 8. Executive Telemetry vs Under-the-Hood Peel Mode Toggle
+      const btnExec = document.getElementById('view-exec');
+      const btnTech = document.getElementById('view-tech');
+      if (btnExec && btnTech) {
+        btnExec.addEventListener('click', () => {
+          btnExec.className = 'px-4 py-1.5 rounded-lg bg-secondary text-[#141313] font-label text-xs font-bold transition-all';
+          btnTech.className = 'px-4 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label text-xs font-medium transition-all';
+          document.querySelectorAll('.sanctum-exec-view').forEach(el => el.classList.remove('hidden'));
+          document.querySelectorAll('.sanctum-tech-view').forEach(el => el.classList.add('hidden'));
+        });
+        btnTech.addEventListener('click', () => {
+          btnTech.className = 'px-4 py-1.5 rounded-lg bg-secondary text-[#141313] font-label text-xs font-bold transition-all';
+          btnExec.className = 'px-4 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label text-xs font-medium transition-all';
+          document.querySelectorAll('.sanctum-exec-view').forEach(el => el.classList.add('hidden'));
+          document.querySelectorAll('.sanctum-tech-view').forEach(el => el.classList.remove('hidden'));
+        });
+      }
+
+      // 9. Session 06 Luminous Box Hover Glow & Dynamic Spotlight Tracker
+      const glowSlabs = document.querySelectorAll('.tactile-slab-3d, .tri-card, .neon-laser-card');
+      glowSlabs.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

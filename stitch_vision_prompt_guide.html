@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aethelgard — Google Stitch UI/UX Production Prompt Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #070B08;
+      --bg-surface: #111A14;
+      --bg-surface-elevated: #16231B;
+      --bg-card: rgba(17, 26, 20, 0.88);
+      --border-subtle: rgba(197, 160, 89, 0.18);
+      --border-gold: rgba(197, 160, 89, 0.38);
+      --border-mint: rgba(46, 229, 157, 0.35);
+      --accent-gold: #C5A059;
+      --accent-gold-light: #E5C07B;
+      --accent-mint: #2EE59D;
+      --accent-mint-light: #5EEAD4;
+      --accent-cyan: #06B6D4;
+      --accent-amber: #F59E0B;
+      --accent-violet: #8B5CF6;
+      --text-main: #F9FAFB;
+      --text-secondary: #9CA3AF;
+      --text-muted: #6B7280;
+      --font-medieval: 'Cinzel', serif;
+      --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      padding: 2.5rem 1.5rem;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(46, 229, 157, 0.09) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(197, 160, 89, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 50%);
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 1rem;
+      border-radius: 9999px;
+      background: rgba(197, 160, 89, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--accent-gold-light);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-mint);
+      box-shadow: 0 0 12px var(--accent-mint);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    h1 {
+      font-family: var(--font-medieval);
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #FFF 30%, var(--accent-gold-light) 75%, var(--accent-mint) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 860px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Top Action Strip */
+    .action-strip {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 1.4rem 1.8rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(197, 160, 89, 0.15);
+    }
+
+    .action-strip p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+
+    .action-strip strong {
+      color: var(--accent-mint);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-mint {
+      background: linear-gradient(135deg, var(--accent-mint), #059669);
+      color: #070B08;
+      box-shadow: 0 4px 15px rgba(46, 229, 157, 0.3);
+    }
+
+    .btn-mint:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(46, 229, 157, 0.45);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--border-gold);
+    }
+
+    /* Master Vision Context Box */
+    .master-box {
+      background: rgba(17, 26, 20, 0.95);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 1.6rem;
+      margin-bottom: 2.2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .master-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .master-title {
+      font-family: var(--font-medieval);
+      font-size: 1.15rem;
+      color: var(--accent-gold-light);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Prompt Cards */
+    .prompt-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(14px);
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .prompt-card:hover {
+      border-color: var(--border-gold);
+      box-shadow: 0 12px 35px rgba(197, 160, 89, 0.15), 0 0 20px rgba(46, 229, 157, 0.08);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .card-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      margin-bottom: 0.35rem;
+    }
+
+    .badge-mint { background: rgba(46, 229, 157, 0.15); color: var(--accent-mint); border: 1px solid var(--border-mint); }
+    .badge-gold { background: rgba(197, 160, 89, 0.15); color: var(--accent-gold-light); border: 1px solid var(--border-gold); }
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-cyan { background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); border: 1px solid rgba(6, 182, 212, 0.3); }
+
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+
+    .btn-copy {
+      background: rgba(197, 160, 89, 0.15);
+      border: 1px solid var(--border-gold);
+      color: var(--accent-gold-light);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-copy:hover {
+      background: var(--accent-mint);
+      border-color: var(--accent-mint);
+      color: #070B08;
+      box-shadow: 0 0 15px rgba(46, 229, 157, 0.4);
+    }
+
+    .btn-copy.copied {
+      background: var(--accent-mint);
+      border-color: var(--accent-mint);
+      color: #070B08;
+    }
+
+    .prompt-box {
+      background: #050806;
+      border: 1px solid rgba(197, 160, 89, 0.1);
+      border-radius: 10px;
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.83rem;
+      color: #D1D5DB;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      max-height: 290px;
+      overflow-y: auto;
+      margin-top: 0.75rem;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #111A14;
+      border: 1px solid var(--accent-mint);
+      color: #fff;
+      padding: 0.85rem 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(46, 229, 157, 0.3);
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 0.6rem;
+      z-index: 1000;
+    }
+
+    .toast.active {
+      display: flex;
+      animation: slideUp 0.2s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="pill-badge">
+        <div class="pulse-dot"></div>
+        Aethelgard Atelier Edition • Google Stitch Suite
+      </div>
+      <h1>Aethelgard — Sovereign Atelier Prompt Hub</h1>
+      <p class="subtitle">
+        One-click copy-paste prompts matching your <strong>Aethelgard Autonomous Atelier</strong> landing page. Built for Google Stitch to generate the full suite of sovereign enterprise screens with 100% aesthetic fidelity.
+      </p>
+    </header>
+
+    <!-- Top Action Strip -->
+    <div class="action-strip">
+      <div>
+        <p><strong>Next Screen to Build in Stitch:</strong> You already have the <em>Aethelgard Landing Page</em>! Now generate <strong>Prompt 1 (The Sovereign Command Cockpit)</strong> or <strong>Prompt 2 (Valerius the Herald Voice Studio)</strong>.</p>
+      </div>
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="index.html" class="btn btn-secondary">← Executive Hub</a>
+        <a href="STITCH_VISION_AND_UIUX_MASTER_PROMPT.md" class="btn btn-mint">View Full Codex Spec</a>
+      </div>
+    </div>
+
+    <!-- PROMPT 1: Sovereign Command Cockpit -->
+    <div class="prompt-card">
+      <div class="card-top">
+        <div>
+          <span class="card-badge badge-mint">Screen 1 • Master Dashboard</span>
+          <h2 class="card-title">The Sovereign Command Cockpit (Main Guild Dashboard)</h2>
+          <p class="card-desc">The central sanctuary where executives oversee the 10 Sovereign Agents with pulsing mint runes, active voice calls, and credit ledgers.</p>
+        </div>
+        <button class="btn-copy" onclick="copyPrompt('p1', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy Prompt
+        </button>
+      </div>
+      <div class="prompt-box" id="p1">Create the master executive dashboard ("The Sovereign Command Cockpit") for Aethelgard — matching the exact "Autonomous Enterprise Atelier" visual aesthetic.
+
+Design Theme: Deep Obsidian Forest Void (#070B08 canvas with subtle dot grid), dark moss-slate atelier glass panels (#111A14) with 1px antique gilded brass borders (#C5A059), luminous ethereal mint green (#2EE59D) active glows, and circular illuminated heraldic agent sigils.
+
+Layout & Elements:
+1. Top Sanctum Header:
+   - Left: Illuminated Guild Insignia ("AETHELGARD ATELIER") with workspace switcher ("House of ScaleTech ▼") + status pill ("⚔️ IX Nodes in Perpetual Vigil").
+   - Center: Live Sovereign Telemetry Ticker ("Operational Status: All Agents Consecrated • 1 Inbound Call Active on WhatsApp Line").
+   - Right: Fuel Ledger ("1,240 / 1,500 Sovereign Credits" with mint glowing ring) + Notifications Rune + Executive Profile.
+2. Left Tactical Navigation Rail (Antique Brass Linework Icons):
+   - ⚔️ Sovereign Cockpit (Active)
+   - 📞 Valerius the Herald (Voice Concierge & Live Calls)
+   - 🌐 Daedalus the Architect (Product Web Studio)
+   - 📅 The Omnichannel Chronicle (Calendar)
+   - 📜 Aurelius the Scribe (Manuscripts & Carousels)
+   - 📊 Argus the Watcher (Closed-Loop Telemetry)
+   - ⚙️ Guild Treaties & Tone Tuning
+3. Top Metric Runes (4 Glass Cards with Gilded Corner Brackets):
+   - Card 1: "Verified Fidelity" (99.98% • Consecrated output quality).
+   - Card 2: "Inbound Herald Calls" (118 Calls Answered • 42 Appointments Sealed).
+   - Card 3: "Active Web Sanctuaries" (4 Live Landing Pages on custom domains).
+   - Card 4: "Treasury Arbitrage" ($11,400 Saved vs traditional human agency retainer).
+4. Central Feature: The "Sovereign Astrolabe" Agent Constellation:
+   - Interactive grid showcasing the Sovereign Agents with illuminated circular guild sigils and pulsing mint status rings:
+     - 1. Solon the Chancellor: "Formulating Q4 Thought Leadership Roadmap" (Active)
+     - 2. Valerius the Herald: "In Inbound Call: Qualifying Enterprise Prospect (+1 415...)" (Live Call • Dragon Amber)
+     - 3. Daedalus the Architect: "Synthesized 3 Astro Landing Page Blocks for Product X" (Active)
+     - 4. Aurelius the Scribe: "Illuminating 7-Slide LinkedIn PDF Carousel" (Writing)
+     - 5. Hephaestus the Artificer: "Forging FLUX Visuals & ElevenLabs Audio" (Active)
+     - 6. Justinian the Arbiter: "Sealed Verification of Product Claims (Score 99/100)" (Passed)
+     - 7. Hermes the Emissary: "Dispatching LinkedIn Carousel at 8:15 AM Optimal Slot" (Queued)
+     - 8. Argus the Watcher: "Distilling 72h Engagement Telemetry into Feedback Vectors" (Active)
+5. Lower Chamber:
+   - Left (60%): "Upcoming Chronicle Dispatch" (Timeline of upcoming LinkedIn carousels and scheduled voice appointments with 1-click preview).
+   - Right (40%): "Live Astrolabe Log" (Monospaced real-time event stream showing prompt updates, call bookings, and code deployments).</div>
+    </div>
+
+    <!-- PROMPT 2: Valerius the Herald Voice Studio -->
+    <div class="prompt-card">
+      <div class="card-top">
+        <div>
+          <span class="card-badge badge-amber">Screen 2 • Voice Concierge & Telephony</span>
+          <h2 class="card-title">Valerius the Herald: 24/7 AI Voice Concierge Studio</h2>
+          <p class="card-desc">The 24/7 telephonic voice receptionist: answers WhatsApp/Cellular phone calls, books calendar appointments, and presents executive audio debriefs.</p>
+        </div>
+        <button class="btn-copy" onclick="copyPrompt('p2', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy Prompt
+        </button>
+      </div>
+      <div class="prompt-box" id="p2">Create the dedicated "Voice Concierge & Telephony Receptionist Studio" for Aethelgard — managed by "Valerius the Herald".
+
+Design Theme: Aethelgard Obsidian Atelier (#070B08 background, #111A14 moss-slate glass cards, 1px antique brass borders #C5A059, glowing ethereal mint #2EE59D audio waveforms, illuminated circular seal of Valerius).
+
+Layout Structure:
+1. Top Herald Toolbar:
+   - Left: Circular Heraldic Seal of Valerius with headline "Valerius the Herald — Sovereign Telephony Envoy".
+   - Center: Line Status Badges: "🟢 Line +1 (555) 019-4820: Answering on Sovereign Vigil" + "WhatsApp Voice: Consecrated".
+   - Right: "Simulate Incoming Call" button + "Voice Cadence Tuning" button.
+2. The Sovereign Debrief Chamber (The "Did I Miss Anything?" Feature):
+   - An illuminated glass banner with antique gold filigree displaying the Herald's debrief for the returning founder:
+     - Title Pill: "🎙️ Sovereign Audio Debrief Consecrated"
+     - Text: "While you were absent from the sanctuary, 3 voice inquiries were answered. Critical Event: Michael Sterling of Apex Capital called regarding the Enterprise Guild tier. Valerius addressed his security architecture inquiries and sealed an audience for Thursday at 2:00 PM in the council calendar."
+     - Audio Action: Glowing mint play button "[▶ Play 20-Sec Sovereign Audio Briefing]" + "View Sanctioned Calendar Audience" link.
+3. Dual-Pane Telephony Workspace:
+   - Left Pane (60%): "Inbound Call Chronicle & Live Runes"
+     - Chronological list of recent calls with caller identity, channel emblem (WhatsApp Voice / Phone / Telegram), duration, and outcome badge ("Audience Sealed", "Lead Consecrated").
+     - Detailed Call Transcript Inspection:
+       - Waveform audio player with playback controls.
+       - Conversational script (Caller vs Valerius) with sentiment markers.
+       - Extracted Treaties box: "Scheduled Audience: Oct 24, 2:00 PM; Action: Dispatch technical whitepaper to michael@apex.com."
+   - Right Pane (40%): "The Herald's Lexicon & Calendar Cloister"
+     - Calendar availability matrix with booked audiences.
+     - Knowledge Corpus editor (Directives for handling objections, pricing inquiries, and founder escalations).
+     - Herald Voice Profile selector (Select authoritative ElevenLabs/Gemini Live sovereign voice personas).</div>
+    </div>
+
+    <!-- PROMPT 3: Daedalus the Architect Web Studio -->
+    <div class="prompt-card">
+      <div class="card-top">
+        <div>
+          <span class="card-badge badge-cyan">Screen 3 • Web Builder Studio</span>
+          <h2 class="card-title">Daedalus the Architect: Product Web Studio</h2>
+          <p class="card-desc">Autonomous split-screen workspace: Left = conversational section builder & block tree; Right = live responsive canvas with 1-click domain deployment.</p>
+        </div>
+        <button class="btn-copy" onclick="copyPrompt('p3', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy Prompt
+        </button>
+      </div>
+      <div class="prompt-box" id="p3">Create the "Product Web Studio" screen for Aethelgard — presided over by "Daedalus the Architect". A split-screen autonomous workspace that synthesizes live product websites and landing pages in 60 seconds.
+
+Design Theme: Aethelgard Obsidian Atelier (#070B08 dark canvas, #111A14 toolbars, 1px antique brass trim #C5A059, runestone cyan and ethereal mint highlights, illuminated seal of Daedalus).
+
+Layout (Split-Screen Atelier):
+1. Top Consecration Bar:
+   - Left: Product Sanctuary Selector ("CloudShield Sovereign Landing Page v2.1") + Custom Domain Status ("Live • getcloudshield.com").
+   - Center: Viewport Rune Selectors (Desktop 1440px [Active], Tablet 768px, Mobile 375px).
+   - Right: "Regenerate Layout", "Inspect Code (Tailwind/HTML)", and glowing mint button "🚀 Consecrate & Publish (1-Click)".
+2. Left Control Spire (30% Width):
+   - Co-Pilot Dialogue Bar: "Instruct Daedalus on layout refinement..." (e.g., "Add the Valerius phone consultation trigger beneath the hero and cast pricing cards in moss glass").
+   - Section Hierarchy Tree:
+     - Sovereign Hero Section (Chiseled Headline, Dual CTAs, 3D Product Visual)
+     - Proof of Trust Ticker (Enterprise Insignias)
+     - Sacred Bento Grid (3 Feature Cards with engraved medieval linework)
+     - Consecrated Pricing Matrix
+     - Direct Telephony / WhatsApp Consultation Trigger
+   - Alchemical Palette Overrides: Color chips (Obsidian #070B08, Mint #2EE59D, Antique Gold #C5A059).
+3. Right Atelier Canvas (70% Width):
+   - High-fidelity visual preview of the synthesized landing page within an antique brass browser frame.
+   - The preview renders:
+     - Chiseled headline: "Autonomous Cloud Defense Cast in Sovereign Code".
+     - Frosted moss glass cards with animated data charts.
+     - Interactive billing cadence toggle (Moon Cycles / Solar Cycles with 20% discount).
+     - Sticky bottom conversion bar with "Summon Valerius via WhatsApp Call" button.</div>
+    </div>
+
+    <!-- PROMPT 4: Onboarding Portal -->
+    <div class="prompt-card">
+      <div class="card-top">
+        <div>
+          <span class="card-badge badge-gold">Screen 4 • Client Onboarding</span>
+          <h2 class="card-title">The Bespoke Onboarding & Product Intake Portal</h2>
+          <p class="card-desc">4-step intake ritual: enterprise product whitepaper upload, USP extraction by Solon, and phone line consecration.</p>
+        </div>
+        <button class="btn-copy" onclick="copyPrompt('p4', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy Prompt
+        </button>
+      </div>
+      <div class="prompt-box" id="p4">Create the "Client Onboarding & Product DNA Intake Portal" for Aethelgard.
+
+Design Theme: Aethelgard Obsidian Atelier (#070B08 canvas, #111A14 moss slate glass cards, illuminated brass step lines #C5A059, glowing emerald runes #2EE59D).
+
+Layout & Components:
+1. Top Guild Stepper (4 Rites connected by glowing brass lines):
+   - Rite 1: Corporate Identity & Brand Seal (Completed - Emerald check rune)
+   - Rite 2: Product DNA & Specification Ingestion (Active - Gilded brass glow)
+   - Rite 3: Telephony Phone Line & WhatsApp Binding (Upcoming)
+   - Rite 4: Sovereign Swarm Consecration (Upcoming)
+2. Main Chamber (Rite 2: Product DNA Ingestion):
+   - Header: "Consecrate Your Product DNA" — "Daedalus and Aurelius will analyze your technical specs to forge your first live web sanctuary, phone concierge script, and 30-day chronicle."
+   - Left Column: Form inputs for Product Designation, Guild Vertical dropdown (B2B SaaS, High-Tech Manufacturing, Professional Advisory), Target Persona definition, and Core Value Propositions.
+   - Right Column: Drag-and-drop document upload vault with engraved filigree border ("Drop Product Whitepaper, Pitch Deck, or Architectural Diagram here").
+3. Live Agent Extraction Monitor:
+   - Panel showing "Solon the Chancellor" parsing uploaded documents in real-time with badges: "3 Sovereign USPs Decoded", "Target Audience: Enterprise CTOs", "Tone: Solemn & Authoritative".
+4. Navigation Bar: Glass bar with "Back" button and glowing mint button "Proceed to Telephony Setup ➔".</div>
+    </div>
+
+    <!-- PROMPT 5: Omnichannel Chronicle & Calendar -->
+    <div class="prompt-card">
+      <div class="card-top">
+        <div>
+          <span class="card-badge badge-mint">Screen 5 • Calendar</span>
+          <h2 class="card-title">The Omnichannel Chronicle & Booked Audiences</h2>
+          <p class="card-desc">Unified weekly calendar tracking scheduled LinkedIn carousels, WhatsApp broadcasts, and booked demo calls.</p>
+        </div>
+        <button class="btn-copy" onclick="copyPrompt('p5', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy Prompt
+        </button>
+      </div>
+      <div class="prompt-box" id="p5">Create the "Omnichannel Chronicle & Booked Audiences Calendar" screen for Aethelgard.
+
+Design Theme: Aethelgard Obsidian Atelier (#070B08 background, #111A14 calendar grid cells, gilded brass accents, platform tags: LinkedIn Blue #0A66C2, WhatsApp Green #25D366, Phone Dragon Amber #F59E0B).
+
+Components:
+1. Header Bar:
+   - View Controls: Month View, Week View [Active], Council Agenda.
+   - Channel Filters: [All Channels, LinkedIn, WhatsApp, Phone Audiences, Meta].
+   - Autonomy Toggle: "⚔️ Autonomous Vigil: ACTIVE" (Glowing mint pulse).
+2. Weekly Chronicle Grid (Monday to Sunday):
+   - Monday 08:30 AM (LinkedIn): Post card preview "7-Slide Illuminated Carousel: The Fall of Human Retainers" with slide thumbnails.
+   - Tuesday 02:00 PM (Phone Call): Booked audience card "Live Consultation with Apex Capital (Sealed by Valerius)".
+   - Wednesday 11:00 AM (WhatsApp): Broadcast card "Re-engage Enterprise Leads with Sovereign Case Study".
+   - Friday 09:00 AM (LinkedIn): Thought leadership manuscript with 3 hook variations tested by Aurelius.
+3. Slide-Out Scrubber: Clicking any card opens a full inspection drawer with a high-resolution 7-slide carousel reader or call recording playback.</div>
+    </div>
+
+    <!-- PROMPT 6: Argus the Watcher Radar -->
+    <div class="prompt-card">
+      <div class="card-top">
+        <div>
+          <span class="card-badge badge-gold">Screen 6 • Telemetry Radar</span>
+          <h2 class="card-title">Argus the Watcher: Closed-Loop Telemetry Radar</h2>
+          <p class="card-desc">Empirical closed-loop feedback engine where post engagement and call booking rates autonomously rewrite agent prompts.</p>
+        </div>
+        <button class="btn-copy" onclick="copyPrompt('p6', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy Prompt
+        </button>
+      </div>
+      <div class="prompt-box" id="p6">Create the "Closed-Loop Telemetry & Strategic Attribution Radar" for Aethelgard — presided over by "Argus the Watcher".
+
+Design Theme: Aethelgard Obsidian Atelier (#070B08 background, #111A14 analytical glass panels, mint #2EE59D for positive attribution, gilded brass #C5A059 for vectors).
+
+Components:
+1. Header: "Closed-Loop Strategic Radar" — "Live post telemetry and voice call conversions directly recalibrate upstream agent prompts without human intervention."
+2. Executive Metric Runes:
+   - Dwell Time Index: +43.2% (Average carousel dwell: 48 seconds).
+   - Voice-to-Audience Rate: 35.6% (Valerius booking efficiency).
+   - Cost Per Consecrated Lead: $14.20 (vs $180 industry benchmark).
+   - Autonomous Prompt Recalibrations: 32 Sovereign Adjustments this cycle.
+3. Two-Column Layout:
+   - Left Pane (55%): "Omnichannel & Telephony Attribution Charts" (Interactive engagement timeline comparing Carousels vs Phone Calls vs Video Reels).
+   - Right Pane (45%): "The Closed-Loop Feedback Engine (The Moat)"
+     - Dynamic cards showing active Feedback Vectors:
+       - *Vector #1 (Voice Concierge):* "Valerius introductory cadence offering immediate technical consultation achieved +45% higher booking rate. System prompt recalibrated."
+       - *Vector #2 (Aurelius the Scribe):* "Carousels with 'Contrarian Problem' hooks yielded 2.4x higher dwell time. Scribe prompt updated with 70% weight on Contrarian frameworks."</div>
+    </div>
+
+    <!-- PROMPT 7: Mobile Companion -->
+    <div class="prompt-card">
+      <div class="card-top">
+        <div>
+          <span class="card-badge badge-amber">Screen 7 • Mobile Companion</span>
+          <h2 class="card-title">Mobile Executive Companion (Aethelgard Mini-HUD)</h2>
+          <p class="card-desc">iPhone/Android executive view with instant phone call notifications, live transcripts, and 20s audio debriefs.</p>
+        </div>
+        <button class="btn-copy" onclick="copyPrompt('p7', this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copy Prompt
+        </button>
+      </div>
+      <div class="prompt-box" id="p7">Create the mobile executive companion view (iOS / Android 390px) for Aethelgard.
+
+Design Theme: Aethelgard Obsidian Atelier (#070B08 mobile canvas, 390x844 iPhone frame, #111A14 glass cards, gilded brass borders, mint glowing runes).
+
+Layout:
+1. Top Bar: Illuminated Guild Seal + Sanctum selector + Connection status ("IX Sovereign Nodes Active").
+2. Today's Executive Vigil Card:
+   - "Today's Consecrations: 2 Posts Published • 1 Landing Page Live • 4 Inbound Calls Answered • 2 Audiences Sealed".
+3. Urgent Call Alert Card (High-Priority Amber Glow):
+   - "📞 Inbound Call Handled by Valerius": VP of Infrastructure at ScaleCloud. "Valerius qualified enterprise lead and sealed demonstration for tomorrow at 2:00 PM." Buttons: "Listen to 20s Audio Brief", "View Full Transcript".
+4. Today's Dispatch Approval Scrubber:
+   - Mini thumbnail of today's LinkedIn carousel with swipe-to-pause action.
+5. Bottom Floating Glass Navigation Bar:
+   - Guild Pulse • Call Chronicle • Calendar • Settings.</div>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    <span>Prompt copied to clipboard! Ready to paste into Google Stitch.</span>
+  </div>
+
+  <script>
+    function copyPrompt(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.classList.add('copied');
+        btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!`;
+        
+        const toast = document.getElementById('toast');
+        toast.classList.add('active');
+
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy Prompt`;
+          toast.classList.remove('active');
+        }, 2200);
+      });
+    }
+  </script>
+
+</body>
+</html>

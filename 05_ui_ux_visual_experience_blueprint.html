@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Agent OS — UI/UX Blueprint & Visual Experience Deck</title>
+  <style>
+    /* ==========================================================================
+       OBSIDIAN DESIGN SYSTEM: CORE VARIABLES & TOKENS
+       ========================================================================== */
+    :root {
+      --bg-base: #0B0F19;
+      --bg-surface: rgba(17, 24, 39, 0.75);
+      --bg-surface-elevated: rgba(31, 41, 55, 0.90);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.18);
+
+      --accent-indigo: #6366F1;
+      --accent-violet: #8B5CF6;
+      --accent-cyan: #06B6D4;
+      --accent-emerald: #10B981;
+      --accent-amber: #F59E0B;
+      --accent-rose: #F43F5E;
+
+      --text-primary: #F9FAFB;
+      --text-secondary: #9CA3AF;
+      --text-muted: #6B7280;
+      --text-dim: #4B5563;
+
+      --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+      --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      --shadow-glow-indigo: 0 0 25px rgba(99, 102, 241, 0.25);
+      --shadow-glow-emerald: 0 0 25px rgba(16, 185, 129, 0.25);
+      --shadow-glow-rose: 0 0 25px rgba(244, 63, 94, 0.35);
+
+      --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-smooth: 240ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==========================================================================
+       TOP PERSISTENT CONTROL BAR
+       ========================================================================== */
+    .deck-header {
+      width: 100%;
+      max-width: 1440px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      background: var(--bg-surface);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      margin-bottom: 16px;
+      z-index: 100;
+      box-shadow: var(--shadow-glass);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-violet));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
+    }
+
+    .brand-meta h1 {
+      font-family: var(--font-heading);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+    }
+
+    .brand-meta p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+    }
+
+    .deck-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .control-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-action {
+      background: rgba(99, 102, 241, 0.15);
+      color: #A5B4FC;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-action:hover {
+      background: var(--accent-indigo);
+      color: #FFFFFF;
+      box-shadow: var(--shadow-glow-indigo);
+    }
+
+    .btn-nav {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-nav:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: var(--border-strong);
+    }
+
+    /* ==========================================================================
+       16:9 PRESENTATION CANVAS & SLIDES CONTAINER
+       ========================================================================== */
+    .deck-viewport {
+      width: 100%;
+      max-width: 1440px;
+      aspect-ratio: 16 / 9;
+      position: relative;
+      background: radial-gradient(circle at 50% 0%, rgba(30, 41, 59, 0.45) 0%, rgba(11, 15, 25, 0.95) 75%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+      display: flex;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 48px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 280ms ease, transform 280ms ease;
+      transform: translateX(20px);
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+      z-index: 10;
+    }
+
+    /* Slide Header */
+    .slide-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .slide-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-cyan);
+    }
+
+    .slide-title {
+      font-family: var(--font-heading);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    .slide-subtitle {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 960px;
+      line-height: 1.45;
+      margin-bottom: 24px;
+    }
+
+    /* Content Area */
+    .slide-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* Cards Grid */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      width: 100%;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      width: 100%;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+
+    .card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 17px;
+      font-weight: 600;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-body {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Metric Callouts */
+    .metric-hero {
+      font-family: var(--font-heading);
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .metric-indigo { color: var(--accent-indigo); }
+    .metric-emerald { color: var(--accent-emerald); }
+    .metric-cyan { color: var(--accent-cyan); }
+    .metric-violet { color: var(--accent-violet); }
+    .metric-amber { color: var(--accent-amber); }
+
+    .metric-sub {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Terminal / Wireframe Block */
+    .wireframe-box {
+      background: #070A12;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: #93C5FD;
+      overflow-x: auto;
+      white-space: pre;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .wireframe-box .accent { color: var(--accent-cyan); font-weight: bold; }
+    .wireframe-box .green { color: var(--accent-emerald); }
+    .wireframe-box .amber { color: var(--accent-amber); }
+    .wireframe-box .rose { color: var(--accent-rose); }
+    .wireframe-box .dim { color: var(--text-dim); }
+
+    /* Interactive Demo Simulator Elements */
+    .interactive-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+
+    .badge-green { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-cyan  { background: rgba(6, 182, 212, 0.15); color: #67E8F9; border: 1px solid rgba(6, 182, 212, 0.3); }
+    .badge-rose  { background: rgba(244, 63, 94, 0.15); color: #FDA4AF; border: 1px solid rgba(244, 63, 94, 0.3); }
+
+    /* Interactive Tab Switcher */
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .tab-btn.active {
+      background: rgba(99, 102, 241, 0.2);
+      color: #FFFFFF;
+      border: 1px solid rgba(99, 102, 241, 0.4);
+    }
+
+    /* Slide Footer */
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* ==========================================================================
+       KEYBOARD SHORTCUTS HINT & PROGRESS METER
+       ========================================================================== */
+    .deck-footer {
+      width: 100%;
+      max-width: 1440px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      padding: 8px 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .progress-track {
+      width: 320px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-indigo), var(--accent-cyan));
+      width: 8.33%;
+      transition: width 240ms ease;
+    }
+
+    /* ==========================================================================
+       OVERVIEW LIGHTBOX GRID
+       ========================================================================== */
+    .overview-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 15, 25, 0.94);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .overview-modal.open {
+      display: flex;
+    }
+
+    .overview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .overview-thumb {
+      aspect-ratio: 16 / 9;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .overview-thumb:hover, .overview-thumb.active {
+      border-color: var(--accent-indigo);
+      box-shadow: var(--shadow-glow-indigo);
+      transform: scale(1.02);
+    }
+
+    .thumb-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-cyan);
+    }
+
+    .thumb-title {
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 600;
+      color: #FFFFFF;
+    }
+
+    /* ==========================================================================
+       PRINT STYLESHEET (@media print) FOR FLAWLESS 16:9 PDF EXPORT
+       ========================================================================== */
+    @media print {
+      @page {
+        size: 16in 9in landscape;
+        margin: 0;
+      }
+
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      html, body {
+        width: 16in !important;
+        height: auto !important;
+        min-height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: #0B0F19 !important;
+        overflow: visible !important;
+        font-size: 14pt !important;
+      }
+
+      .deck-header,
+      .deck-footer,
+      .overview-modal,
+      .btn-nav,
+      .btn-action,
+      .control-pill {
+        display: none !important;
+      }
+
+      .deck-viewport {
+        display: block !important;
+        width: 100% !important;
+        max-width: none !important;
+        aspect-ratio: auto !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+      }
+
+      .slide {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        width: 16in !important;
+        height: 9in !important;
+        max-height: 9in !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        padding: 0.6in 0.8in !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        position: relative !important;
+        opacity: 1 !important;
+        transform: none !important;
+        background: #0B0F19 !important;
+      }
+
+      .card, .wireframe-box {
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+        background: rgba(17, 24, 39, 0.95) !important;
+        box-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Persistent Deck Control Bar -->
+  <header class="deck-header">
+    <div class="brand-group">
+      <div class="brand-logo">⬡</div>
+      <div class="brand-meta">
+        <h1>NEXUS AGENT OS</h1>
+        <p>UI/UX Visual Experience Blueprint • Study 05</p>
+      </div>
+    </div>
+    <div class="deck-controls">
+      <div class="control-pill">
+        <span>SLIDE</span>
+        <strong id="slide-counter">01 / 13</strong>
+      </div>
+      <button class="btn-action" onclick="toggleOverview()" title="View all slides (O or Esc)">
+        <span>⊞</span> Overview
+      </button>
+      <button class="btn-action" onclick="window.print()" title="Print / Save 16:9 PDF (Ctrl+P)">
+        <span>🖨</span> Print PDF
+      </button>
+      <button class="btn-action" onclick="toggleFullScreen()" title="Fullscreen Mode (F)">
+        <span>⛶</span> Fullscreen
+      </button>
+      <div style="display: flex; gap: 4px; margin-left: 8px;">
+        <button class="btn-nav" onclick="prevSlide()" title="Previous (Left Arrow)">◀</button>
+        <button class="btn-nav" onclick="nextSlide()" title="Next (Right Arrow or Space)">▶</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 16:9 Presentation Canvas -->
+  <main class="deck-viewport" id="viewport">
+
+    <!-- SLIDE 1: Title & Executive Paradigm -->
+    <section class="slide active" data-slide="1">
+      <div>
+        <div class="slide-eyebrow">EXECUTIVE ARCHITECTURE SPECIFICATION • STUDY 05</div>
+        <h2 class="slide-title">Mission-Control UI/UX & Visual Experience Blueprint</h2>
+        <p class="slide-subtitle">Replacing traditional human agency retainers ($5k–$15k/mo) with an autonomous AI corporate marketing team ($129–$899+/mo) through high-density observability, direct-manipulation studios, and cross-platform native companions.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="grid-3">
+          <div class="card" style="border-top: 3px solid var(--accent-indigo);">
+            <div class="card-title"><span class="metric-indigo">01.</span> Command Cockpit</div>
+            <div class="card-body">A high-density mission-control interface featuring a live 9-agent constellation state graph, real-time SSE reasoning feed, token telemetry HUD, and tri-state governance toggles.</div>
+            <div class="badge-cyan" style="align-self: flex-start; margin-top: auto;">Observability Core</div>
+          </div>
+          <div class="card" style="border-top: 3px solid var(--accent-emerald);">
+            <div class="card-title"><span class="metric-emerald">02.</span> Product Web Studio</div>
+            <div class="card-body">Split-pane studio with live responsive DOM preview (Desktop/Tablet/Mobile), 8-Block CRO section tree, Next.js/Tailwind code inspection, and 1-click Cloudflare edge deployment.</div>
+            <div class="badge-green" style="align-self: flex-start; margin-top: auto;">Generative Front-End</div>
+          </div>
+          <div class="card" style="border-top: 3px solid var(--accent-violet);">
+            <div class="card-title"><span class="metric-violet">03.</span> Omnichannel & Feedback</div>
+            <div class="card-body">Multi-network scheduling calendar with authentic deliverable inspectors (LinkedIn carousel flipbook, IG 9:16 player, WhatsApp simulator) paired with closed-loop prompt recalibration.</div>
+            <div class="badge-amber" style="align-self: flex-start; margin-top: auto;">Closed-Loop Engine</div>
+          </div>
+        </div>
+
+        <div class="grid-4" style="margin-top: 12px;">
+          <div class="card" style="padding: 16px;">
+            <div class="metric-hero metric-indigo">$8,151<span style="font-size: 16px; font-weight: normal; color: var(--text-muted);">/mo</span></div>
+            <div class="metric-sub">Average Client Net Cost Savings</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div class="metric-hero metric-emerald">23.3x</div>
+            <div class="metric-sub">Software ROI Multiple vs Agency</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div class="metric-hero metric-cyan">9 Agents</div>
+            <div class="metric-sub">Autonomous Orchestrated Hierarchy</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div class="metric-hero metric-violet">4 Native Apps</div>
+            <div class="metric-sub">iOS, Android, macOS & Windows</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>AUTONOMOUS B2B SAAS PLATFORM BLUEPRINT</span>
+        <span>CONFIDENTIAL & PROPRIETARY • 2026</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: The Obsidian Design System -->
+    <section class="slide" data-slide="2">
+      <div>
+        <div class="slide-eyebrow">DESIGN TOKENS & VISUAL FOUNDATION</div>
+        <h2 class="slide-title">The Obsidian Glassmorphism Design Language</h2>
+        <p class="slide-subtitle">Engineered specifically for multi-monitor operations, long-session B2B workflows, and high data density with zero eye fatigue.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Color Palette & Contrast Ratios (WCAG 2.1 AAA)</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: #0B0F19; border: 1px solid var(--border-subtle); border-radius: 6px;">
+                <span style="font-family: var(--font-mono); font-size: 12px;">#0B0F19 • Obsidian Void Base</span>
+                <span class="badge-cyan">Substrate</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: #111827; border: 1px solid var(--border-subtle); border-radius: 6px;">
+                <span style="font-family: var(--font-mono); font-size: 12px;">#111827 • Dark Slate Card Surface</span>
+                <span class="badge-cyan">Elevation 1</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: rgba(99, 102, 241, 0.2); border: 1px solid var(--accent-indigo); border-radius: 6px;">
+                <span style="font-family: var(--font-mono); font-size: 12px; color: #A5B4FC;">#6366F1 • Electric Indigo Brand</span>
+                <span class="badge-indigo" style="color: #A5B4FC;">5.82 : 1 AA</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: rgba(16, 185, 129, 0.2); border: 1px solid var(--accent-emerald); border-radius: 6px;">
+                <span style="font-family: var(--font-mono); font-size: 12px; color: #6EE7B7;">#10B981 • Emerald Telemetry & ROI</span>
+                <span class="badge-green">7.26 : 1 AAA</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: rgba(6, 182, 212, 0.2); border: 1px solid var(--accent-cyan); border-radius: 6px;">
+                <span style="font-family: var(--font-mono); font-size: 12px; color: #67E8F9;">#06B6D4 • Cyan SSE Thought Stream</span>
+                <span class="badge-cyan">7.94 : 1 AAA</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Glassmorphism & Depth Architecture</div>
+            <div class="wireframe-box">
+<span class="dim">/* Canonical CSS Glass Token Matrix */</span>
+.glass-surface {
+  background: <span class="green">rgba(17, 24, 39, 0.75)</span>;
+  backdrop-filter: <span class="accent">blur(16px)</span>;
+  border: 1px solid <span class="dim">rgba(255, 255, 255, 0.08)</span>;
+  box-shadow: <span class="amber">0 8px 32px 0 rgba(0, 0, 0, 0.37)</span>;
+}
+
+<span class="dim">/* Typography Hierarchy Tokenization */</span>
+--font-heading:   <span class="accent">'Plus Jakarta Sans'</span>, 700/800 (-0.025em);
+--font-body:      <span class="accent">'Inter'</span>, 400/500 (1.5 line-height);
+--font-telemetry: <span class="accent">'JetBrains Mono'</span>, tabular-nums;
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>SECTION 01 • DESIGN SYSTEM SPECIFICATION</span>
+        <span>TOKENS • GLASSMORPHISM • TYPOGRAPHY</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Surface 1 - Multi-Agent Command Cockpit -->
+    <section class="slide" data-slide="3">
+      <div>
+        <div class="slide-eyebrow">SURFACE 01 • REAL-TIME OBSERVABILITY</div>
+        <h2 class="slide-title">Multi-Agent Command Cockpit Wireframe</h2>
+        <p class="slide-subtitle">Interactive visual topology displaying live agent cognitive states, active data-flow particles, and token-by-token SSE reasoning streams.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="wireframe-box" style="font-size: 11px;">
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ <span class="accent">[⬡ NEXUS AGENT OS]</span>  │ Cockpit │ Web Studio │ Omnichannel │ Analytics │ Settings │ <span class="green">[Org: Acme Enterprise ▾]</span> <span class="amber">[⛁ 4,820/5k]</span>│
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ SYSTEM STATUS: <span class="green">● FULLY AUTONOMOUS (ALL SYSTEMS NOMINAL)</span>   │ 9 AGENTS ACTIVE │ CYCLE: 2026-W37 │ MTD SAVINGS: $8,151 │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│  <span class="dim">┌────────────────────────────────────────────── LIVE AGENT CONSTELLATION ─────────────────────────────────────────┐</span>  │
+│  │                                                                                                                   │  │
+│  │    <span class="accent">[ 1. PLANNER ]</span> ══════► <span class="accent">[ 2. WEB BUILDER ]</span> ══════► <span class="accent">[ 5. GATEKEEPER ]</span> ══════► <span class="green">[ 🌐 DEPLOYED CDN ]</span>          │  │
+│  │      <span class="green">● IDLE</span>                 <span class="accent">● GENERATING AST</span>           <span class="amber">● VERIFYING CLAIMS</span>        landing.acme.com            │  │
+│  │      Task: Sprint W38       Code: 3,420 tokens         Score: 0.94 (Pass)        Latency: 28ms               │  │
+│  │         ║                        ║                          ║                                                 │  │
+│  │         ▼                        ▼                          ▼                                                 │  │
+│  │    <span class="accent">[ 3. CREATOR ]</span> ══════► <span class="accent">[ 4. SYNTHESIZER ]</span> ══════► <span class="accent">[ 6. ORCHESTRATOR ]</span> ════► <span class="green">[ 📲 PUBLISHED CHANNELS ]</span>    │  │
+│  │      <span class="green">● IDLE</span>                 <span class="accent">● RENDERING MP4</span>            <span class="amber">● SCHEDULING DISPATCH</span>     LinkedIn, IG, WhatsApp, X   │  │
+│  │      Hooks: 8 Variants      Runway Gen-3: 14s          Queue: 18 Deliverables    Status: Synchronized        │  │
+│  │         ▲                                                     ║                                               │  │
+│  │         ╚═════════ <span class="amber">[ 8. MARKETING PERFORMANCE MANAGER ]</span> ══════╝                                               │  │
+│  │                       <span class="amber">● RECALIBRATING (CTR Delta +2.4% -> Prompt Injected)</span>                                        │  │
+│  <span class="dim">└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘</span>  │
+│                                                                                                                       │
+│  ┌───────────────────────────────────────────────────────┬─────────────────────────────────────────────────────────┐  │
+│  │ <span class="accent">⚡ LIVE AGENT REASONING STREAM (SSE Protocol)</span>           │ <span class="green">📊 REAL-TIME TELEMETRY HUD</span>                              │  │
+│  ├───────────────────────────────────────────────────────┼─────────────────────────────────────────────────────────┤  │
+│  │ [18:52:11] <span class="accent">Web Builder</span>: Synthesizing Hero AST section.│ Compute Burn Rate:  48.2 tps ($0.0018/sec)              │  │
+│  │ [18:52:19] <span class="violet">Synthesizer</span>: Dispatched FLUX.1 Pro prompt. │ Monthly Credit Burn: 38.4% (Normal Velocity)            │  │
+│  │ [18:52:26] <span class="amber">Gatekeeper</span>: Flagged claim "500% faster".   │ Closed-Loop Recalibrations Today: 14 Shifts             │  │
+│  │   └─► Auto-rewritten to "3x faster" (Ground truth doc)│ Mode: <span class="rose">[ EMERGENCY PAUSE ]</span> <span class="amber">[ SUPERVISED ]</span> <span class="green">[ FULL AUTO ●]</span>   │  │
+│  └───────────────────────────────────────────────────────┴─────────────────────────────────────────────────────────┘  │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>SURFACE 01 • MISSION CONTROL COCKPIT</span>
+        <span>CONSTELLATION GRAPH • SSE REASONING STREAM • TELEMETRY HUD</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: Cockpit Governance & Tri-State Autonomous Modes -->
+    <section class="slide" data-slide="4">
+      <div>
+        <div class="slide-eyebrow">GOVERNANCE & FAIL-SAFE ARCHITECTURE</div>
+        <h2 class="slide-title">Tri-State Governance & Human-in-the-Loop Steering</h2>
+        <p class="slide-subtitle">Granular operational postures balancing autonomous execution velocity with enterprise regulatory and brand compliance.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="grid-3">
+          <div class="card" style="border-left: 4px solid var(--accent-emerald);">
+            <div class="card-title">
+              <span class="badge-green">Mode 1</span> Fully Autonomous
+            </div>
+            <div class="card-body">
+              <strong>100% Zero-Touch Operation:</strong>
+              <ul style="margin-top: 8px; padding-left: 16px; display: flex; flex-direction: column; gap: 6px;">
+                <li>Agents research, write, render, audit, and deploy without waiting for human approval.</li>
+                <li>Gatekeeper evaluates compliance automatically (Score ≥ 0.88 required for release).</li>
+                <li>Self-healing revision loops run up to 3 times before human escalation.</li>
+              </ul>
+            </div>
+            <div class="badge-green" style="align-self: flex-start; margin-top: auto;">Default Active State</div>
+          </div>
+
+          <div class="card" style="border-left: 4px solid var(--accent-amber);">
+            <div class="card-title">
+              <span class="badge-amber">Mode 2</span> Supervised Mode
+            </div>
+            <div class="card-body">
+              <strong>1-Tap Executive Sign-Off:</strong>
+              <ul style="margin-top: 8px; padding-left: 16px; display: flex; flex-direction: column; gap: 6px;">
+                <li>Agents execute complete creative cycles and self-audit artifacts automatically.</li>
+                <li>Temporal workflow triggers a LangGraph interrupt node prior to dispatch.</li>
+                <li>Push alert sent to iOS/Android companions with 1-tap lockscreen approve buttons.</li>
+              </ul>
+            </div>
+            <div class="badge-amber" style="align-self: flex-start; margin-top: auto;">HITL Compliance Buffer</div>
+          </div>
+
+          <div class="card" style="border-left: 4px solid var(--accent-rose);">
+            <div class="card-title">
+              <span class="badge-rose">Mode 3</span> Emergency Pause
+            </div>
+            <div class="card-body">
+              <strong>Global Hardware Circuit Breaker:</strong>
+              <ul style="margin-top: 8px; padding-left: 16px; display: flex; flex-direction: column; gap: 6px;">
+                <li>Instantly halts all active LLM inference streams and queues.</li>
+                <li>Freezes all scheduled social and WhatsApp outbound dispatches.</li>
+                <li>Audible chime and flashing crimson status bar across all client screens.</li>
+              </ul>
+            </div>
+            <div class="badge-rose" style="align-self: flex-start; margin-top: auto;">Instant Kill Switch</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 10px;">
+          <div class="card-title"><span class="metric-cyan">❯</span> Direct Operator Prompt Injection</div>
+          <div class="card-body">
+            Executives can inject real-time natural language overrides directly into the agent bus: 
+            <span style="font-family: var(--font-mono); color: var(--accent-cyan); background: rgba(0,0,0,0.4); padding: 4px 8px; border-radius: 4px;">
+              "Acme Team: Recalibrate all social posts to highlight our SOC 2 Type II audit pass announced today."
+            </span>
+            The Executive Strategy Agent immediately decomposes the directive into sprint adjustment tickets.
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>SURFACE 01 • GOVERNANCE CONTROLS</span>
+        <span>CIRCUIT BREAKERS • HITL INTERRUPTS • DIRECT INJECTION</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: Surface 2 - Product Landing Page Studio -->
+    <section class="slide" data-slide="5">
+      <div>
+        <div class="slide-eyebrow">SURFACE 02 • GENERATIVE FRONT-END STUDIO</div>
+        <h2 class="slide-title">Product Landing Page Studio Wireframe</h2>
+        <p class="slide-subtitle">Split-pane workspace enabling autonomous generation, interactive block customization, and responsive DOM preview of Next.js / Tailwind properties.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="wireframe-box" style="font-size: 11px;">
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ <span class="accent">[◄ Cockpit]</span>  LANDING PAGE STUDIO: "B2B Enterprise Compliance Engine v2" │ Status: <span class="amber">Staged ●</span>  <span class="green">[🚀 DEPLOY TO PRODUCTION]</span> │
+├───────────────────────────────────┬───────────────────────────────────────────────────────────────────────────────────┤
+│ <span class="accent">SECTION BUILDER & PROMPT CONTROLS</span> │ <span class="cyan">RESPONSIVE LIVE PREVIEW: [ 💻 Desktop (1440px) | 📱 Tablet (768px) | 📲 Mobile (375px) ]</span>│
+├───────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────┤
+│ ☰ Active Page Blocks (8-Block CRO)│ ┌───────────────────────────────────────────────────────────────────────────────┐ │
+│                                   │ │ <span class="dim">[NAVBAR: ACME LOGO | Solutions | Architecture | Pricing | CTA: Chat WhatsApp]</span> │ │
+│ [::] 1. Sticky Navigation Bar     │ │                                                                               │ │
+│      CTA: Direct WhatsApp Route   │ │                       AUTOMATE YOUR SOC 2 COMPLIANCE                          │ │
+│                                   │ │               Without the $15,000/mo Traditional Agency Overhead              │ │
+│ [::] 2. Hero Section (Selected)   │ │                                                                               │ │
+│      Variant: "Enterprise Trust"  │ │         <span class="green">[ ⚡ Start Autonomous Audit ]</span>     <span class="cyan">[ 💬 Inquire via WhatsApp ]</span>         │ │
+│      Asset: 3D Glass Isometric    │ │                                                                               │ │
+│                                   │ │ ───────────────────────────────────────────────────────────────────────────── │ │
+│ [::] 3. Social Proof Marquee      │ │ TRUSTED BY COMPLIANCE TEAMS AT 250+ ENTERPRISES:                              │ │
+│      Logos: 12 Synced Tier-1s     │ │ <span class="dim">[ LOGO 1: FinTech X ]   [ LOGO 2: CloudScale ]   [ LOGO 3: DataGuard ]</span>                │ │
+│                                   │ │ ───────────────────────────────────────────────────────────────────────────── │ │
+│ [::] 4. Bento Feature Grid        │ │ ┌─────────────────────┐ ┌─────────────────────┐ ┌──────────────────────────┐  │ │
+│      Layout: 3-Col Asymmetric     │ │ │ Zero-Drift Telemetry│ │ Instant Next.js AST │ │ Closed-Loop Feedback     │  │ │
+│                                   │ │ └─────────────────────┘ └─────────────────────┘ └──────────────────────────┘  │ │
+│ [::] 5. Pricing & ROI Calculator  │ │ └─────────────────────────────────────────────────────────────────────────────┘ │
+├───────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────┤
+│ 🪄 AI Section Quick-Tuner:        │ PERFORMANCE: Lighthouse: <span class="green">99/100</span> | LCP: <span class="green">0.8s</span> | DOM Bundle: <span class="cyan">38.4 KB</span> | SSL: <span class="green">Active ●</span>          │
+│ "Emphasize zero-touch automation" │ Domain: <span class="accent">https://compliance.acme.com</span> [ Cloudflare CNAME: <span class="green">Verified ●</span> | Edge: <span class="green">Purged ●</span> ]     │
+│ <span class="amber">[ ⚡ REGENERATE HERO SECTION ]</span>     │ <span class="accent">[ 💻 View Next.js / Tailwind Code ]</span>  <span class="dim">[ 📋 Copy AST Schema ]</span>  <span class="dim">[ 💾 Export Static ZIP ]</span>   │
+└───────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────┘
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>SURFACE 02 • PRODUCT WEB STUDIO</span>
+        <span>SPLIT-PANE CANVASES • 8-BLOCK CRO • RESPONSIVE DOM</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Product Studio Code & Edge Deployment -->
+    <section class="slide" data-slide="6">
+      <div>
+        <div class="slide-eyebrow">EDGE DEPLOYMENT & AST ENGINE</div>
+        <h2 class="slide-title">Next.js React Server Components & Cloudflare Edge</h2>
+        <p class="slide-subtitle">Autonomous compilation of validated Abstract Syntax Trees into performant, production-ready code deployed instantly to global CDN edges.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Production Code Inspection (page.tsx)</div>
+            <div class="wireframe-box" style="font-size: 11px;">
+<span class="accent">export default async function</span> <span class="green">LandingHero</span>({ content }) {
+  <span class="accent">return</span> (
+    &lt;<span class="amber">section</span> className=<span class="green">"relative min-h-screen bg-[#0B0F19] overflow-hidden"</span>&gt;
+      &lt;<span class="amber">div</span> className=<span class="green">"max-w-7xl mx-auto px-6 pt-32 pb-24"</span>&gt;
+        &lt;<span class="amber">span</span> className=<span class="green">"inline-flex items-center px-3 py-1 rounded-full text-xs font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20"</span>&gt;
+          {content.eyebrowTag}
+        &lt;/<span class="amber">span</span>&gt;
+        &lt;<span class="amber">h1</span> className=<span class="green">"mt-6 text-5xl sm:text-7xl font-extrabold tracking-tight text-white"</span>&gt;
+          {content.headlineH1}
+        &lt;/<span class="amber">h1</span>&gt;
+        &lt;<span class="amber">div</span> className=<span class="green">"mt-10 flex gap-4"</span>&gt;
+          &lt;<span class="amber">WhatsAppTriggerButton</span> number=<span class="green">"+18005550199"</span> /&gt;
+        &lt;/<span class="amber">div</span>&gt;
+      &lt;/<span class="amber">div</span>&gt;
+    &lt;/<span class="amber">section</span>&gt;
+  );
+}
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Global Cloudflare Edge Pipeline</div>
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 8px;">
+                <span>DNS CNAME Routing:</span>
+                <span class="badge-green">compliance.acme.com ➔ edge.nexus.io</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 8px;">
+                <span>SSL / TLS Encryption:</span>
+                <span class="badge-green">Full Strict (Let's Encrypt Wildcard)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 8px;">
+                <span>Edge Cache & TTFB:</span>
+                <span class="badge-cyan">28ms Global TTFB (310 Edge Nodes)</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 8px;">
+                <span>Core Web Vitals Audit:</span>
+                <span class="badge-green">LCP 0.8s • CLS 0.00 • FID 12ms</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>SURFACE 02 • CODE ARCHITECTURE</span>
+        <span>NEXT.JS SERVER COMPONENTS • CLOUDFLARE SSL • SUB-30MS TTFB</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Surface 3 - Omnichannel Calendar Studio -->
+    <section class="slide" data-slide="7">
+      <div>
+        <div class="slide-eyebrow">SURFACE 03 • OMNICHANNEL DISTRIBUTION</div>
+        <h2 class="slide-title">Omnichannel Calendar Studio Wireframe</h2>
+        <p class="slide-subtitle">Multi-network publishing matrix synchronizing LinkedIn, Instagram, WhatsApp Business, Facebook, and X campaigns with interactive deliverable inspection.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="wireframe-box" style="font-size: 11px;">
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ <span class="accent">OMNICHANNEL CALENDAR STUDIO</span> │ Channels: [☑ LinkedIn] [☑ WhatsApp] [☑ Instagram] [☑ Facebook] [☑ X]   <span class="green">[+ Auto-Sprint]</span>  │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ ◄ September 2026 ►  [ Month | Week | Day Timeline ]                 Queue Status: <span class="green">24 Scheduled</span> | <span class="amber">2 Staged</span> | <span class="dim">0 Failed</span> │
+├──────────────┬──────────────┬──────────────┬──────────────┬──────────────┬────────────────────────────────────────────┤
+│ MON 14       │ TUE 15       │ WED 16       │ THU 17       │ FRI 18       │ <span class="accent">NATIVE DELIVERABLE INSPECTOR</span>               │
+├──────────────┼──────────────┼──────────────┼──────────────┼──────────────┼────────────────────────────────────────────┤
+│ 09:00 <span class="cyan">[LI]</span>   │ 10:00 <span class="dim">[X]</span>    │ 09:00 <span class="cyan">[LI]</span>   │ 11:30 <span class="violet">[IG]</span>   │ 09:00 <span class="cyan">[LI]</span>   │ Selected: <span class="green">THU 17 - 14:00 [WhatsApp Nurture]</span>│
+│ 7-Slide PDF  │ 5-Tweet      │ Case Study   │ 20s AI Reel  │ Thought Lead │                                            │
+│ Carousel     │ Thread       │ Post         │ (Runway Gen3)│ Carousel     │ ┌────────────────────────────────────────┐ │
+│ <span class="green">Score: 0.94●</span> │ <span class="green">Score: 0.98●</span> │ <span class="green">Score: 0.92●</span> │ <span class="green">Score: 0.91●</span> │ <span class="green">Score: 0.97●</span> │ │ 📱 <span class="green">WHATSAPP BUSINESS SIMULATOR</span>         │ │
+│              │              │              │              │              │ │ ────────────────────────────────────── │ │
+│ 14:00 <span class="green">[WA]</span>   │ 15:00 <span class="cyan">[FB]</span>   │ 14:00 <span class="green">[WA]</span>   │ 14:00 <span class="green">[WA]</span>   │ 17:00 <span class="dim">[X]</span>    │ │ <span class="green">[Acme AI SDR - Verified Business]</span>      │ │
+│ Lead Nurture │ Product Ad   │ High-Intent  │ Inbound CTA  │ Weekly Recap │ │ Hello Alexander, noticed you reviewed  │ │
+│ Sequence #1  │ Post         │ Auto-Reply   │ Flow (Active)│ Thread       │ │ our enterprise compliance landing page.│ │
+│              │              │              │              │              │ │                                        │ │
+│ 18:00 <span class="violet">[IG]</span>   │              │ 18:00 <span class="violet">[IG]</span>   │              │              │ │ <span class="cyan">[ 💬 Yes, Send Breakdown ]</span>             │ │
+│ Behind-Scenes│              │ Carousel     │              │              │ │ <span class="green">[ 📅 Book Live Executive Demo ]</span>         │ │
+│ Static FLUX  │              │ Post         │              │              │ └────────────────────────────────────────┘ │
+│              │              │              │              │              │ Projected Open Rate: <span class="green">88.4%</span> | Tariff: <span class="cyan">$0.04</span> │
+└──────────────┴──────────────┴──────────────┴──────────────┴──────────────┴────────────────────────────────────────────┘
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>SURFACE 03 • OMNICHANNEL CALENDAR</span>
+        <span>LINKEDIN • WHATSAPP • INSTAGRAM • FACEBOOK • X (TWITTER)</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: Native Omnichannel Deliverable Inspectors -->
+    <section class="slide" data-slide="8">
+      <div>
+        <div class="slide-eyebrow">MULTIMODAL CREATIVE INSPECTION</div>
+        <h2 class="slide-title">Interactive Native Deliverable Inspectors</h2>
+        <p class="slide-subtitle">Pixel-accurate client previewers simulating platform-native rendering before automated dispatch.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="grid-3">
+          <!-- Inspector 1: LinkedIn -->
+          <div class="card">
+            <div class="card-title">
+              <span style="color: #0A66C2;">in</span> LinkedIn 7-Slide Flipbook
+            </div>
+            <div style="background: #000; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">
+                <span>Slide 3 of 7</span>
+                <span class="badge-green">PDF Document</span>
+              </div>
+              <div style="background: #111827; height: 130px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 10px; border: 1px dashed var(--border-strong);">
+                <div style="font-weight: bold; font-size: 13px; color: #fff;">The 5 Agency Retainer Myths</div>
+                <div style="font-size: 11px; color: var(--accent-cyan); margin-top: 4px;">Myth #3: Humans Are More Agile</div>
+              </div>
+              <div style="display: flex; justify-content: space-between; gap: 8px;">
+                <button class="btn-action" style="flex: 1; font-size: 11px; padding: 4px;">◀ Prev</button>
+                <button class="btn-action" style="flex: 1; font-size: 11px; padding: 4px;">Next ▶</button>
+              </div>
+            </div>
+            <div class="card-body" style="font-size: 12px;">
+              Vector-crisp PDF preview, caption analyzer, and hashtag density scorer.
+            </div>
+          </div>
+
+          <!-- Inspector 2: Instagram -->
+          <div class="card">
+            <div class="card-title">
+              <span style="color: #E4405F;">📷</span> Instagram 9:16 Reel Player
+            </div>
+            <div style="background: #000; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">
+                <span>20s Synthetic Reel</span>
+                <span class="badge-violet">Runway Gen-3</span>
+              </div>
+              <div style="background: #111827; height: 130px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                <div style="font-size: 24px;">▶</div>
+                <div style="position: absolute; bottom: 8px; left: 8px; right: 8px; background: rgba(0,0,0,0.7); padding: 4px 6px; border-radius: 4px; font-size: 10px; color: #FBBF24;">
+                  "Say goodbye to $15k agency retainers..."
+                </div>
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); display: flex; justify-content: space-between;">
+                <span>Voice: ElevenLabs AI</span>
+                <span>Audio Duck: -18dB</span>
+              </div>
+            </div>
+            <div class="card-body" style="font-size: 12px;">
+              Auto-synced animated subtitles, audio ducking telemetry, and Reels cover selection.
+            </div>
+          </div>
+
+          <!-- Inspector 3: WhatsApp -->
+          <div class="card">
+            <div class="card-title">
+              <span style="color: #25D366;">💬</span> WhatsApp Lead Simulator
+            </div>
+            <div style="background: #000; border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">
+                <span>Cloud API HSM</span>
+                <span class="badge-green">Pre-Approved</span>
+              </div>
+              <div style="background: #075E54; padding: 8px; border-radius: 6px; font-size: 11px; color: #fff; line-height: 1.3;">
+                "Hi David, here is the SOC 2 compliance teardown you requested."
+                <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 4px;">
+                  <span style="background: rgba(255,255,255,0.2); padding: 3px 6px; border-radius: 4px; text-align: center;">📅 Book Demo Call</span>
+                </div>
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">
+                Category: MARKETING • Cost: $0.034
+              </div>
+            </div>
+            <div class="card-body" style="font-size: 12px;">
+              Branching conversational tree, 24-hr session window meter, and quick-reply buttons.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>SURFACE 03 • DELIVERABLE INSPECTORS</span>
+        <span>LINKEDIN FLIPBOOK • INSTAGRAM REELS • WHATSAPP CLOUD API</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: Surface 4 - Granular Analytics & Closed-Loop Panel -->
+    <section class="slide" data-slide="9">
+      <div>
+        <div class="slide-eyebrow">SURFACE 04 • CLOSED-LOOP PERFORMANCE</div>
+        <h2 class="slide-title">Granular Analytics & Closed-Loop Feedback Panel</h2>
+        <p class="slide-subtitle">Correlating omnichannel engagement with landing page conversions to drive autonomous prompt self-recalibration.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="wireframe-box" style="font-size: 11px;">
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│ <span class="accent">GRANULAR ANALYTICS & CLOSED-LOOP ATTRIBUTION</span> │ Time Range: [ Last 30 Days ▾ ]  <span class="cyan">[ 💾 Export CSV ]</span> <span class="amber">[ 🔄 Recalibrate Now ]</span>│
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│  NET SAVINGS (MTD)      PLATFORM COST (PRO)    TOTAL LEADS ACQUIRED    AVERAGE CAC / LEAD    AGENCY ROI MULTIPLE      │
+│     <span class="green">$8,151 / mo</span>               <span class="cyan">$349 / mo</span>              <span class="accent">391 Leads</span>               <span class="green">$0.89 / Lead</span>             <span class="emerald metric-hero" style="font-size: 14px;">23.3x ROI</span>       │
+│   (vs $8,500 Agency)      (All-Inclusive)         (+28% MoM Surge)         (-91% vs Human)       (Software Multiple)  │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ FULL-FUNNEL ATTRIBUTION:                                                                                              │
+│                                                                                                                       │
+│  <span class="cyan">[ OMNICHANNEL TOUCHPOINTS ]</span>          <span class="accent">[ RESPONSIVE LANDING PAGE ]</span>               <span class="green">[ WHATSAPP CONVERSATIONAL CRM ]</span>       │
+│  LinkedIn:  142k Imp (CTR: 4.1%) ──┐  ┌───────────────────────────────┐         ┌─────────────────────────────┐       │
+│  X Threads:  58k Imp (CTR: 3.2%) ──┼─►│ 9,310 Unique Page Sessions    │─(4.2%)─►│ 391 Inbound Lead Chats      │       │
+│  Instagram:  45k Imp (CTR: 3.9%) ──┘  │ Avg Dwell Time: 2m 14s        │         │ 188 Qualified Pipeline Calls│       │
+│  Blended CTR: 3.82% (+0.6% Delta)     │ Bounce Rate: 28.1% (Ultra-Low)│         │ 24 Closed Enterprise Deals  │       │
+│                                       └───────────────────────────────┘         └─────────────────────────────┘       │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ <span class="amber">🔄 CLOSED-LOOP AGENT RECALIBRATION AUDIT LOG (Autonomous Feedback Pipeline)</span>                                           │
+├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ [2026-09-10 11:20:14] <span class="amber">TELEMETRY ALERT</span>: Hook Degradation on LinkedIn Post #482 (CTR dropped to 1.82% vs 3.5% bench)      │
+│                       └─► <span class="green">Autonomous Shift</span>: Performance Manager injected negative prompt vector to Content Creator.     │
+│                       └─► <span class="cyan">New Directive</span>: "Disallow passive question hooks; enforce data-dense contrarian declarations." │
+│ [2026-09-11 08:45:22] <span class="green">CONVERSION SURGE</span>: Landing Page Variant B (WhatsApp CTA) Outperformed Form Submit by +310% in GCC.  │
+│                       └─► <span class="green">Autonomous Shift</span>: Web Builder Agent updated default CTA for all MENA / UAE traffic IP ranges.    │
+└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>SURFACE 04 • CLOSED-LOOP ANALYTICS</span>
+        <span>FULL-FUNNEL ATTRIBUTION • CAC CALCULATOR • RECALIBRATION LOG</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: Closed-Loop Recalibration Mathematical Model -->
+    <section class="slide" data-slide="10">
+      <div>
+        <div class="slide-eyebrow">MATHEMATICAL FEEDBACK SPECIFICATION</div>
+        <h2 class="slide-title">The Autonomous Prompt Recalibration Engine</h2>
+        <p class="slide-subtitle">Algorithmic self-tuning: how live telemetry directly mutates agent system prompts without requiring human campaign managers.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">The Performance Vector Equation</div>
+            <div style="background: rgba(0,0,0,0.4); padding: 18px; border-radius: 8px; border: 1px solid var(--border-subtle); text-align: center; margin: 12px 0;">
+              <div style="font-family: var(--font-mono); font-size: 16px; color: var(--accent-cyan); letter-spacing: 0.05em;">
+                P&#773; = 0.30·ΔCTR + 0.25·ΔDwell + 0.35·ΔConv - 0.10·ΔDropOff
+              </div>
+            </div>
+            <div class="card-body">
+              If the computed performance vector drops below baseline (<span style="font-family: var(--font-mono); color: var(--accent-rose);">P&#773; &lt; -0.15</span>), the Marketing Performance Manager generates a structured Prompt Mutation Directive that updates the LangGraph system state.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">System Prompt Mutation JSON Payload</div>
+            <div class="wireframe-box" style="font-size: 11px;">
+{
+  <span class="accent">"recalibrationId"</span>: <span class="green">"recal_2026_09_10_01"</span>,
+  <span class="accent">"targetAgent"</span>: <span class="green">"ContentCreatorAgent"</span>,
+  <span class="accent">"triggerPillar"</span>: <span class="green">"Agency Cost Teardown"</span>,
+  <span class="accent">"directive"</span>: <span class="green">"NEGATIVE_REINFORCE_ATTRIBUTE"</span>,
+  <span class="accent">"disallowedPatterns"</span>: [
+    <span class="rose">"Have you ever wondered why agencies charge so much?"</span>,
+    <span class="rose">"Are you tired of slow turnaround times?"</span>
+  ],
+  <span class="accent">"enforcedPatterns"</span>: [
+    <span class="green">"Why traditional agency retainers cost $15,000 for 40 hours of work"</span>,
+    <span class="green">"Here is the exact token BOM breakdown replacing your marketing firm"</span>
+  ],
+  <span class="accent">"confidenceScore"</span>: <span class="cyan">0.96</span>
+}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>SURFACE 04 • MATHEMATICAL RECALIBRATION</span>
+        <span>STATE MUTATION • VECTOR MATH • SYSTEM PROMPT EVOLUTION</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: Surface 5 - Native Companion Apps -->
+    <section class="slide" data-slide="11">
+      <div>
+        <div class="slide-eyebrow">SURFACE 05 • CROSS-PLATFORM COMPANIONS</div>
+        <h2 class="slide-title">Future Native Companion Apps & Telemetry UX</h2>
+        <p class="slide-subtitle">API-first headless foundation powering native companion clients across iOS, Android, macOS, and Windows.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="grid-4">
+          <!-- iOS -->
+          <div class="card">
+            <div class="card-title">
+              <span class="metric-indigo"></span> iOS Native
+            </div>
+            <div class="card-body">
+              <strong>SwiftUI & Combine:</strong>
+              <ul style="margin-top: 6px; padding-left: 14px; display: flex; flex-direction: column; gap: 4px; font-size: 12px;">
+                <li>Lock-screen widgets (Live Activity)</li>
+                <li>Actionable APNs push notifications</li>
+                <li>1-tap biometric approvals via FaceID</li>
+                <li>Hot WhatsApp lead calling</li>
+              </ul>
+            </div>
+            <div class="badge-indigo" style="color: #A5B4FC; margin-top: auto;">SwiftUI Native</div>
+          </div>
+
+          <!-- Android -->
+          <div class="card">
+            <div class="card-title">
+              <span class="metric-emerald">🤖</span> Android Native
+            </div>
+            <div class="card-body">
+              <strong>Jetpack Compose:</strong>
+              <ul style="margin-top: 6px; padding-left: 14px; display: flex; flex-direction: column; gap: 4px; font-size: 12px;">
+                <li>Material You dynamic theming</li>
+                <li>Persistent foreground SSE service</li>
+                <li>Glanceable home-screen widgets</li>
+                <li>BiometricPrompt sign-off</li>
+              </ul>
+            </div>
+            <div class="badge-green" style="margin-top: auto;">Kotlin Compose</div>
+          </div>
+
+          <!-- macOS -->
+          <div class="card">
+            <div class="card-title">
+              <span class="metric-cyan">💻</span> macOS Menu Bar
+            </div>
+            <div class="card-body">
+              <strong>Swift & AppKit:</strong>
+              <ul style="margin-top: 6px; padding-left: 14px; display: flex; flex-direction: column; gap: 4px; font-size: 12px;">
+                <li>360x480 floating mini-cockpit</li>
+                <li>Pulsing menu bar telemetry icon</li>
+                <li>Global hotkey (<kbd>Cmd+Shift+A</kbd>)</li>
+                <li>Instant voice/text prompt prompter</li>
+              </ul>
+            </div>
+            <div class="badge-cyan" style="margin-top: auto;">AppKit Popover</div>
+          </div>
+
+          <!-- Windows -->
+          <div class="card">
+            <div class="card-title">
+              <span class="metric-violet">⊞</span> Windows 11 Tray
+            </div>
+            <div class="card-body">
+              <strong>C# & WinUI 3:</strong>
+              <ul style="margin-top: 6px; padding-left: 14px; display: flex; flex-direction: column; gap: 4px; font-size: 12px;">
+                <li>Windows 11 Mica material flyout</li>
+                <li>Interactive Toast Notifications</li>
+                <li>Windows Hello facial verification</li>
+                <li>Global hotkey (<kbd>Win+Shift+A</kbd>)</li>
+              </ul>
+            </div>
+            <div class="badge-violet" style="color: #DDD6FE; margin-top: auto;">WinUI 3 App SDK</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>SURFACE 05 • NATIVE COMPANION ECOSYSTEM</span>
+        <span>SWIFTUI • JETPACK COMPOSE • MACOS MENU BAR • WINUI 3</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: Companion App Telemetry & Rich APNs Push -->
+    <section class="slide" data-slide="12">
+      <div>
+        <div class="slide-eyebrow">PUSH NOTIFICATION & APPROVAL WORKFLOWS</div>
+        <h2 class="slide-title">1-Tap Lockscreen Approvals & Biometric Verification</h2>
+        <p class="slide-subtitle">High-priority actionable push alerts allowing busy executives to govern autonomous operations with zero latency.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Actionable APNs Push Notification Payload</div>
+            <div class="wireframe-box" style="font-size: 11px;">
+{
+  <span class="accent">"aps"</span>: {
+    <span class="accent">"alert"</span>: {
+      <span class="accent">"title"</span>: <span class="green">"⚡ LinkedIn Carousel Ready for Sign-Off"</span>,
+      <span class="accent">"subtitle"</span>: <span class="green">"Gatekeeper Score: 0.96 (Passed)"</span>,
+      <span class="accent">"body"</span>: <span class="green">"7-Slide PDF 'The 5 Agency Retainer Myths'. Tap to approve for 14:00 dispatch."</span>
+    },
+    <span class="accent">"category"</span>: <span class="cyan">"CAMPAIGN_APPROVAL"</span>,
+    <span class="accent">"sound"</span>: <span class="green">"nexus_alert.aiff"</span>
+  },
+  <span class="accent">"data"</span>: {
+    <span class="accent">"deliverableId"</span>: <span class="green">"del_li_carousel_882"</span>,
+    <span class="accent">"scheduledTime"</span>: <span class="cyan">"2026-09-17T14:00:00Z"</span>
+  }
+}
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Lockscreen Action Mechanics</div>
+            <div style="background: rgba(0,0,0,0.5); padding: 16px; border-radius: 12px; border: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 10px;">
+              <div style="font-weight: bold; font-size: 14px; color: #fff;">
+                🔔 Nexus Agent OS • Just Now
+              </div>
+              <div style="font-size: 12px; color: var(--text-secondary);">
+                7-Slide PDF Carousel ready for LinkedIn scheduling. Gatekeeper compliance score: 0.96.
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 6px;">
+                <button class="btn-action" style="flex: 1; justify-content: center; background: rgba(16, 185, 129, 0.2); border-color: var(--accent-emerald); color: #6EE7B7;">
+                  ⚡ Approve (FaceID)
+                </button>
+                <button class="btn-action" style="flex: 1; justify-content: center; background: rgba(245, 158, 11, 0.2); border-color: var(--accent-amber); color: #FBBF24;">
+                  ✏ Dictate Revision
+                </button>
+              </div>
+            </div>
+            <div class="card-body" style="font-size: 12px; margin-top: 8px;">
+              Biometric FaceID / TouchID execution securely authenticates production releases without opening the full desktop console.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>SURFACE 05 • EXECUTIVE INTERACTIONS</span>
+        <span>RICH PUSH • BIOMETRIC FACEID • LOCKSCREEN CONTROLS</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 13: Full Suite Summary & Architecture Verification -->
+    <section class="slide" data-slide="13">
+      <div>
+        <div class="slide-eyebrow">EXECUTIVE SUMMARY & SUITE VERIFICATION</div>
+        <h2 class="slide-title">Complete Study Suite Architecture Verification</h2>
+        <p class="slide-subtitle">Milestone 5 completes the operational visualization layer, seamlessly connecting to Milestones 1 through 4.</p>
+      </div>
+
+      <div class="slide-content">
+        <div class="grid-3">
+          <div class="card" style="border-top: 3px solid var(--accent-indigo);">
+            <div class="card-title">M1: Orchestration & Roles</div>
+            <div class="card-body">Temporal durable spine + LangGraph cognitive state loops + n8n social integration adapters powering the 9-agent autonomous team.</div>
+            <div class="badge-indigo" style="color: #A5B4FC; margin-top: auto;">Study 01 Complete</div>
+          </div>
+
+          <div class="card" style="border-top: 3px solid var(--accent-cyan);">
+            <div class="card-title">M2 & M3: Compute & Economics</div>
+            <div class="card-body">Cent-accurate unit BOM ($0.019 text post, $0.089 carousel, $0.849 video, $0.448 web page) sustaining >90% SaaS gross margins ($129–$899/mo).</div>
+            <div class="badge-cyan" style="margin-top: auto;">Studies 02 & 03 Complete</div>
+          </div>
+
+          <div class="card" style="border-top: 3px solid var(--accent-emerald);">
+            <div class="card-title">M4 & M5: Market Fit & UI/UX</div>
+            <div class="card-body">Granular competitor whitespace against 9 incumbents, weighted 5-country geo-launch, and the Obsidian mission-control design system.</div>
+            <div class="badge-green" style="margin-top: auto;">Studies 04 & 05 Complete</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 12px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(16, 185, 129, 0.1)); border-color: rgba(99, 102, 241, 0.35);">
+          <div class="card-title" style="color: #FFFFFF;">
+            <span>🚀</span> Ready for Client Pitching & Production Implementation
+          </div>
+          <div class="card-body" style="color: #E2E8F0;">
+            The complete 5-study technical and financial suite is documented in root Markdown files and matching 16:9 standalone HTML presentation decks with zero-bleed print engine.
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-footer">
+        <span>NEXUS AGENT OS • CANONICAL BLUEPRINT</span>
+        <span>MILESTONE 5 COMPLETE • READY FOR MASTER HUB INTEGRATION</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation & Progress Meter -->
+  <footer class="deck-footer">
+    <div>
+      <span style="color: var(--accent-cyan);">KEYS:</span> 
+      <kbd>◀</kbd> <kbd>▶</kbd> Navigate &nbsp;|&nbsp; 
+      <kbd>Space</kbd> Next &nbsp;|&nbsp; 
+      <kbd>F</kbd> Fullscreen &nbsp;|&nbsp; 
+      <kbd>O</kbd> / <kbd>Esc</kbd> Overview Grid
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div class="progress-track">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <span id="slide-progress-text">Slide 1 of 13</span>
+    </div>
+  </footer>
+
+  <!-- Lightbox Overview Grid Modal -->
+  <div class="overview-modal" id="overview-modal">
+    <div class="overview-header">
+      <h2 style="font-family: var(--font-heading); font-size: 24px; color: #fff;">Slide Deck Lightbox Overview</h2>
+      <button class="btn-action" onclick="toggleOverview()">✕ Close (Esc)</button>
+    </div>
+    <div class="overview-grid" id="overview-grid">
+      <!-- Injected by JavaScript -->
+    </div>
+  </div>
+
+  <!-- Vanilla JavaScript Presentation Engine -->
+  <script>
+    let currentSlide = 1;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const counterEl = document.getElementById('slide-counter');
+    const progressEl = document.getElementById('progress-bar');
+    const progressTextEl = document.getElementById('slide-progress-text');
+    const overviewModal = document.getElementById('overview-modal');
+    const overviewGrid = document.getElementById('overview-grid');
+
+    // Populate Overview Lightbox Grid
+    slides.forEach((slide, idx) => {
+      const slideNum = idx + 1;
+      const title = slide.querySelector('.slide-title')?.innerText || `Slide ${slideNum}`;
+      const thumb = document.createElement('div');
+      thumb.className = `overview-thumb ${slideNum === 1 ? 'active' : ''}`;
+      thumb.innerHTML = `
+        <div class="thumb-num">SLIDE ${String(slideNum).padStart(2, '0')}</div>
+        <div class="thumb-title">${title}</div>
+      `;
+      thumb.onclick = () => {
+        goToSlide(slideNum);
+        toggleOverview();
+      };
+      overviewGrid.appendChild(thumb);
+    });
+
+    function updateDeck() {
+      slides.forEach((slide, idx) => {
+        if (idx + 1 === currentSlide) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      const formattedCurrent = String(currentSlide).padStart(2, '0');
+      const formattedTotal = String(totalSlides).padStart(2, '0');
+      counterEl.innerText = `${formattedCurrent} / ${formattedTotal}`;
+      progressTextEl.innerText = `Slide ${currentSlide} of ${totalSlides}`;
+      progressEl.style.width = `${(currentSlide / totalSlides) * 100}%`;
+
+      // Update overview thumbnails
+      const thumbs = document.querySelectorAll('.overview-thumb');
+      thumbs.forEach((thumb, idx) => {
+        if (idx + 1 === currentSlide) {
+          thumb.classList.add('active');
+        } else {
+          thumb.classList.remove('active');
+        }
+      });
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateDeck();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateDeck();
+      }
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        updateDeck();
+      }
+    }
+
+    function toggleOverview() {
+      overviewModal.classList.toggle('open');
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (overviewModal.classList.contains('open')) {
+        if (e.key === 'Escape' || e.key === 'o' || e.key === 'O') {
+          toggleOverview();
+        }
+        return;
+      }
+
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        goToSlide(1);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        goToSlide(totalSlides);
+      } else if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        toggleFullScreen();
+      } else if (e.key === 'o' || e.key === 'O') {
+        e.preventDefault();
+        toggleOverview();
+      }
+    });
+
+    // Initial update
+    updateDeck();
+  </script>
+</body>
+</html>

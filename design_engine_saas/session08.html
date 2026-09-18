@@ -1,0 +1,3580 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Engine SaaS — Autonomous UI/UX Platform (Session 08 Flagship)</title>
+  <meta name="description" content="Session 08 Flagship: Chrono-Engine Time-Travel Scrubber, View Transitions API Morphing, Codex Multi-Format Exporter, Liquid Glass Lens, and Tri-Agent Spatial Radar.">
+
+  <!-- Typography: Inter, Plus Jakarta Sans, JetBrains Mono, Cinzel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Anime.js v3.2.2 CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+
+  <!-- Tailwind Configuration with Obsidian Verdant Design Tokens -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            void: 'var(--bg-void)',
+            surface: {
+              DEFAULT: 'var(--bg-surface)',
+              elevated: 'var(--bg-surface-elevated)',
+              card: 'var(--bg-glass)',
+              glass: 'var(--bg-glass)'
+            },
+            brass: {
+              DEFAULT: 'var(--accent-gold)',
+              light: '#E2C384',
+              dark: '#8E6E32'
+            },
+            ethereal: {
+              DEFAULT: 'var(--accent-mint)',
+              glow: 'rgba(46, 229, 157, 0.35)',
+              muted: 'rgba(46, 229, 157, 0.12)'
+            },
+            amber: {
+              dragon: '#F59E0B'
+            },
+            parchment: '#E6E4DD'
+          },
+          fontFamily: {
+            heading: ['Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Cinzel', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          boxShadow: {
+            'specular': 'inset 0 1px 1px 0 rgba(255, 255, 255, 0.15), 0 10px 30px -10px rgba(0, 0, 0, 0.5)',
+            'specular-hover': 'inset 0 1px 1px 0 rgba(255, 255, 255, 0.25), 0 20px 40px -15px rgba(46, 229, 157, 0.2)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* CSS Registered Custom Properties for GPU Spotlight & Border Beams */
+    @property --beam-angle {
+      syntax: '<angle>';
+      inherits: false;
+      initial-value: 0deg;
+    }
+    @property --mouse-x {
+      syntax: '<percentage>';
+      inherits: true;
+      initial-value: 50%;
+    }
+    @property --mouse-y {
+      syntax: '<percentage>';
+      inherits: true;
+      initial-value: 50%;
+    }
+
+    
+    /* Session 07 Liquid Glass Lens Refraction */
+    .liquid-lens-active {
+      backdrop-filter: url(#liquidRefractFilter) blur(2px);
+      -webkit-backdrop-filter: url(#liquidRefractFilter) blur(2px);
+    }
+    .device-shell-bezel {
+      box-shadow: 0 0 0 10px #1e2923, 0 0 0 12px rgba(255, 255, 255, 0.12), 0 30px 60px -15px rgba(0, 0, 0, 0.85);
+      border-radius: 42px;
+      overflow: hidden;
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), height 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .device-shell-tablet {
+      box-shadow: 0 0 0 12px #18221c, 0 0 0 14px rgba(255, 255, 255, 0.1), 0 35px 70px -20px rgba(0, 0, 0, 0.9);
+      border-radius: 36px;
+    }
+    .device-shell-desktop {
+      box-shadow: 0 0 0 14px #141c17, 0 0 0 16px rgba(255, 255, 255, 0.08), 0 40px 80px -20px rgba(0, 0, 0, 0.95);
+      border-radius: 20px;
+    }
+
+    
+    /* Session 08: View Transitions API & Chrono-Engine */
+    @view-transition {
+      navigation: auto;
+    }
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.35s;
+      animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .view-trans-card {
+      view-transition-name: var(--vt-name, auto);
+    }
+    .chrono-track {
+      background: linear-gradient(90deg, rgba(46,229,157,0.15) 0%, rgba(197,160,89,0.2) 50%, rgba(46,229,157,0.3) 100%);
+    }
+    .chrono-dot-active {
+      box-shadow: 0 0 15px #2EE59D, 0 0 30px rgba(46, 229, 157, 0.6);
+      transform: scale(1.3);
+    }
+
+    /* Dynamic Theme Token Defaults (Obsidian Verdant) */
+    :root {
+      --bg-void: #070B08;
+      --bg-surface: #111A14;
+      --bg-surface-elevated: #16231B;
+      --bg-glass: rgba(17, 26, 20, 0.78);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --accent-mint: #2EE59D;
+      --accent-gold: #C5A059;
+      --accent-amber: #F59E0B;
+      --accent-cyan: #06B6D4;
+      --text-main: #E6E4DD;
+      --text-muted: #8E9991;
+    }
+
+    /* Theme Morphing Classes */
+    body.theme-monastic {
+      --bg-void: #0B0A08;
+      --bg-surface: #171510;
+      --bg-surface-elevated: #221F17;
+      --bg-glass: rgba(23, 21, 16, 0.82);
+      --accent-mint: #E5C989;
+      --accent-gold: #C5A059;
+      --accent-amber: #D97706;
+      --text-main: #F3EFE6;
+      --text-muted: #A39B8B;
+    }
+    body.theme-cyber {
+      --bg-void: #050B14;
+      --bg-surface: #0D1929;
+      --bg-surface-elevated: #13243A;
+      --bg-glass: rgba(13, 25, 41, 0.82);
+      --accent-mint: #06B6D4;
+      --accent-gold: #8B5CF6;
+      --accent-amber: #38BDF8;
+      --text-main: #F0F9FF;
+      --text-muted: #7DD3FC;
+    }
+    body.theme-titanium {
+      --bg-void: #0E0F12;
+      --bg-surface: #1A1C23;
+      --bg-surface-elevated: #242731;
+      --bg-glass: rgba(26, 28, 35, 0.85);
+      --accent-mint: #E2E8F0;
+      --accent-gold: #94A3B8;
+      --accent-amber: #38BDF8;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+    }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* Particle Constellation Canvas */
+    #meshCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.65;
+    }
+
+    /* Emil Kowalski Spring Micro-Physics */
+    .spring-interactive {
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease, background-color 0.2s ease, border-color 0.2s ease;
+      cursor: pointer;
+    }
+    .spring-interactive:active {
+      transform: scale(0.96) translateY(1px);
+    }
+
+    /* 3D Gyroscopic Tilt Surface */
+    .tilt-card {
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
+      perspective: 1000px;
+      will-change: transform;
+    }
+
+    /* 21st.dev / Aceternity Dynamic Cursor Spotlight */
+    .spotlight-surface {
+      position: relative;
+      background: var(--bg-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.12), 0 12px 32px -8px rgba(0, 0, 0, 0.6);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.4s ease;
+    }
+    .spotlight-surface::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(46, 229, 157, 0.14), transparent 80%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .spotlight-surface:hover::before {
+      opacity: 1;
+    }
+    .spotlight-surface:hover {
+      border-color: rgba(46, 229, 157, 0.35);
+      box-shadow: inset 0 1px 2px 0 rgba(255, 255, 255, 0.22), 0 18px 40px -12px rgba(46, 229, 157, 0.22);
+    }
+
+    /* Magic UI Animated Conic Border Beam */
+    .beam-card-active {
+      position: relative;
+    }
+    .beam-card-active::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: conic-gradient(
+        from var(--beam-angle),
+        transparent 65%,
+        var(--accent-mint) 86%,
+        #ffffff 94%,
+        transparent 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      animation: rotateBorderBeam 3.6s linear infinite;
+      z-index: 2;
+    }
+    @keyframes rotateBorderBeam {
+      to {
+        --beam-angle: 360deg;
+      }
+    }
+
+    /* Live Multi-Agent Cursor Avatars */
+    .agent-cursor {
+      position: absolute;
+      pointer-events: none;
+      z-index: 60;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      transition: transform 0.08s linear;
+      will-change: transform;
+    }
+    .agent-cursor-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      white-space: nowrap;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Interactive Visual Diff Split-Pane Slider */
+    .diff-container {
+      position: relative;
+      user-select: none;
+      overflow: hidden;
+    }
+    .diff-overlay-pane {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 50%;
+      overflow: hidden;
+      border-right: 2px solid var(--accent-mint);
+      box-shadow: 4px 0 15px rgba(46, 229, 157, 0.35);
+      z-index: 20;
+      background: #090e0b;
+    }
+    .diff-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--accent-mint);
+      color: #070B08;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(46, 229, 157, 0.6);
+      cursor: ew-resize;
+      z-index: 30;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    /* Command Palette Overlay */
+    .cmdk-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 5, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 9999;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 120px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cmdk-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .cmdk-modal {
+      width: 100%;
+      max-width: 620px;
+      background: #101913;
+      border: 1px solid rgba(46, 229, 157, 0.3);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(46, 229, 157, 0.25);
+      overflow: hidden;
+      transform: scale(0.96) translateY(-10px);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cmdk-overlay.open .cmdk-modal {
+      transform: scale(1) translateY(0);
+    }
+
+    /* Knowledge Slide-Over Drawer */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      z-index: 9990;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      justify-content: flex-end;
+    }
+    .drawer-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .drawer-panel {
+      width: 100%;
+      max-width: 580px;
+      height: 100vh;
+      background: #0E1611;
+      border-left: 1px solid rgba(46, 229, 157, 0.25);
+      padding: 32px 28px;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -15px 0 35px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+    }
+    .drawer-overlay.open .drawer-panel {
+      transform: translateX(0);
+    }
+
+    /* Code Export Modal */
+    .code-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 7, 5, 0.88);
+      backdrop-filter: blur(10px);
+      z-index: 9995;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .code-modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .code-modal {
+      width: 100%;
+      max-width: 760px;
+      background: #0E1611;
+      border: 1px solid rgba(46, 229, 157, 0.35);
+      border-radius: 20px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: 85vh;
+    }
+
+    /* Pulse Glow Keyframes */
+    @keyframes runeGlow {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.08); filter: drop-shadow(0 0 12px rgba(46, 229, 157, 0.8)); }
+    }
+    .rune-pulse {
+      animation: runeGlow 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="selection:bg-ethereal selection:text-void">
+
+  <!-- Interactive 60fps Particle Constellation Canvas -->
+  <canvas id="meshCanvas"></canvas>
+
+  <!-- Sticky Top Navigation Bar -->
+  <header class="sticky top-4 z-50 w-[calc(100%-2rem)] max-w-7xl mx-auto">
+    <nav class="bg-surface-glass backdrop-blur-xl border border-white/10 rounded-full px-6 py-3 shadow-specular flex items-center justify-between transition-all duration-300 hover:border-ethereal/40">
+      
+      <!-- Brand Group -->
+      <a href="../index.html" class="flex items-center gap-3 group text-decoration-none">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-ethereal/20 to-brass/10 border border-ethereal flex items-center justify-center shadow-[0_0_15px_rgba(46,229,157,0.3)] group-hover:scale-105 transition-transform duration-200">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="text-ethereal" stroke-width="2.2">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-heading font-extrabold text-base tracking-tight bg-gradient-to-r from-white via-parchment to-ethereal bg-clip-text text-transparent">
+              DESIGN ENGINE
+            </span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-ethereal/15 text-ethereal border border-ethereal/30 uppercase tracking-widest font-semibold">
+              SESSION 06
+            </span>
+          </div>
+          <span class="text-[10px] font-mono text-text-muted hidden sm:inline">AUTONOMOUS MULTI-AGENT OS</span>
+        </div>
+      </a>
+
+      <!-- Center Navigation Links -->
+      <div class="hidden xl:flex items-center gap-6 text-sm font-medium text-text-muted">
+        <a href="#curves" class="hover:text-ethereal transition-colors">Curve Editor</a>
+        <a href="#tree" class="hover:text-ethereal transition-colors">AST Inspector</a>
+        <a href="#arbitrage" class="hover:text-ethereal transition-colors">Arbitrage ROI</a>
+        <a href="#diff" class="hover:text-ethereal transition-colors">Visual Diff</a>
+        <a href="#sandbox" class="hover:text-ethereal transition-colors">Multi-Agent Stage</a>
+        <a href="#voice" class="hover:text-ethereal transition-colors">Voice Radar</a>
+      </div>
+
+      <!-- Right Action Controls -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        
+        <!-- Theme Morphing Button -->
+        <button id="themeCycleBtn" onclick="cycleTheme()" class="spring-interactive px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-text-muted hover:text-white flex items-center gap-1.5" title="Cycle Theme Language">
+          <span id="themeDot" class="w-2 h-2 rounded-full bg-ethereal"></span>
+          <span id="themeLabel" class="hidden sm:inline">Verdant</span>
+        </button>
+
+        <!-- Command Palette Trigger Button -->
+        <button id="cmdkNavBtn" onclick="toggleCmdk()" class="spring-interactive flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-text-muted hover:text-white hover:border-white/20" title="Open Command Palette (Ctrl+K)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span class="hidden sm:inline">Search</span>
+          <kbd class="text-[10px] font-mono bg-black/40 px-1.5 py-0.5 rounded border border-white/10">⌘K</kbd>
+        </button>
+
+        <!-- Web Audio Haptics Toggle Button -->
+        
+          <!-- Session 07: Procedural 8Hz Alpha Binaural Soundscape Toggle -->
+          <button id="binauralToggleBtn" onclick="toggleBinauralSoundscape()" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-ethereal/50 text-xs font-mono text-text-muted hover:text-white transition-all shadow-specular">
+            <span id="binauralDot" class="w-2 h-2 rounded-full bg-white/30"></span>
+            <span id="binauralLabel">8Hz Alpha: OFF</span>
+          </button>
+
+          <button id="audioToggleBtn" onclick="toggleAudio()" class="spring-interactive w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-text-muted hover:text-ethereal hover:border-ethereal/40" title="Toggle Procedural Web Audio Haptics">
+          <svg id="audioIconOn" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-ethereal">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <svg id="audioIconOff" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-text-muted hidden">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+
+        <!-- Knowledge Ledger Button -->
+        <button onclick="toggleDrawer()" class="spring-interactive hidden md:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brass/15 text-brass border border-brass/30 text-xs font-semibold hover:bg-brass/25">
+          <span class="w-1.5 h-1.5 rounded-full bg-brass animate-pulse"></span>
+          <span>Learned Ledger</span>
+        </button>
+
+        <!-- Primary Launch Button -->
+        <a href="#curves" class="spring-interactive px-4 py-1.5 rounded-full bg-gradient-to-r from-ethereal to-emerald-500 text-void font-heading font-bold text-xs shadow-[0_0_15px_rgba(46,229,157,0.35)] hover:shadow-[0_0_22px_rgba(46,229,157,0.55)]">
+          Motion Lab
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 6-Session Roadmap Traversal Banner -->
+  <div class="max-w-7xl mx-auto px-4 mt-6 flex items-center justify-center">
+    <div class="inline-flex items-center gap-1.5 p-1 bg-surface-elevated/80 border border-white/10 rounded-full text-xs font-mono flex-wrap justify-center">
+      <a href="../design_engine/index.html" class="px-3 py-1 rounded-full text-text-muted hover:text-white transition-colors">Session 01</a>
+      <span class="text-white/20">&bull;</span>
+      <a href="session02.html" class="px-3 py-1 rounded-full text-text-muted hover:text-white transition-colors">Session 02</a>
+      <span class="text-white/20">&bull;</span>
+      <a href="session03.html" class="px-3 py-1 rounded-full text-text-muted hover:text-white transition-colors">Session 03</a>
+      <span class="text-white/20">&bull;</span>
+      <a href="session04.html" class="px-3 py-1 rounded-full text-text-muted hover:text-white transition-colors">Session 04</a>
+      <span class="text-white/20">&bull;</span>
+      <a href="session05.html" class="px-3 py-1 rounded-full text-text-muted hover:text-white transition-colors">Session 05</a>
+      <span class="text-white/20">&bull;</span>
+      <span class="px-3 py-1 rounded-full bg-ethereal/20 text-ethereal border border-ethereal/30 font-bold flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-ethereal animate-ping"></span>
+        Session 06 (Flagship OS)
+      </span>
+    </div>
+  </div>
+
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- HERO SECTION -->
+    <section class="text-center max-w-4xl mx-auto pt-6 pb-16">
+      
+      <!-- Top Eyebrow Tag -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-ethereal/10 border border-ethereal/30 text-xs font-mono text-ethereal mb-6 shadow-[0_0_20px_rgba(46,229,157,0.15)]">
+        <span class="w-2 h-2 rounded-full bg-ethereal rune-pulse"></span>
+        <span>CURVE DEBUGGER &bull; COMPONENT AST INSPECTOR &bull; AGENCY ARBITRAGE</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="font-heading font-extrabold text-4xl sm:text-6xl lg:text-7xl tracking-tight leading-[1.08] mb-6">
+        Autonomous UI/UX Engine <br/>
+        <span class="bg-gradient-to-r from-white via-parchment to-ethereal bg-clip-text text-transparent">
+          Micro-Physics & Architectural AST.
+        </span>
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="text-lg sm:text-xl text-text-muted max-w-2xl mx-auto leading-relaxed mb-10 font-normal">
+        Tune Emil Kowalski spring constants directly on an interactive cubic-bezier curve debugger, inspect the hierarchical AST node tree with live contrast ratings, and calculate your annual agency arbitrage.
+      </p>
+
+      <!-- CTA Action Button Row -->
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="#curves" onclick="playClickSound()" class="spring-interactive px-7 py-3.5 rounded-full bg-gradient-to-r from-ethereal via-emerald-400 to-ethereal text-void font-heading font-bold text-sm shadow-[0_0_25px_rgba(46,229,157,0.4)] hover:shadow-[0_0_35px_rgba(46,229,157,0.65)] flex items-center gap-2">
+          <span>Launch Curve Debugger</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+
+        <a href="#tree" onclick="playClickSound()" class="spring-interactive px-6 py-3.5 rounded-full bg-surface-elevated/80 border border-cyan-400/30 text-cyan-400 font-heading font-semibold text-sm hover:bg-cyan-400/10 flex items-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          <span>AST Tree Inspector</span>
+        </a>
+
+        <a href="#arbitrage" onclick="playClickSound()" class="spring-interactive px-6 py-3.5 rounded-full bg-surface-elevated/80 border border-brass/30 text-brass font-heading font-semibold text-sm hover:bg-brass/10 flex items-center gap-2">
+          <span>Arbitrage Calculator</span>
+        </a>
+      </div>
+
+      <!-- Trust Metrics Bar -->
+      <div class="mt-14 pt-8 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div>
+          <div class="text-2xl sm:text-3xl font-mono font-bold text-ethereal">40.2ms</div>
+          <div class="text-xs font-mono text-text-muted mt-1 uppercase tracking-wider">Deterministic AST Latency</div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-mono font-bold text-white">$145.8k/yr</div>
+          <div class="text-xs font-mono text-text-muted mt-1 uppercase tracking-wider">Avg Agency Retainer Saved</div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-mono font-bold text-brass">&lt;4 Days</div>
+          <div class="text-xs font-mono text-text-muted mt-1 uppercase tracking-wider">Client Payback Period</div>
+        </div>
+        <div>
+          <div class="text-2xl sm:text-3xl font-mono font-bold text-amber-dragon">100%</div>
+          <div class="text-xs font-mono text-text-muted mt-1 uppercase tracking-wider">WCAG 2.1 AAA Contrast</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE CUBIC BÉZIER & SPRING CURVE DEBUGGER -->
+    
+      <!-- ========================================== -->
+      <!-- SESSION 07: INTERACTIVE REFRACTIVE LIQUID GLASS LENS -->
+      <!-- ========================================== -->
+      
+      <!-- ========================================== -->
+      <!-- SESSION 08: CHRONO-ENGINE VISUAL TIME-TRAVEL SCRUBBER -->
+      <!-- ========================================== -->
+      <section id="chronoSection" class="py-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+          <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ethereal/10 border border-ethereal/30 text-xs font-mono text-ethereal mb-3">
+                <span>⏳ GIT TOPOLOGY &bull; VISUAL TIME-TRAVEL REVISION SCRUBBER</span>
+              </div>
+              <h2 class="text-3xl font-extrabold font-heading text-white tracking-tight">
+                Chrono-Engine Time-Travel Scrubber
+              </h2>
+              <p class="text-sm text-text-muted mt-1 max-w-xl">
+                Scrub continuously through all 8 evolutionary session milestones to inspect deterministic Git commit SHAs, architectural additions, and live component diff telemetry.
+              </p>
+            </div>
+            <div class="flex items-center gap-3">
+              <button id="chronoPrevBtn" onclick="stepChrono(-1)" class="px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-ethereal/50 text-xs font-mono text-gray-300 hover:text-white transition-all">
+                &larr; Prev Milestone
+              </button>
+              <button id="chronoNextBtn" onclick="stepChrono(1)" class="px-3 py-2 rounded-xl bg-ethereal/20 border border-ethereal/40 text-xs font-mono text-ethereal hover:bg-ethereal/30 font-bold transition-all">
+                Next Milestone &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Chrono Timeline Card -->
+          <div class="p-8 rounded-[24px] bg-gradient-to-b from-surface/95 to-[#0B150E] border border-white/10 shadow-2xl space-y-6">
+            
+            <!-- Interactive Scrubber Bar -->
+            <div class="space-y-3">
+              <div class="flex justify-between items-center text-xs font-mono">
+                <span class="text-text-muted">Evolutionary Timeline (Sessions 01 &ndash; 08):</span>
+                <span id="chronoSessionBadge" class="text-ethereal font-bold text-sm">Session 08 (Current Flagship)</span>
+              </div>
+              
+              <div class="relative py-4 select-none">
+                <!-- Track Line -->
+                <div class="h-2 rounded-full chrono-track relative">
+                  <div id="chronoProgressFill" class="h-full bg-ethereal rounded-full transition-all duration-200" style="width: 100%;"></div>
+                </div>
+
+                <!-- 8 Detent Milestone Dots -->
+                <div class="absolute inset-0 flex items-center justify-between pointer-events-none px-1">
+                  <button type="button" onclick="setChronoSession(1)" class="chrono-detent pointer-events-auto w-4 h-4 rounded-full bg-white/20 border border-white/40 transition-all cursor-pointer" title="Session 01"></button>
+                  <button type="button" onclick="setChronoSession(2)" class="chrono-detent pointer-events-auto w-4 h-4 rounded-full bg-white/20 border border-white/40 transition-all cursor-pointer" title="Session 02"></button>
+                  <button type="button" onclick="setChronoSession(3)" class="chrono-detent pointer-events-auto w-4 h-4 rounded-full bg-white/20 border border-white/40 transition-all cursor-pointer" title="Session 03"></button>
+                  <button type="button" onclick="setChronoSession(4)" class="chrono-detent pointer-events-auto w-4 h-4 rounded-full bg-white/20 border border-white/40 transition-all cursor-pointer" title="Session 04"></button>
+                  <button type="button" onclick="setChronoSession(5)" class="chrono-detent pointer-events-auto w-4 h-4 rounded-full bg-white/20 border border-white/40 transition-all cursor-pointer" title="Session 05"></button>
+                  <button type="button" onclick="setChronoSession(6)" class="chrono-detent pointer-events-auto w-4 h-4 rounded-full bg-white/20 border border-white/40 transition-all cursor-pointer" title="Session 06"></button>
+                  <button type="button" onclick="setChronoSession(7)" class="chrono-detent pointer-events-auto w-4 h-4 rounded-full bg-white/20 border border-white/40 transition-all cursor-pointer" title="Session 07"></button>
+                  <button type="button" onclick="setChronoSession(8)" class="chrono-detent pointer-events-auto w-5 h-5 rounded-full bg-ethereal chrono-dot-active border-2 border-void transition-all cursor-pointer" title="Session 08"></button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Milestone Details Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch pt-2 border-t border-white/10">
+              
+              <!-- Left: Commit Details & Architectural Highlights -->
+              <div class="lg:col-span-7 space-y-4">
+                <div class="flex flex-wrap items-center gap-3 font-mono text-xs">
+                  <span id="chronoCommitSha" class="px-2.5 py-1 rounded bg-black/60 border border-white/10 text-emerald-400 font-bold">commit 0x8B7C22E4</span>
+                  <span id="chronoTimestamp" class="text-text-muted">2026-09-17 23:00:00 UTC</span>
+                  <span id="chronoBranchPill" class="px-2 py-0.5 rounded-full bg-ethereal/20 text-ethereal text-[10px]">branch: main &bull; release-v8</span>
+                </div>
+
+                <h3 id="chronoTitle" class="text-xl font-bold font-heading text-white">
+                  Session 08: Chrono-Engine, View Transitions Morphing &amp; Codex Exporter
+                </h3>
+
+                <p id="chronoDescription" class="text-xs text-text-muted leading-relaxed font-sans">
+                  Introduces interactive time-travel revision scrubbing across the 8-session Git branch history, browser-native View Transitions API shared element layout morphing, enterprise 5-language Codex token exporter suite, and tri-agent spatial voice radar.
+                </p>
+
+                <!-- Token & AST Metric Counters -->
+                <div class="grid grid-cols-3 gap-3 pt-2">
+                  <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                    <div class="text-[10px] font-mono text-text-muted">AST Node Delta</div>
+                    <div id="chronoAstCount" class="text-lg font-bold font-heading text-white mt-1">+14 Nodes</div>
+                  </div>
+                  <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                    <div class="text-[10px] font-mono text-text-muted">Token Parity</div>
+                    <div id="chronoParity" class="text-lg font-bold font-heading text-ethereal mt-1">100.0%</div>
+                  </div>
+                  <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                    <div class="text-[10px] font-mono text-text-muted">DOM IDs (0 Dupes)</div>
+                    <div id="chronoIdCount" class="text-lg font-bold font-heading text-amber-dragon mt-1">148 Unique</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Visual Snapshot Preview Frame -->
+              <div class="lg:col-span-5 flex flex-col justify-between p-5 rounded-2xl bg-black/50 border border-white/10 space-y-3">
+                <div class="flex items-center justify-between text-xs font-mono">
+                  <span class="text-text-muted">Milestone Snapshot:</span>
+                  <span id="chronoSnapshotTag" class="text-ethereal font-semibold">v8.0-PROD</span>
+                </div>
+
+                <div id="chronoSnapshotCard" class="flex-1 p-4 rounded-xl bg-surface-elevated/90 border border-ethereal/30 flex flex-col justify-center items-center text-center space-y-2">
+                  <span id="chronoSnapshotIcon" class="text-3xl">⏳</span>
+                  <div id="chronoSnapshotHeadline" class="text-sm font-bold text-white font-heading">Chrono-Spatial OS</div>
+                  <div id="chronoSnapshotSub" class="text-xs font-mono text-text-muted">8 Total Sessions Synchronized</div>
+                  <span id="chronoSnapshotBadge" class="px-2.5 py-0.5 rounded-full bg-ethereal/20 text-ethereal font-mono text-[10px] font-semibold">Zero-Drift Checksum OK</span>
+                </div>
+
+                <div class="flex justify-between items-center text-[11px] font-mono text-gray-400">
+                  <span>Architecture: Deterministic</span>
+                  <span class="text-ethereal">Rollback Available</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <section id="lensSection" class="py-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+          <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ethereal/10 border border-ethereal/30 text-xs font-mono text-ethereal mb-3">
+                <span>💧 OPTICAL SHADER LAB &bull; SVG feDisplacementMap</span>
+              </div>
+              <h2 class="text-3xl font-extrabold font-heading text-white tracking-tight">
+                Procedural Refractive Liquid Glass Lens
+              </h2>
+              <p class="text-sm text-text-muted mt-1 max-w-xl">
+                Real-time optical distortion simulating viscous glass refraction and dynamic specular highlights using GPU-accelerated SVG filter mathematics.
+              </p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-mono text-text-muted">Refractive Index:</span>
+              <span id="lensTelemetryEta" class="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 font-mono text-xs text-ethereal font-bold">η = 1.52 (Crown Glass)</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- Left Controls & Presets -->
+            <div class="lg:col-span-4 space-y-5 bg-surface/80 backdrop-blur-xl border border-white/10 rounded-[20px] p-6 shadow-specular">
+              <div class="text-xs font-mono text-white/70 uppercase tracking-wider font-semibold border-b border-white/10 pb-2">
+                Optical Parameters
+              </div>
+
+              <!-- Presets -->
+              <div>
+                <label class="block text-xs font-mono text-text-muted mb-2">Refraction Presets</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <button id="lensPresetClean" onclick="applyLensPreset('clean')" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-ethereal/50 text-xs font-mono text-left transition-all">
+                    <span class="block text-white font-medium">Clean Glass</span>
+                    <span class="text-[10px] text-text-muted">Scale 10 &bull; 0.02f</span>
+                  </button>
+                  <button id="lensPresetHydro" onclick="applyLensPreset('hydro')" class="px-3 py-2 rounded-xl bg-ethereal/10 border border-ethereal/40 text-xs font-mono text-left transition-all">
+                    <span class="block text-ethereal font-medium">Liquid Hydro</span>
+                    <span class="text-[10px] text-ethereal/70">Scale 24 &bull; 0.035f</span>
+                  </button>
+                  <button id="lensPresetMercury" onclick="applyLensPreset('mercury')" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-dragon/50 text-xs font-mono text-left transition-all">
+                    <span class="block text-amber-dragon font-medium">Viscous Mercury</span>
+                    <span class="text-[10px] text-text-muted">Scale 40 &bull; 0.055f</span>
+                  </button>
+                  <button id="lensPresetZero" onclick="applyLensPreset('zero')" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 text-xs font-mono text-left transition-all">
+                    <span class="block text-gray-300 font-medium">Zero Distortion</span>
+                    <span class="text-[10px] text-text-muted">Flat Glass &bull; 0px</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Scale Slider -->
+              <div>
+                <div class="flex justify-between items-center text-xs font-mono mb-1.5">
+                  <span class="text-text-muted">Displacement Scale:</span>
+                  <span id="lensScaleVal" class="text-ethereal font-bold">22px</span>
+                </div>
+                <input id="lensScaleSlider" type="range" min="0" max="50" value="22" step="1" oninput="updateLensScale(this.value)" class="w-full accent-[#2EE59D] bg-white/10 h-1.5 rounded-lg cursor-pointer">
+              </div>
+
+              <!-- Frequency Slider -->
+              <div>
+                <div class="flex justify-between items-center text-xs font-mono mb-1.5">
+                  <span class="text-text-muted">Turbulence Frequency:</span>
+                  <span id="lensFreqVal" class="text-ethereal font-bold">0.035</span>
+                </div>
+                <input id="lensFreqSlider" type="range" min="0.008" max="0.08" value="0.035" step="0.002" oninput="updateLensFreq(this.value)" class="w-full accent-[#2EE59D] bg-white/10 h-1.5 rounded-lg cursor-pointer">
+              </div>
+
+              <!-- Specular Slider -->
+              <div>
+                <div class="flex justify-between items-center text-xs font-mono mb-1.5">
+                  <span class="text-text-muted">Specular Hardness:</span>
+                  <span id="lensSpecularVal" class="text-ethereal font-bold">22</span>
+                </div>
+                <input id="lensSpecularSlider" type="range" min="5" max="50" value="22" step="1" oninput="updateLensSpecular(this.value)" class="w-full accent-[#2EE59D] bg-white/10 h-1.5 rounded-lg cursor-pointer">
+              </div>
+
+              <!-- Real-Time Vector Telemetry -->
+              <div class="p-3.5 rounded-xl bg-black/40 border border-white/5 space-y-1.5 font-mono text-xs">
+                <div class="text-[10px] text-text-muted uppercase">Displacement Normal:</div>
+                <div id="lensTelemetryVector" class="text-white font-mono text-xs">D(x, y) = [dx: +4.2px, dy: -2.8px]</div>
+                <div class="text-[10px] text-ethereal/80">Kernel: feDisplacementMap + feSpecularLighting</div>
+              </div>
+            </div>
+
+            <!-- Right Visual Stage with Interactive Refracting Lens -->
+            <div class="lg:col-span-8">
+              <div id="lensTestStage" class="relative rounded-[24px] border border-white/15 bg-gradient-to-br from-[#0B150E] via-[#070B08] to-[#122217] p-8 overflow-hidden min-h-[380px] shadow-2xl flex flex-col justify-between">
+                
+                <!-- Underlying Graphic Elements Subject to Optical Refraction -->
+                <div class="relative z-0 space-y-6 select-none">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <span class="w-3 h-3 rounded-full bg-ethereal shadow-[0_0_12px_#2EE59D]"></span>
+                      <span class="font-heading font-extrabold text-xl text-white tracking-tight">Aethelgard High-Velocity Yield Engine</span>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-ethereal/20 text-ethereal text-xs font-mono font-bold">PARITY 100%</span>
+                  </div>
+
+                  <!-- Grid of Data Cards -->
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="p-4 rounded-xl bg-surface-elevated/90 border border-white/10">
+                      <div class="text-xs font-mono text-text-muted">TVL Arbitrage</div>
+                      <div class="text-2xl font-bold font-heading text-white mt-1">$48,290,140</div>
+                      <div class="text-xs text-ethereal font-mono mt-1">+18.4% 24h Delta</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-surface-elevated/90 border border-white/10">
+                      <div class="text-xs font-mono text-text-muted">Execution Velocity</div>
+                      <div class="text-2xl font-bold font-heading text-white mt-1">0.38ms AST</div>
+                      <div class="text-xs text-amber-dragon font-mono mt-1">Deterministic SLA</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-surface-elevated/90 border border-white/10">
+                      <div class="text-xs font-mono text-text-muted">Airgap Verification</div>
+                      <div class="text-2xl font-bold font-heading text-white mt-1">SHA-256 Valid</div>
+                      <div class="text-xs text-ethereal font-mono mt-1">Zero Security Drift</div>
+                    </div>
+                  </div>
+
+                  <!-- High-Contrast Sample Code -->
+                  <div class="p-4 rounded-xl bg-black/60 border border-white/10 font-mono text-xs text-gray-300">
+                    <span class="text-ethereal">export function</span> <span class="text-brass">evaluateDisplacementField</span>(coord: <span class="text-cyan-400">Vector2</span>) {<br>
+                    &nbsp;&nbsp;<span class="text-gray-400">// Computed dynamic liquid displacement via GPU shader:</span><br>
+                    &nbsp;&nbsp;<span class="text-purple-400">return</span> <span class="text-amber-dragon">perlinNoise2D</span>(coord.x * <span class="text-ethereal">0.035</span>, coord.y * <span class="text-ethereal">0.035</span>) * <span class="text-ethereal">22.0</span>;<br>
+                    }
+                  </div>
+                </div>
+
+                <!-- The Interactive Refracting Liquid Glass Lens Overlay Card -->
+                <div id="interactiveLensCard" onmousemove="handleLensMouseMove(event)" class="liquid-lens-active relative z-10 mt-6 p-6 rounded-[20px] bg-white/[0.03] border border-white/30 shadow-[0_20px_50px_rgba(0,0,0,0.6)] cursor-crosshair transition-all">
+                  <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                      <div class="w-2.5 h-2.5 rounded-full bg-ethereal animate-ping"></div>
+                      <span class="font-mono text-xs font-bold text-white uppercase tracking-wider">Refractive Glass Specimen Surface</span>
+                    </div>
+                    <span class="text-[11px] font-mono text-ethereal bg-ethereal/10 px-2 py-0.5 rounded border border-ethereal/30">Hover to Modulate Light Position</span>
+                  </div>
+                  <p class="text-xs text-gray-200 leading-relaxed font-sans">
+                    Notice how the text and cards underneath deform organically through the procedural noise vector field. The specular highlights dynamically follow cursor coordinates while maintaining WCAG AAA legible text contrast.
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="curves" class="py-16">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <span class="text-xs font-mono text-ethereal font-bold uppercase tracking-widest">MOTION LAB & INTERACTION PHYSICS</span>
+        <h2 class="font-heading font-bold text-3xl sm:text-4xl mt-2 text-white">Cubic Bézier & Spring Curve Editor</h2>
+        <p class="text-sm text-text-muted mt-2">
+          Directly author and test Emil Kowalski spring micro-interactions and custom Bézier curves. Observe real-time impulse velocity and copy the CSS cubic-bezier rule.
+        </p>
+      </div>
+
+      <div class="spotlight-surface beam-card-active rounded-[28px] p-8 max-w-4xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          
+          <!-- Interactive Curve Visualizer Frame -->
+          <div class="p-6 rounded-2xl bg-void border border-white/10 relative flex flex-col items-center justify-center">
+            
+            <!-- SVG Curve Canvas -->
+            <svg id="bezierSvg" class="w-full h-48 overflow-visible select-none" viewBox="0 0 240 160">
+              <!-- Grid lines -->
+              <line x1="0" y1="0" x2="240" y2="0" stroke="rgba(255,255,255,0.06)" stroke-width="1"></line>
+              <line x1="0" y1="80" x2="240" y2="80" stroke="rgba(255,255,255,0.06)" stroke-width="1"></line>
+              <line x1="0" y1="160" x2="240" y2="160" stroke="rgba(255,255,255,0.06)" stroke-width="1"></line>
+              <line x1="120" y1="0" x2="120" y2="160" stroke="rgba(255,255,255,0.06)" stroke-width="1"></line>
+              
+              <!-- Control arm lines -->
+              <line id="arm1" x1="0" y1="160" x2="42" y2="18" stroke="#2EE59D" stroke-width="1.5" stroke-dasharray="3 3"></line>
+              <line id="arm2" x1="240" y1="0" x2="76" y2="0" stroke="#C5A059" stroke-width="1.5" stroke-dasharray="3 3"></line>
+
+              <!-- Main Bézier Curve Path -->
+              <path id="bezierCurvePath" d="M 0 160 C 42 18, 76 0, 240 0" fill="none" stroke="#2EE59D" stroke-width="3"></path>
+
+              <!-- Control Points P1, P2 -->
+              <circle id="cp1Circle" cx="42" cy="18" r="6" fill="#2EE59D" stroke="#070B08" stroke-width="2" class="cursor-pointer"></circle>
+              <circle id="cp2Circle" cx="76" cy="0" r="6" fill="#C5A059" stroke="#070B08" stroke-width="2" class="cursor-pointer"></circle>
+            </svg>
+
+            <!-- Test Impulse Target Element -->
+            <div class="w-full mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div id="physicsImpulseBox" class="w-10 h-10 rounded-xl bg-gradient-to-r from-ethereal to-emerald-500 border border-white/20 shadow-specular flex items-center justify-center font-bold text-void text-xs">
+                  AST
+                </div>
+                <span id="impulseStatusText" class="text-xs font-mono text-text-muted">Ready for impulse...</span>
+              </div>
+              <button onclick="triggerCurveImpulse()" class="spring-interactive px-4 py-2 rounded-xl bg-ethereal text-void font-heading font-bold text-xs shadow-specular">
+                Trigger Impulse
+              </button>
+            </div>
+          </div>
+
+          <!-- Curve Controls & Presets -->
+          <div class="space-y-6">
+            <div class="space-y-3">
+              <span class="text-xs font-mono text-text-muted uppercase tracking-wider font-bold">PHYSICS PRESETS:</span>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono">
+                <button onclick="applyCurvePreset('kowalski')" class="spring-interactive p-2.5 rounded-xl bg-white/5 border border-white/10 text-ethereal hover:border-ethereal/40 text-left">
+                  <div class="font-bold">Kowalski Snappy</div>
+                  <div class="text-[10px] text-text-muted">Direct micro-spring</div>
+                </button>
+                <button onclick="applyCurvePreset('entrance')" class="spring-interactive p-2.5 rounded-xl bg-white/5 border border-white/10 text-white hover:border-white/30 text-left">
+                  <div class="font-bold">Fluid Entrance</div>
+                  <div class="text-[10px] text-text-muted">Smooth 350ms arrival</div>
+                </button>
+                <button onclick="applyCurvePreset('exit')" class="spring-interactive p-2.5 rounded-xl bg-white/5 border border-white/10 text-amber-dragon hover:border-amber-dragon/40 text-left">
+                  <div class="font-bold">50% Fast Exit</div>
+                  <div class="text-[10px] text-text-muted">Snappy 160ms release</div>
+                </button>
+              </div>
+            </div>
+
+            <!-- CSS Output Box -->
+            <div class="p-4 rounded-xl bg-void/80 border border-white/10 font-mono text-xs space-y-2">
+              <div class="flex items-center justify-between text-[11px] text-text-muted">
+                <span>CSS TIMING FUNCTION</span>
+                <span id="copyCurveFeedback" class="text-ethereal opacity-0 transition-opacity">Copied!</span>
+              </div>
+              <div id="cssCurveVal" class="text-ethereal font-bold">
+                cubic-bezier(0.175, 0.885, 0.320, 1.275)
+              </div>
+              <button onclick="copyCurveCss()" class="spring-interactive w-full mt-2 py-2 rounded-lg bg-white/5 border border-white/10 text-text-muted hover:text-white text-xs font-mono">
+                Copy CSS Timing Rule
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPONENT AST TREE INSPECTOR -->
+    <section id="tree" class="py-16">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <span class="text-xs font-mono text-cyan-400 font-bold uppercase tracking-widest">DETERMINISTIC ARCHITECTURE</span>
+        <h2 class="font-heading font-bold text-3xl sm:text-4xl mt-2 text-white">Component AST Tree Inspector</h2>
+        <p class="text-sm text-text-muted mt-2">
+          Explore the hierarchical syntax tree generated for your user interface. Select nodes to inspect compiled Tailwind utilities and WCAG contrast ratings.
+        </p>
+      </div>
+
+      <div class="spotlight-surface beam-card-active rounded-[28px] p-8 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          
+          <!-- Hierarchical Node Tree -->
+          <div class="p-6 rounded-2xl bg-void/80 border border-white/10 space-y-3 font-mono text-xs">
+            <div class="text-[11px] text-text-muted uppercase tracking-wider font-bold mb-4">AST HIERARCHY (SELECT NODE):</div>
+
+            <button onclick="selectAstNode('root')" id="nodeBtnRoot" class="ast-node-btn w-full text-left p-2.5 rounded-xl bg-ethereal/15 border border-ethereal text-ethereal font-bold flex items-center justify-between">
+              <span>&lt;DocumentRoot /&gt;</span>
+              <span class="text-[10px] bg-ethereal/20 px-2 py-0.5 rounded">Fragment</span>
+            </button>
+
+            <button onclick="selectAstNode('hero')" id="nodeBtnHero" class="ast-node-btn w-full text-left p-2.5 rounded-xl bg-white/5 border border-white/10 text-white pl-6 flex items-center justify-between hover:bg-white/10">
+              <span>&boxur; &lt;HeroModule /&gt;</span>
+              <span class="text-[10px] text-text-muted">Section</span>
+            </button>
+
+            <button onclick="selectAstNode('bento')" id="nodeBtnBento" class="ast-node-btn w-full text-left p-2.5 rounded-xl bg-white/5 border border-white/10 text-white pl-10 flex items-center justify-between hover:bg-white/10">
+              <span>&boxur; &lt;BentoGrid /&gt;</span>
+              <span class="text-[10px] text-text-muted">CSS Grid</span>
+            </button>
+
+            <button onclick="selectAstNode('squircle')" id="nodeBtnSquircle" class="ast-node-btn w-full text-left p-2.5 rounded-xl bg-white/5 border border-white/10 text-white pl-14 flex items-center justify-between hover:bg-white/10">
+              <span>&boxur; &lt;SquircleCard /&gt;</span>
+              <span class="text-[10px] text-brass">R_in = 12px</span>
+            </button>
+
+            <button onclick="selectAstNode('telemetry')" id="nodeBtnTelemetry" class="ast-node-btn w-full text-left p-2.5 rounded-xl bg-white/5 border border-white/10 text-white pl-18 flex items-center justify-between hover:bg-white/10">
+              <span>&boxur; &lt;TelemetryPill /&gt;</span>
+              <span class="text-[10px] text-amber-dragon">Atomic</span>
+            </button>
+          </div>
+
+          <!-- Node Detail Inspector Box -->
+          <div class="p-6 rounded-2xl bg-void/80 border border-white/10 font-mono text-xs space-y-4">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+              <span class="font-bold text-white text-sm" id="astDetailTag">&lt;DocumentRoot /&gt;</span>
+              <span class="text-ethereal text-[11px]" id="astDetailCompile">Compile: 0.38ms</span>
+            </div>
+
+            <div class="space-y-1">
+              <div class="text-[10px] text-text-muted uppercase">COMPILED TAILWIND TOKENS</div>
+              <div class="p-3 rounded-lg bg-surface-elevated/70 border border-white/5 text-ethereal leading-relaxed" id="astDetailTokens">
+                min-h-screen bg-[#070B08] text-[#E6E4DD] font-sans antialiased overflow-x-hidden selection:bg-[#2EE59D]
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-2">
+              <div class="p-3 rounded-lg bg-surface-elevated/50 border border-white/5">
+                <div class="text-[10px] text-text-muted uppercase">WCAG CONTRAST</div>
+                <div class="text-base font-bold text-white mt-1" id="astDetailContrast">14.2:1 AAA</div>
+              </div>
+              <div class="p-3 rounded-lg bg-surface-elevated/50 border border-white/5">
+                <div class="text-[10px] text-text-muted uppercase">SQUIRCLE CONTINUITY</div>
+                <div class="text-base font-bold text-brass mt-1" id="astDetailSquircle">Verified</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- REAL-TIME AGENCY ROI ARBITRAGE CALCULATOR -->
+    <section id="arbitrage" class="py-16">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <span class="text-xs font-mono text-brass font-bold uppercase tracking-widest">FINANCIAL ARBITRAGE</span>
+        <h2 class="font-heading font-bold text-3xl sm:text-4xl mt-2 text-white">Agency Retainer Arbitrage Calculator</h2>
+        <p class="text-sm text-text-muted mt-2">
+          Compare the astronomical overhead of traditional $12.5k/mo human marketing agencies against deterministic autonomous multi-agent execution.
+        </p>
+      </div>
+
+      <div class="spotlight-surface rounded-[28px] p-8 max-w-4xl mx-auto">
+        <div class="space-y-8">
+          
+          <!-- Slider Control -->
+          <div>
+            <div class="flex justify-between text-sm font-mono mb-2">
+              <span class="text-text-muted">Concurrent Marketing & UI Workstreams:</span>
+              <span id="arbitrageProjectsLabel" class="text-ethereal font-bold">1 Full Retainer</span>
+            </div>
+            <input id="arbitrageSlider" type="range" min="1" max="10" value="1" oninput="updateArbitrage(this.value)" class="w-full accent-ethereal cursor-pointer">
+          </div>
+
+          <!-- Economics Comparison Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            
+            <div class="p-6 rounded-2xl bg-void/80 border border-white/10">
+              <div class="text-xs font-mono text-text-muted uppercase">Traditional Agency (Annual)</div>
+              <div class="text-3xl font-mono font-bold text-amber-dragon mt-2" id="agencyCostVal">$150,000</div>
+              <div class="text-xs text-text-muted mt-2">$12,500/mo base retainer per workstream</div>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-void/80 border border-ethereal/30 shadow-[0_0_20px_rgba(46,229,157,0.15)]">
+              <div class="text-xs font-mono text-text-muted uppercase">Design Engine SaaS (Annual)</div>
+              <div class="text-3xl font-mono font-bold text-ethereal mt-2" id="engineCostVal">$4,188</div>
+              <div class="text-xs text-text-muted mt-2">$349/mo Pro Guild + sub-$0.04 screen BOM</div>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-void/80 border border-brass/30">
+              <div class="text-xs font-mono text-text-muted uppercase">Net Annual Arbitrage Saved</div>
+              <div class="text-3xl font-mono font-bold text-brass mt-2" id="arbitrageSavingsVal">$145,812</div>
+              <div class="text-xs text-text-muted mt-2">Payback Period: <strong class="text-ethereal">&lt;4 Days</strong></div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE FIGMA TOKEN <-> AST CODE VISUAL SPLIT-DIFF SLIDER -->
+    <section id="diff" class="py-16">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <span class="text-xs font-mono text-ethereal font-bold uppercase tracking-widest">ZERO-DRIFT VERIFICATION</span>
+        <h2 class="font-heading font-bold text-3xl sm:text-4xl mt-2 text-white">Token-to-AST Visual Split-Diff</h2>
+        <p class="text-sm text-text-muted mt-2">
+          Drag the interactive divider to inspect how Figma design tokens (left) seamlessly compile into production-grade React 19 and Tailwind AST code (right).
+        </p>
+      </div>
+
+      <div class="spotlight-surface beam-card-active rounded-[28px] p-6 max-w-5xl mx-auto">
+        <div id="diffContainer" class="diff-container h-[380px] rounded-2xl bg-void border border-white/10 relative cursor-ew-resize" onmousedown="startDiffDrag(event)" ontouchstart="startDiffDrag(event)">
+          
+          <div class="absolute inset-0 p-6 overflow-hidden flex flex-col justify-center font-mono text-xs text-ethereal leading-relaxed select-none">
+            <div class="text-[10px] text-cyan-400 uppercase tracking-wider mb-2 font-bold flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+              <span>COMPILED PRODUCTION REACT 19 &bull; TAILWIND AST (RIGHT)</span>
+            </div>
+            <pre class="overflow-x-auto text-[11px] text-text-main/90">
+export default function AutonomousModule() {
+  return (
+    &lt;div className="rounded-[28px] p-8 bg-[#111A14] border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]"&gt;
+      &lt;div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2EE59D]/15 text-[#2EE59D] text-xs font-mono"&gt;
+        VALERIUS THE HERALD ACTIVE
+      &lt;/div&gt;
+      &lt;h3 className="text-2xl font-bold tracking-tight text-white mt-2"&gt;
+        B2B Autonomous Telephony & CRM Radar
+      &lt;/h3&gt;
+      &lt;div className="grid grid-cols-3 gap-4 mt-6"&gt;
+        &lt;div className="p-4 rounded-[12px] bg-[#16231B] border border-white/5"&gt;
+          &lt;div className="text-xs text-[#8E9991]"&gt;Inbound Qual&lt;/div&gt;
+          &lt;div className="text-xl font-bold text-[#2EE59D]"&gt;99.8%&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+            </pre>
+          </div>
+
+          <div id="diffOverlayPane" class="diff-overlay-pane p-6 flex flex-col justify-center font-mono text-xs leading-relaxed select-none" style="width: 50%;">
+            <div class="text-[10px] text-brass uppercase tracking-wider mb-2 font-bold flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-brass"></span>
+              <span>RAW FIGMA TOKENS JSON &bull; CONTINUOUS CURVATURE (LEFT)</span>
+            </div>
+            <pre class="overflow-x-auto text-[11px] text-brass">
+{
+  "component": "AutonomousModule",
+  "geometry": {
+    "outerRadius": "28px",
+    "padding": "16px",
+    "innerRadius": "12px",
+    "squircleLaw": "R_inner = R_outer - Padding"
+  },
+  "tokens": {
+    "bgVoid": "#070B08",
+    "bgSurface": "#111A14",
+    "accentMint": "#2EE59D",
+    "specularRim": "inset 0 1px 1px rgba(255,255,255,0.15)"
+  },
+  "physics": {
+    "stiffness": 450,
+    "damping": 35,
+    "mass": 0.8
+  }
+}
+            </pre>
+          </div>
+
+          <div id="diffHandle" class="diff-handle" style="left: 50%;">
+            &harr;
+          </div>
+
+        </div>
+
+        <div class="flex items-center justify-between pt-4 text-xs font-mono text-text-muted">
+          <span>&larr; Drag handle left/right to inspect token-to-code alignment</span>
+          <span class="text-ethereal font-semibold">100% Deterministic AST Parity</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE GENERATIVE SANDBOX & MULTI-AGENT CURSOR PRESENCE -->
+    
+      <!-- ========================================== -->
+      <!-- SESSION 07: AI PROMPT-TO-COMPONENT STREAMING SYNTHESIZER -->
+      <!-- ========================================== -->
+      <section id="synthesizerStudioSection" class="py-16 bg-surface/40 border-y border-white/5">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+          <div class="text-center max-w-3xl mx-auto mb-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ethereal/10 border border-ethereal/30 text-xs font-mono text-ethereal mb-3">
+              <span>✨ AUTONOMOUS STREAMING ENGINE &bull; TOKENS &rarr; AST &rarr; UI</span>
+            </div>
+            <h2 class="text-3xl font-extrabold font-heading text-white tracking-tight">
+              Prompt-to-Component Synthesizer Studio
+            </h2>
+            <p class="text-sm text-text-muted mt-2">
+              Type or select a design prompt to witness the 3-phase autonomous compilation: semantic token extraction, progressive AST code streaming, and live interactive UI component synthesis.
+            </p>
+          </div>
+
+          <!-- Prompt Bar & Quick Presets -->
+          <div class="max-w-4xl mx-auto mb-8 space-y-3">
+            <div class="relative flex items-center">
+              <input id="synthPromptInput" type="text" value="Bento SaaS Pricing Tier with glowing annual discount badge & interactive billing cycle" class="w-full pl-5 pr-40 py-3.5 rounded-2xl bg-surface-elevated/90 border border-white/15 focus:border-ethereal text-sm text-white placeholder-text-muted outline-none transition-all shadow-specular font-sans">
+              <button id="synthRunBtn" onclick="runSynthesizer(1)" class="absolute right-2 px-5 py-2 rounded-xl bg-ethereal text-void font-heading font-extrabold text-xs uppercase tracking-wider hover:bg-[#34f5a8] hover:shadow-[0_0_20px_rgba(46,229,157,0.5)] transition-all flex items-center gap-2">
+                <span>⚡ Synthesize</span>
+              </button>
+            </div>
+
+            <!-- Quick Preset Chips -->
+            <div class="flex flex-wrap items-center gap-2 justify-center">
+              <span class="text-xs font-mono text-text-muted">Presets:</span>
+              <button id="synthPresetBtn1" onclick="selectSynthPreset(1)" class="px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-ethereal/40 text-xs font-mono text-gray-300 transition-all">
+                💎 Bento SaaS Pricing Card
+              </button>
+              <button id="synthPresetBtn2" onclick="selectSynthPreset(2)" class="px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-ethereal/40 text-xs font-mono text-gray-300 transition-all">
+                📈 Fintech Telemetry Node
+              </button>
+              <button id="synthPresetBtn3" onclick="selectSynthPreset(3)" class="px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-ethereal/40 text-xs font-mono text-gray-300 transition-all">
+                🎛️ Audio Spectrum Dial Node
+              </button>
+            </div>
+          </div>
+
+          <!-- 3-Phase Generation Workspace -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            
+            <!-- Left: Semantic Tokens & Code AST Stream -->
+            <div class="lg:col-span-6 flex flex-col justify-between p-6 rounded-[22px] bg-surface/90 border border-white/10 shadow-specular space-y-4">
+              <div>
+                <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-3">
+                  <div class="flex items-center gap-2 font-mono text-xs text-white font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-ethereal"></span>
+                    <span>PHASE 1: SEMANTIC TOKEN EXTRACTION</span>
+                  </div>
+                  <span id="synthPhaseIndicator" class="text-[10px] font-mono text-ethereal bg-ethereal/10 px-2 py-0.5 rounded">Ready</span>
+                </div>
+
+                <!-- Animated Token Extraction Pills -->
+                <div id="synthTokenContainer" class="flex flex-wrap gap-2 min-h-[44px]">
+                  <span class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[11px] font-mono text-ethereal">Token: #070B08 (Void)</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[11px] font-mono text-ethereal">Radius: Squircle-24px</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[11px] font-mono text-ethereal">Backdrop: Blur-20px</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[11px] font-mono text-ethereal">Spring: 450k/35c</span>
+                </div>
+              </div>
+
+              <!-- Progressive Code AST Stream Terminal -->
+              <div class="flex-1 flex flex-col mt-2">
+                <div class="flex items-center justify-between text-xs font-mono text-text-muted mb-2">
+                  <span>PHASE 2: PROGRESSIVE AST CODE STREAM</span>
+                  <span class="text-ethereal font-mono text-[10px]">React + Tailwind</span>
+                </div>
+                <div class="relative flex-1 p-4 rounded-xl bg-black/70 border border-white/10 font-mono text-xs text-emerald-400 overflow-hidden min-h-[190px]">
+                  <pre id="synthCodeStream" class="whitespace-pre-wrap leading-relaxed text-gray-300"><code>&lt;!-- Synthesized component AST ready --&gt;</code></pre>
+                  <span id="synthCursor" class="inline-block w-2 h-4 bg-ethereal animate-pulse ml-0.5 align-middle"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Phase 3 Live Rendered Interactive Component -->
+            <div class="lg:col-span-6 flex flex-col p-6 rounded-[22px] bg-gradient-to-b from-surface/90 to-[#0c140f] border border-white/10 shadow-specular">
+              <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-5">
+                <div class="flex items-center gap-2 font-mono text-xs text-white font-semibold">
+                  <span class="w-2 h-2 rounded-full bg-amber-dragon shadow-[0_0_8px_#F59E0B]"></span>
+                  <span>PHASE 3: INSTANT LIVE COMPONENT RENDER</span>
+                </div>
+                <span class="text-[10px] font-mono text-gray-400">Interactive Preview</span>
+              </div>
+
+              <!-- Dynamic Component Output Canvas -->
+              <div id="synthPreviewContainer" class="flex-1 flex items-center justify-center p-4 rounded-xl bg-black/30 border border-dashed border-white/15 min-h-[280px]">
+                
+                <!-- Initial Card Shell (IDs only exist once in DOM!) -->
+                <div id="synthInteractiveOutput" class="w-full max-w-sm p-6 rounded-[22px] bg-[#111A14]/90 backdrop-blur-xl border border-ethereal/40 shadow-[0_0_30px_rgba(46,229,157,0.15)] space-y-4">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <span class="px-2.5 py-0.5 rounded-full bg-ethereal/20 text-ethereal font-mono text-[10px] font-bold uppercase tracking-wider">Most Popular</span>
+                      <h4 id="synthCardTitle" class="text-xl font-heading font-extrabold text-white mt-2">Sovereign Pro</h4>
+                    </div>
+                    <div class="text-right">
+                      <div id="synthCardPrice" class="text-3xl font-black font-heading text-white">$29<span class="text-xs font-normal text-text-muted">/mo</span></div>
+                      <span id="synthCardBillingBadge" class="text-[10px] text-ethereal font-mono">Billed Annually (-25%)</span>
+                    </div>
+                  </div>
+
+                  <p id="synthCardCopy" class="text-xs text-text-muted leading-relaxed">
+                    Continuous multi-agent UI generation, real-time AST compilation, and zero-drift Figma token export.
+                  </p>
+
+                  <!-- Working Toggle -->
+                  <div id="synthCardToggleWrap" class="p-2 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
+                    <span class="text-xs font-mono text-gray-300">Annual Discount:</span>
+                    <button onclick="toggleSynthCardBilling()" class="px-3 py-1 rounded-lg bg-ethereal/20 text-ethereal text-xs font-mono font-bold hover:bg-ethereal/30 transition-all">
+                      <span id="synthCardToggleLabel">Active (25% OFF)</span>
+                    </button>
+                  </div>
+
+                  <button onclick="playChimeSound()" class="w-full py-2.5 rounded-xl bg-ethereal text-void font-heading font-extrabold text-xs uppercase tracking-wider hover:bg-[#34f5a8] transition-all">
+                    Deploy Component AST &rarr;
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      
+      <!-- ========================================== -->
+      <!-- SESSION 07: SCALED MULTI-VIEWPORT DEVICE MATRIX -->
+      <!-- ========================================== -->
+      <section id="matrixSection" class="py-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+          <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ethereal/10 border border-ethereal/30 text-xs font-mono text-ethereal mb-3">
+                <span>📱 RESPONSIVE SANDBOX &bull; DYNAMIC SCALE TRANSFORM</span>
+              </div>
+              <h2 class="text-3xl font-extrabold font-heading text-white tracking-tight">
+                Scaled Multi-Viewport Device Matrix
+              </h2>
+              <p class="text-sm text-text-muted mt-1 max-w-xl">
+                Emulates exact hardware device dimensions and responsive layouts using CSS transform scale calculations with hardware bezels and Dynamic Island styling.
+              </p>
+            </div>
+
+            <!-- Device Controls & Orientation -->
+            <div class="flex flex-wrap items-center gap-2">
+              <div class="inline-flex p-1 rounded-xl bg-surface-elevated border border-white/10">
+                <button id="devTabDesktop" onclick="setDeviceProfile('desktop')" class="dev-tab-btn active px-3 py-1.5 rounded-lg text-xs font-mono text-ethereal bg-white/10 transition-all font-semibold">
+                  🖥️ Desktop (1440)
+                </button>
+                <button id="devTabTablet" onclick="setDeviceProfile('tablet')" class="dev-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono text-text-muted hover:text-white transition-all">
+                  📱 iPad Pro (834)
+                </button>
+                <button id="devTabMobile" onclick="setDeviceProfile('mobile')" class="dev-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono text-text-muted hover:text-white transition-all">
+                  📲 iPhone 16 (393)
+                </button>
+                <button id="devTabWide" onclick="setDeviceProfile('wide')" class="dev-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono text-text-muted hover:text-white transition-all">
+                  💻 Cinema (1920)
+                </button>
+              </div>
+
+              <!-- Orientation Toggle -->
+              <button id="orientationToggleBtn" onclick="toggleDeviceOrientation()" class="px-3 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-ethereal/50 text-xs font-mono text-text-muted hover:text-white transition-all flex items-center gap-1.5">
+                <span>🔄</span>
+                <span id="orientationLabel">Portrait</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Device Matrix Canvas Container -->
+          <div class="p-6 rounded-[28px] bg-gradient-to-b from-[#0B120E] via-void to-[#070B08] border border-white/10 shadow-2xl overflow-hidden">
+            
+            <!-- Matrix Telemetry Status Strip -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-white/10 text-xs font-mono">
+              <div class="flex items-center gap-4">
+                <div><span class="text-text-muted">Target Resolution:</span> <span id="matrixTelemetryRes" class="text-white font-bold">1440 × 900px</span></div>
+                <div><span class="text-text-muted">Computed Scale:</span> <span id="matrixTelemetryScale" class="text-ethereal font-bold">74.2%</span></div>
+                <div><span class="text-text-muted">DPR:</span> <span id="matrixTelemetryDpr" class="text-amber-dragon font-bold">3x Retina</span></div>
+              </div>
+              <div class="text-text-muted">
+                Breakpoint: <span id="matrixTelemetryMq" class="text-ethereal">@media (min-width: 1024px)</span>
+              </div>
+            </div>
+
+            <!-- Scaled Device Frame Wrapper -->
+            <div id="deviceMatrixContainer" class="relative w-full flex justify-center items-start overflow-hidden transition-all duration-300" style="min-height: 480px;">
+              
+              <!-- Device Shell -->
+              <div id="deviceShellFrame" class="device-shell-bezel bg-[#0A0E0C] border-2 border-white/20 relative shadow-2xl transition-all duration-300">
+                
+                <!-- Dynamic Island (visible in mobile mode) -->
+                <div id="deviceDynamicIsland" class="hidden absolute top-3 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full z-30 border border-white/10 flex items-center justify-between px-3">
+                  <span class="w-2.5 h-2.5 rounded-full bg-[#1A2E20] border border-[#2EE59D]/40"></span>
+                  <span class="w-2 h-2 rounded-full bg-ethereal/80 animate-pulse"></span>
+                </div>
+
+                <!-- Status Bar -->
+                <div id="deviceStatusBar" class="h-8 bg-transparent px-6 flex items-center justify-between text-[11px] font-mono text-gray-400 select-none z-20 relative">
+                  <span>9:41</span>
+                  <div class="flex items-center gap-2 text-[10px]">
+                    <span>5G</span>
+                    <span>100% 🔋</span>
+                  </div>
+                </div>
+
+                <!-- Device Preview Content (Interactive Mini-App) -->
+                <div id="devicePreviewContent" class="p-6 text-white space-y-5 select-none overflow-y-auto" style="height: calc(100% - 32px);">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <div class="w-3 h-3 rounded-full bg-ethereal shadow-[0_0_8px_#2EE59D]"></div>
+                      <span class="font-heading font-extrabold text-sm tracking-tight text-white">DESIGN ENGINE OS</span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded bg-ethereal/20 text-ethereal text-[10px] font-mono">v7.0-PROD</span>
+                  </div>
+
+                  <!-- Mini Hero Inside Screen -->
+                  <div class="p-5 rounded-2xl bg-surface-elevated/90 border border-white/10 space-y-2">
+                    <span class="text-[10px] font-mono text-ethereal uppercase tracking-wider">Multi-Agent Pipeline</span>
+                    <h3 class="text-base font-bold font-heading text-white">Autonomous Telephony &amp; UI Generation</h3>
+                    <p class="text-xs text-text-muted leading-relaxed">
+                      Zero-drift AST synchronized across Daedalus, Valerius, and Justinian in 0.38ms.
+                    </p>
+                  </div>
+
+                  <!-- Mini Metrics Grid -->
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
+                      <div class="text-[10px] font-mono text-text-muted">Latency</div>
+                      <div class="text-sm font-bold text-ethereal mt-0.5">38.4ms</div>
+                    </div>
+                    <div class="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
+                      <div class="text-[10px] font-mono text-text-muted">Parity</div>
+                      <div class="text-sm font-bold text-white mt-0.5">100.0%</div>
+                    </div>
+                    <div class="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
+                      <div class="text-[10px] font-mono text-text-muted">WCAG</div>
+                      <div class="text-sm font-bold text-amber-dragon mt-0.5">14.2:1 AAA</div>
+                    </div>
+                    <div class="p-3 rounded-xl bg-white/5 border border-white/10 text-center">
+                      <div class="text-[10px] font-mono text-text-muted">FPS</div>
+                      <div class="text-sm font-bold text-ethereal mt-0.5">60.0</div>
+                    </div>
+                  </div>
+
+                  <!-- Mini Interactive Component -->
+                  <div class="p-4 rounded-xl bg-black/40 border border-white/10 flex items-center justify-between">
+                    <div>
+                      <div class="text-xs font-semibold text-white">Interactive Billing Engine</div>
+                      <div id="miniAppMetricVal" class="text-[11px] font-mono text-text-muted">Tier: Enterprise Sovereign</div>
+                    </div>
+                    <button onclick="toggleMiniAppBilling()" class="px-3 py-1.5 rounded-lg bg-ethereal/20 border border-ethereal/40 text-ethereal text-xs font-mono font-bold hover:bg-ethereal/30 transition-all">
+                      <span id="miniAppPriceVal">$349/mo</span>
+                    </button>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      
+      <!-- ========================================== -->
+      <!-- SESSION 08: NATIVE VIEW TRANSITIONS API MORPHING -->
+      <!-- ========================================== -->
+      <section id="viewTransitionsSection" class="py-16 bg-surface/30 border-y border-white/5">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+          <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ethereal/10 border border-ethereal/30 text-xs font-mono text-ethereal mb-3">
+                <span>🔲 SHARED ELEMENT TRANSITIONS &bull; document.startViewTransition</span>
+              </div>
+              <h2 class="text-3xl font-extrabold font-heading text-white tracking-tight">
+                View Transitions API Layout Morphing
+              </h2>
+              <p class="text-sm text-text-muted mt-1 max-w-xl">
+                Experience seamless 60 FPS hardware-accelerated component morphing between layout modes using browser compositor snapshots.
+              </p>
+            </div>
+
+            <!-- Layout Mode Switcher -->
+            <div class="inline-flex p-1 rounded-xl bg-surface-elevated border border-white/10">
+              <button id="layoutBtnGrid" onclick="switchViewTransitionLayout('grid')" class="px-3.5 py-1.5 rounded-lg text-xs font-mono text-ethereal bg-white/10 transition-all font-semibold flex items-center gap-1.5">
+                <span>▦</span> Grid Bento
+              </button>
+              <button id="layoutBtnDetail" onclick="switchViewTransitionLayout('detail')" class="px-3.5 py-1.5 rounded-lg text-xs font-mono text-text-muted hover:text-white transition-all flex items-center gap-1.5">
+                <span>🔍</span> Detailed Inspector
+              </button>
+              <button id="layoutBtnCompact" onclick="switchViewTransitionLayout('compact')" class="px-3.5 py-1.5 rounded-lg text-xs font-mono text-text-muted hover:text-white transition-all flex items-center gap-1.5">
+                <span>📟</span> Compact Strip
+              </button>
+            </div>
+          </div>
+
+          <!-- Morphing Layout Canvas -->
+          <div id="morphingLayoutContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-300">
+            
+            <!-- Morphing Card 1 -->
+            <div id="morphCard1" class="view-trans-card p-6 rounded-[22px] bg-surface/90 border border-white/10 hover:border-ethereal/40 shadow-specular transition-all flex flex-col justify-between" style="--vt-name: morph-card-1;">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <span class="w-8 h-8 rounded-xl bg-ethereal/15 border border-ethereal/30 flex items-center justify-center text-sm text-ethereal">⚡</span>
+                  <span class="text-[10px] font-mono text-ethereal bg-ethereal/10 px-2 py-0.5 rounded">GPU Shader</span>
+                </div>
+                <h4 class="text-lg font-bold font-heading text-white mb-2">Liquid Optics Lens</h4>
+                <p class="text-xs text-text-muted leading-relaxed">
+                  Real-time procedural refraction and specular highlight tracking via SVG filter displacement fields.
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-text-muted">
+                <span>Scale: 22px</span>
+                <span class="text-ethereal font-semibold">60 FPS Render</span>
+              </div>
+            </div>
+
+            <!-- Morphing Card 2 -->
+            <div id="morphCard2" class="view-trans-card p-6 rounded-[22px] bg-surface/90 border border-white/10 hover:border-amber-dragon/40 shadow-specular transition-all flex flex-col justify-between" style="--vt-name: morph-card-2;">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <span class="w-8 h-8 rounded-xl bg-amber-dragon/15 border border-amber-dragon/30 flex items-center justify-center text-sm text-amber-dragon">📱</span>
+                  <span class="text-[10px] font-mono text-amber-dragon bg-amber-dragon/10 px-2 py-0.5 rounded">Auto-Scale</span>
+                </div>
+                <h4 class="text-lg font-bold font-heading text-white mb-2">Device Sandbox Matrix</h4>
+                <p class="text-xs text-text-muted leading-relaxed">
+                  Precision emulated viewports for Desktop, iPad Pro, and iPhone 16 Pro with Apple Dynamic Island aperture.
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-text-muted">
+                <span>Scale: Dynamic</span>
+                <span class="text-amber-dragon font-semibold">Zero Shift</span>
+              </div>
+            </div>
+
+            <!-- Morphing Card 3 -->
+            <div id="morphCard3" class="view-trans-card p-6 rounded-[22px] bg-surface/90 border border-white/10 hover:border-brass/40 shadow-specular transition-all flex flex-col justify-between" style="--vt-name: morph-card-3;">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <span class="w-8 h-8 rounded-xl bg-brass/15 border border-brass/30 flex items-center justify-center text-sm text-brass">✨</span>
+                  <span class="text-[10px] font-mono text-brass bg-brass/10 px-2 py-0.5 rounded">Synthesizer</span>
+                </div>
+                <h4 class="text-lg font-bold font-heading text-white mb-2">Prompt-to-AST Streamer</h4>
+                <p class="text-xs text-text-muted leading-relaxed">
+                  3-phase generative pipeline: semantic token extraction chips, progressive typewriter AST, and instant UI compilation.
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono text-text-muted">
+                <span>Latency: 38.4ms</span>
+                <span class="text-brass font-semibold">Deterministic</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      
+      <!-- ========================================== -->
+      <!-- SESSION 08: CODEX MULTI-FORMAT TOKEN & AST EXPORTER -->
+      <!-- ========================================== -->
+      <section id="codexExportSection" class="py-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+          <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ethereal/10 border border-ethereal/30 text-xs font-mono text-ethereal mb-3">
+                <span>📦 ENTERPRISE MULTI-TARGET COMPILER &bull; 5 FORMATS</span>
+              </div>
+              <h2 class="text-3xl font-extrabold font-heading text-white tracking-tight">
+                Codex Multi-Format Token &amp; AST Exporter
+              </h2>
+              <p class="text-sm text-text-muted mt-1 max-w-xl">
+                Export synthesized UI components and Obsidian Verdant design tokens seamlessly into production-ready React JSX, CSS Variables, Figma Tokens JSON, TypeScript Types, or Apple SwiftUI Structs.
+              </p>
+            </div>
+
+            <!-- Format Selector Tabs -->
+            <div class="flex flex-wrap items-center gap-2">
+              <div class="inline-flex p-1 rounded-xl bg-surface-elevated border border-white/10">
+                <button id="exportTabReact" onclick="selectExportFormat('react')" class="export-tab-btn active px-3 py-1.5 rounded-lg text-xs font-mono text-ethereal bg-white/10 transition-all font-semibold">
+                  ⚛️ React + Tailwind
+                </button>
+                <button id="exportTabCss" onclick="selectExportFormat('css')" class="export-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono text-text-muted hover:text-white transition-all">
+                  🎨 CSS Variables
+                </button>
+                <button id="exportTabFigma" onclick="selectExportFormat('figma')" class="export-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono text-text-muted hover:text-white transition-all">
+                  📐 Figma JSON
+                </button>
+                <button id="exportTabTs" onclick="selectExportFormat('ts')" class="export-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono text-text-muted hover:text-white transition-all">
+                  🔷 TypeScript
+                </button>
+                <button id="exportTabSwift" onclick="selectExportFormat('swift')" class="export-tab-btn px-3 py-1.5 rounded-lg text-xs font-mono text-text-muted hover:text-white transition-all">
+                  🍎 SwiftUI
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Code Viewport Card -->
+          <div class="p-6 rounded-[24px] bg-[#070B08] border border-white/10 shadow-2xl space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10 text-xs font-mono">
+              <div class="flex items-center gap-3">
+                <span id="exportFormatBadge" class="px-2.5 py-0.5 rounded bg-ethereal/20 text-ethereal font-bold">React JSX + Tailwind v3.4</span>
+                <span id="exportLineCount" class="text-text-muted">Lines: 28 &bull; 1,420 bytes</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="exportCopyFeedback" class="text-ethereal text-xs font-mono opacity-0 transition-opacity">✓ Copied to clipboard!</span>
+                <button id="codexCopyBtn" onclick="copyExportedCode()" class="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-ethereal text-xs font-mono text-white transition-all flex items-center gap-1.5">
+                  <span>📋</span> Copy Code
+                </button>
+                <button id="codexDownloadBtn" onclick="downloadExportedCode()" class="px-3.5 py-1.5 rounded-xl bg-ethereal/20 border border-ethereal/40 hover:bg-ethereal/30 text-xs font-mono text-ethereal font-bold transition-all flex items-center gap-1.5">
+                  <span>⬇️</span> Download File
+                </button>
+              </div>
+            </div>
+
+            <!-- Syntax Highlighted Code Viewer -->
+            <div class="relative p-5 rounded-xl bg-black/70 border border-white/5 overflow-x-auto min-h-[260px] max-h-[440px]">
+              <pre id="codexCodeViewer" class="font-mono text-xs text-gray-300 leading-relaxed"><code>// Loading Codex export...</code></pre>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between text-[11px] font-mono text-text-muted pt-2">
+              <span>Deterministic AST Checksum: <strong class="text-emerald-400">SHA-256 Valid</strong></span>
+              <span>WCAG AAA Verified &bull; Continuous Squircle Continuous Math</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="sandbox" class="py-12">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <span class="text-xs font-mono text-ethereal font-bold uppercase tracking-widest">LIVE MULTIPLAYER AGENT PRESENCE</span>
+        <h2 class="font-heading font-bold text-3xl sm:text-4xl mt-2 text-white">Autonomous Collaborative Stage</h2>
+        <p class="text-sm text-text-muted mt-2">
+          Watch <strong>Daedalus</strong> (Architect), <strong>Valerius</strong> (Herald), and <strong>Justinian</strong> (Steward) co-author component code in real-time across the live preview.
+        </p>
+      </div>
+
+      <div class="spotlight-surface rounded-[24px] p-6 max-w-5xl mx-auto mb-8">
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div class="relative flex-1">
+              <input id="promptInput" type="text" value="B2B Autonomous Telephony & CRM Radar" class="w-full bg-void/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-mono focus:outline-none focus:border-ethereal focus:ring-1 focus:ring-ethereal transition-all placeholder:text-text-muted" placeholder="Enter custom UI prompt...">
+            </div>
+            <button id="synthesizeBtn" onclick="runSynthesis(); playClickSound();" class="spring-interactive px-6 py-3 rounded-xl bg-gradient-to-r from-ethereal to-emerald-500 text-void font-heading font-bold text-sm shadow-[0_0_20px_rgba(46,229,157,0.35)] flex items-center justify-center gap-2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>Compile AST</span>
+            </button>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-white/5">
+            <div class="flex items-center gap-1 bg-void/60 p-1 rounded-xl border border-white/10">
+              <button id="vpDesktop" onclick="setViewport('desktop', this)" class="viewport-btn active spring-interactive px-3 py-1 rounded-lg text-xs font-mono font-medium text-ethereal bg-white/10">Desktop</button>
+              <button id="vpTablet" onclick="setViewport('tablet', this)" class="viewport-btn spring-interactive px-3 py-1 rounded-lg text-xs font-mono font-medium text-text-muted hover:text-white">Tablet (768px)</button>
+              <button id="vpMobile" onclick="setViewport('mobile', this)" class="viewport-btn spring-interactive px-3 py-1 rounded-lg text-xs font-mono font-medium text-text-muted hover:text-white">Mobile (390px)</button>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button id="agentToggleBtn" onclick="toggleAgentCursors()" class="spring-interactive px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-text-muted hover:text-white flex items-center gap-2">
+                <span id="agentDot" class="w-2 h-2 rounded-full bg-ethereal"></span>
+                <span>Agents Presence: ON</span>
+              </button>
+              <button onclick="openCodeModal(); playChimeSound();" class="spring-interactive px-3.5 py-1.5 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-semibold hover:bg-cyan-500/25 flex items-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                <span>Export AST</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Output Stage Frame with Live Agent Cursors -->
+      <div id="stageFrame" class="w-full max-w-5xl mx-auto transition-all duration-500 ease-out relative">
+        <div id="cursorDaedalus" class="agent-cursor" style="top: 18%; left: 24%;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#2EE59D" stroke="#070B08" stroke-width="1.5">
+            <polygon points="0 0 0 20 5 15 11 23 14 21 8 13 16 13 0 0"></polygon>
+          </svg>
+          <div class="agent-cursor-badge bg-ethereal text-void border border-ethereal">
+            Daedalus &bull; SQUIRCLE AST
+          </div>
+        </div>
+
+        <div id="cursorValerius" class="agent-cursor" style="top: 62%; left: 70%;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#F59E0B" stroke="#070B08" stroke-width="1.5">
+            <polygon points="0 0 0 20 5 15 11 23 14 21 8 13 16 13 0 0"></polygon>
+          </svg>
+          <div class="agent-cursor-badge bg-amber-dragon text-void border border-amber-dragon">
+            Valerius &bull; VOICE CONCIERGE
+          </div>
+        </div>
+
+        <div id="cursorJustinian" class="agent-cursor" style="top: 78%; left: 32%;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#C5A059" stroke="#070B08" stroke-width="1.5">
+            <polygon points="0 0 0 20 5 15 11 23 14 21 8 13 16 13 0 0"></polygon>
+          </svg>
+          <div class="agent-cursor-badge bg-brass text-void border border-brass">
+            Justinian &bull; $0.04 BOM AUDIT
+          </div>
+        </div>
+
+        <div class="spotlight-surface rounded-[28px] p-6 sm:p-8 relative min-h-[460px] flex flex-col justify-between overflow-hidden">
+          <div class="flex items-center justify-between pb-4 border-b border-white/10 text-xs font-mono text-text-muted">
+            <div class="flex items-center gap-3">
+              <span class="w-2.5 h-2.5 rounded-full bg-ethereal"></span>
+              <span id="stageStatus">MULTI-AGENT COLLABORATION ACTIVE</span>
+              <span class="text-white/20">|</span>
+              <span>LATENCY: <strong id="stageLatency" class="text-ethereal">40.2ms</strong></span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10">CO-AUTHORING: 3 AGENTS</span>
+            </div>
+          </div>
+
+          <div id="compileOverlay" class="absolute inset-0 bg-void/90 backdrop-blur-md z-40 flex flex-col items-center justify-center gap-4 opacity-0 pointer-events-none transition-opacity duration-200">
+            <div class="w-12 h-12 rounded-full border-3 border-ethereal/20 border-t-ethereal animate-spin"></div>
+            <div id="compileStepLabel" class="font-mono text-sm text-ethereal tracking-wider font-semibold">
+              SYNCHRONIZING FIGMA DESIGN TOKENS...
+            </div>
+            <div class="text-xs font-mono text-text-muted">Executing AST Compilation in Deterministic Memory</div>
+          </div>
+
+          <div id="mockContainer" class="my-6 space-y-6">
+            <div id="mockBannerCard" class="p-6 rounded-[20px] bg-surface-elevated/70 border border-white/10 shadow-specular flex flex-col md:flex-row items-start md:items-center justify-between gap-6 transition-all duration-300">
+              <div class="space-y-2 max-w-xl">
+                <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-ethereal/15 border border-ethereal/30 text-[11px] font-mono text-ethereal font-semibold" id="mockBadge">
+                  VALERIUS THE HERALD ACTIVE
+                </div>
+                <h3 class="font-heading font-bold text-xl sm:text-2xl text-white" id="mockTitle">
+                  B2B Autonomous Telephony & CRM Radar
+                </h3>
+                <p class="text-sm text-text-muted leading-relaxed" id="mockCopy">
+                  Deterministic agent synthesis complete. Voice streams, caller intent embeddings, and Google Calendar slots synchronized in real-time.
+                </p>
+              </div>
+
+              <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                <button onclick="simulateVoiceCall()" class="spring-interactive w-full sm:w-auto px-4 py-2.5 rounded-xl bg-amber-dragon text-void font-heading font-bold text-xs shadow-specular text-center flex items-center justify-center gap-1.5">
+                  <span>📞 Test Call</span>
+                </button>
+                <button onclick="playClickSound()" class="spring-interactive w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-heading font-medium text-xs hover:bg-white/10 text-center">
+                  Review Logs
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="mockGrid">
+              <div class="mock-card p-5 rounded-[16px] bg-surface-elevated/50 border border-white/10 shadow-specular hover:border-ethereal/40 transition-colors">
+                <div class="text-[11px] font-mono text-text-muted uppercase" id="statLabel1">Inbound Qualification</div>
+                <div class="text-2xl font-mono font-bold text-ethereal mt-1" id="statVal1">99.8%</div>
+                <div class="text-xs text-text-muted mt-2">ElevenLabs Voice PTT latency &lt;280ms</div>
+              </div>
+
+              <div class="mock-card p-5 rounded-[16px] bg-surface-elevated/50 border border-white/10 shadow-specular hover:border-brass/40 transition-colors">
+                <div class="text-[11px] font-mono text-text-muted uppercase" id="statLabel2">Calendar Bookings</div>
+                <div class="text-2xl font-mono font-bold text-brass mt-1" id="statVal2">142 Slots</div>
+                <div class="text-xs text-text-muted mt-2">Executive slots synchronized seamlessly</div>
+              </div>
+
+              <div class="mock-card p-5 rounded-[16px] bg-surface-elevated/50 border border-white/10 shadow-specular hover:border-amber-dragon/40 transition-colors">
+                <div class="text-[11px] font-mono text-text-muted uppercase" id="statLabel3">Telemetry Integrity</div>
+                <div class="text-2xl font-mono font-bold text-amber-dragon mt-1" id="statVal3">100.0%</div>
+                <div class="text-xs text-text-muted mt-2">Zero dropped websocket frames</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-text-muted gap-2">
+            <div>Squircle Curvature: <span class="text-ethereal font-semibold">R_outer = 28px, R_inner = 12px</span></div>
+            <div class="flex items-center gap-3">
+              <span>Figma &rarr; AST Sync: OK</span>
+              <span class="text-white/20">&bull;</span>
+              <span>Anime.js v3.2.2: ENGAGED</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KINETIC VOICE CONCIERGE WAVEFORM CANVAS (VALERIUS) -->
+    <section id="voice" class="py-16">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-mono text-amber-dragon font-bold uppercase tracking-widest">TELEPHONY & VOICE INTELLIGENCE</span>
+        <h2 class="font-heading font-bold text-3xl sm:text-4xl mt-2 text-white">Valerius Voice Concierge Radar</h2>
+        <p class="text-sm text-text-muted mt-2">
+          Real-time frequency audio waveform visualizing 24/7 AI receptionist voice stream, Deepgram Nova-2 caller transcription, and ElevenLabs speech generation.
+        </p>
+      </div>
+
+      <div class="spotlight-surface beam-card-active rounded-[28px] p-8 max-w-4xl mx-auto">
+        <div class="flex flex-col gap-6">
+          <div class="relative bg-void/90 rounded-2xl border border-white/10 p-4 overflow-hidden flex flex-col items-center justify-center min-h-[220px]">
+            <canvas id="voiceCanvas" width="760" height="160" class="w-full h-40"></canvas>
+            
+            <div class="absolute top-4 left-4 flex items-center gap-2 font-mono text-xs">
+              <span id="voiceStatusDot" class="w-2.5 h-2.5 rounded-full bg-amber-dragon rune-pulse"></span>
+              <span id="voiceStatusText" class="text-amber-dragon font-semibold">VALERIUS READY &bull; MONITORING INBOUND TELEPHONY</span>
+            </div>
+
+            <div class="absolute bottom-4 right-4 font-mono text-[11px] text-text-muted">
+              DEEPGRAM NOVA-2 &bull; &lt;280ms SPEECH PTT
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+            <div class="flex items-center gap-3">
+              <button id="voiceSimBtn" onclick="simulateVoiceCall()" class="spring-interactive px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-dragon to-amber-600 text-void font-heading font-bold text-xs shadow-specular flex items-center gap-2">
+                <span>🎙️ Simulate Inbound Caller Note</span>
+              </button>
+              <button onclick="toggleVoiceWaveMode()" class="spring-interactive px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono text-xs hover:bg-white/10">
+                Mode: <span id="waveModeLabel" class="text-amber-dragon">Spectrum + Wave</span>
+              </button>
+            </div>
+
+            <div class="font-mono text-xs text-text-muted">
+              Audio Bitrate: <strong class="text-white">Opus 48kHz</strong> &bull; Latency: <strong class="text-ethereal">264ms</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="pt-16 pb-12 border-t border-white/10 text-center space-y-4">
+      <div class="flex flex-wrap justify-center gap-6 text-xs font-mono text-text-muted">
+        <a href="#curves" class="hover:text-ethereal">Curve Editor</a>
+        <a href="#tree" class="hover:text-cyan-400">AST Tree</a>
+        <a href="#arbitrage" class="hover:text-brass">Arbitrage</a>
+        <a href="#diff" class="hover:text-ethereal">Visual Diff</a>
+        <a href="#sandbox" class="hover:text-ethereal">Multiplayer Presence</a>
+        <a href="#voice" class="hover:text-amber-dragon">Voice Radar</a>
+        <a href="../DESIGN_ENGINE_RESEARCH_LOG.md" class="hover:text-brass">Research Log (Markdown)</a>
+        <a href="../index.html" class="hover:text-ethereal">Aethelgard Master Hub</a>
+      </div>
+      <p class="text-xs text-text-muted font-sans">
+        &copy; 2026 Design Engine SaaS &bull; Aethelgard Sovereign Autonomous Guild. All rights reserved.
+      </p>
+      <p class="text-[11px] font-mono text-text-muted/60">
+        Session 06 Flagship Build &bull; Zero Duplicate DOM IDs &bull; Motion Curve Editor &bull; AST Inspector
+      </p>
+    </footer>
+
+  </main>
+
+  <!-- KNOWLEDGE & EVOLUTION LEDGER SLIDE-OVER DRAWER -->
+  <div id="drawerOverlay" class="drawer-overlay" onclick="toggleDrawer()">
+    <div class="drawer-panel" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+        <div class="flex items-center gap-2">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-ethereal"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <span class="font-heading font-bold text-base text-white">Learned Intelligence Ledger</span>
+        </div>
+        <button onclick="toggleDrawer(); playClickSound();" class="text-text-muted hover:text-white text-xl">&times;</button>
+      </div>
+
+      <p class="text-xs text-text-muted leading-relaxed mb-6">
+        Real-time audit log of internet searches, repository intelligence, and web capabilities implemented across the workspace during each session.
+      </p>
+
+      <!-- Ledger Items -->
+      <div class="space-y-4 flex-1">
+        
+        <!-- Session 06 Items -->
+        <div class="p-4 rounded-xl bg-surface-elevated/80 border border-ethereal/50 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-heading font-bold text-ethereal">Cubic Bézier & Spring Curve Editor</span>
+            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-ethereal/20 text-ethereal font-bold">SESSION 06</span>
+          </div>
+          <p class="text-[11px] text-text-muted leading-relaxed">
+            Interactive visual motion curve authoring tool rendering live impulse velocity feedback with exportable CSS rules.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-surface-elevated/80 border border-cyan-400/50 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-heading font-bold text-cyan-400">Component AST Tree Inspector</span>
+            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-cyan-400/20 text-cyan-400 font-bold">SESSION 06</span>
+          </div>
+          <p class="text-[11px] text-text-muted leading-relaxed">
+            Hierarchical node visualizer detailing computed Tailwind utility tokens, token classifications, and WCAG AAA contrast ratings.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-surface-elevated/80 border border-brass/50 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-heading font-bold text-brass">Agency Retainer Arbitrage Calculator</span>
+            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-brass/20 text-brass font-bold">SESSION 06</span>
+          </div>
+          <p class="text-[11px] text-text-muted leading-relaxed">
+            Dynamic ROI calculator proving over $145k/yr in client agency savings with a sub-4 day payback period.
+          </p>
+        </div>
+
+        <!-- Session 05 Items -->
+        <div class="p-4 rounded-xl bg-surface-elevated/40 border border-white/10 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-heading font-semibold text-text-muted">Visual Split-Diff & Particle Mesh</span>
+            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-white/10 text-text-muted">SESSION 05</span>
+          </div>
+          <p class="text-[11px] text-text-muted/70 leading-relaxed">
+            Figma Token to AST split-diff slider and 60fps particle constellation mesh.
+          </p>
+        </div>
+
+        <!-- Session 04 Items -->
+        <div class="p-4 rounded-xl bg-surface-elevated/30 border border-white/5 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-heading font-semibold text-text-muted">Multi-Agent Presence & Voice Waveform</span>
+            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-white/5 text-text-muted">SESSION 04</span>
+          </div>
+          <p class="text-[11px] text-text-muted/70 leading-relaxed">
+            Simulated multiplayer co-authoring cursors and 48-band canvas voice waveform visualizer.
+          </p>
+        </div>
+
+        <!-- Session 03 Items -->
+        <div class="p-4 rounded-xl bg-surface-elevated/30 border border-white/5 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-heading font-semibold text-text-muted">Magic UI Animated Beams & Haptics</span>
+            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-white/5 text-text-muted">SESSION 03</span>
+          </div>
+          <p class="text-[11px] text-text-muted/70 leading-relaxed">
+            GPU-accelerated SVG conic-gradient token beams and native procedural Web Audio micro-haptics.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="pt-6 border-t border-white/10 mt-6">
+        <a href="../DESIGN_ENGINE_RESEARCH_LOG.md" target="_blank" class="spring-interactive block w-full py-3 rounded-xl bg-brass/20 text-brass border border-brass/30 font-heading font-bold text-xs text-center hover:bg-brass/30">
+          Open Raw Markdown Research Log &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMAND PALETTE MODAL (CTRL+K / CMD+K) -->
+  <div id="cmdkOverlay" class="cmdk-overlay" onclick="toggleCmdk()">
+    <div class="cmdk-modal" onclick="event.stopPropagation()">
+      <div class="p-4 border-b border-white/10 flex items-center gap-3">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-ethereal"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input id="cmdkInput" type="text" placeholder="Type a command or preset..." oninput="filterCmdk(this.value)" class="w-full bg-transparent text-sm text-white font-mono focus:outline-none placeholder:text-text-muted">
+        <kbd class="text-[10px] font-mono bg-white/5 px-2 py-0.5 rounded border border-white/10 text-text-muted">ESC</kbd>
+      </div>
+
+      <div class="p-3 max-h-80 overflow-y-auto space-y-1 font-mono text-xs" id="cmdkList">
+        <div class="px-2 py-1 text-[10px] text-text-muted uppercase tracking-wider">Features</div>
+        <button onclick="applyCurvePreset('kowalski'); toggleCmdk();" class="w-full text-left px-3 py-2 rounded-lg text-ethereal hover:bg-white/10 flex items-center justify-between">
+          <span>Motion Curve: Kowalski Snappy</span>
+          <span class="text-[10px] text-text-muted">Spring Micro-Physics</span>
+        </button>
+        <button onclick="selectAstNode('root'); toggleCmdk();" class="w-full text-left px-3 py-2 rounded-lg text-cyan-400 hover:bg-white/10 flex items-center justify-between">
+          <span>Inspect AST: DocumentRoot</span>
+          <span class="text-[10px] text-text-muted">AST Inspector</span>
+        </button>
+        <button onclick="setTheme('verdant'); toggleCmdk();" class="w-full text-left px-3 py-2 rounded-lg text-white hover:bg-white/10 flex items-center justify-between">
+          <span>Theme: Obsidian Verdant</span>
+          <span class="text-[10px] text-text-muted">Default Atelier</span>
+        </button>
+
+        <div class="px-2 pt-3 pb-1 text-[10px] text-text-muted uppercase tracking-wider">Live Presets</div>
+        <button onclick="applyPreset('B2B Autonomous Telephony & CRM Radar'); toggleCmdk();" class="w-full text-left px-3 py-2 rounded-lg text-white hover:bg-ethereal/20 hover:text-ethereal flex items-center justify-between">
+          <span>Telephony & Voice CRM Radar</span>
+          <span class="text-[10px] text-text-muted">Daedalus + Valerius</span>
+        </button>
+        <button onclick="applyPreset('SaaS Invoicing & Token Burn Ledger'); toggleCmdk();" class="w-full text-left px-3 py-2 rounded-lg text-white hover:bg-ethereal/20 hover:text-ethereal flex items-center justify-between">
+          <span>Token Burn & Financial Ledger</span>
+          <span class="text-[10px] text-text-muted">Justinian</span>
+        </button>
+
+        <div class="px-2 pt-3 pb-1 text-[10px] text-text-muted uppercase tracking-wider">Actions</div>
+        <button onclick="openCodeModal(); toggleCmdk();" class="w-full text-left px-3 py-2 rounded-lg text-cyan-400 hover:bg-cyan-500/10 flex items-center justify-between">
+          <span>Export React/Tailwind Source AST</span>
+          <span class="text-[10px] text-cyan-500">Copy to Clipboard</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CODE EXPORT MODAL -->
+  <div id="codeModalOverlay" class="code-modal-overlay" onclick="closeCodeModal()">
+    <div class="code-modal" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <div class="flex items-center gap-2 font-heading font-bold text-sm text-white">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-ethereal"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          <span>Deterministic React + Tailwind AST Output (Session 06)</span>
+        </div>
+        <button onclick="closeCodeModal()" class="text-text-muted hover:text-white text-lg">&times;</button>
+      </div>
+
+      <pre class="bg-void p-4 rounded-xl border border-white/10 overflow-x-auto text-xs font-mono text-ethereal leading-relaxed max-h-96" id="codeBlock">
+// Generated by Design Engine SaaS — Session 06 Flagship AST
+import React from 'react';
+
+export default function SovereignPresenceModule() {
+  return (
+    &lt;div className="rounded-[28px] p-8 bg-[#111A14] border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] text-[#E6E4DD]"&gt;
+      &lt;div className="flex items-center justify-between mb-4"&gt;
+        &lt;div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2EE59D]/15 text-[#2EE59D] text-xs font-mono"&gt;
+          ZERO DRIFT &bull; EMIL KOWALSKI SPRINGS VERIFIED
+        &lt;/div&gt;
+        &lt;span className="text-xs font-mono text-[#F59E0B]"&gt;VOICE RADAR ACTIVE&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;h2 className="text-2xl font-bold tracking-tight text-white mb-2"&gt;
+        B2B Autonomous Telephony & CRM Radar
+      &lt;/h2&gt;
+      &lt;p className="text-sm text-[#8E9991] max-w-xl mb-6"&gt;
+        Multi-agent collaborative AST with custom cubic-bezier curves, verified continuous squircles, and sub-$0.04 BOM economics.
+      &lt;/p&gt;
+      &lt;div className="grid grid-cols-3 gap-4"&gt;
+        &lt;div className="p-4 rounded-[12px] bg-[#16231B] border border-white/5"&gt;
+          &lt;div className="text-xs font-mono text-[#8E9991]"&gt;Inbound Qual&lt;/div&gt;
+          &lt;div className="text-xl font-mono font-bold text-[#2EE59D]"&gt;99.8%&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div className="p-4 rounded-[12px] bg-[#16231B] border border-white/5"&gt;
+          &lt;div className="text-xs font-mono text-[#8E9991]"&gt;Voice Latency&lt;/div&gt;
+          &lt;div className="text-xl font-mono font-bold text-[#F59E0B]"&gt;&amp;lt;280ms&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div className="p-4 rounded-[12px] bg-[#16231B] border border-white/5"&gt;
+          &lt;div className="text-xs font-mono text-[#8E9991]"&gt;Token Parity&lt;/div&gt;
+          &lt;div className="text-xl font-mono font-bold text-[#C5A059]"&gt;100.0%&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+      </pre>
+
+      <div class="flex items-center justify-between pt-2">
+        <span id="copyFeedback" class="text-xs font-mono text-ethereal opacity-0 transition-opacity">Copied to clipboard!</span>
+        <button onclick="copyCode()" class="spring-interactive px-5 py-2 rounded-xl bg-ethereal text-void font-heading font-bold text-xs shadow-specular flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <span>Copy Source AST</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING QUICK DRAWER PILL (MOBILE/DESKTOP) -->
+  <button onclick="toggleDrawer(); playClickSound();" class="spring-interactive fixed bottom-6 right-6 z-40 px-4 py-2.5 rounded-full bg-surface-elevated/95 border border-ethereal/40 shadow-[0_0_25px_rgba(46,229,157,0.35)] text-xs font-mono font-semibold text-ethereal flex items-center gap-2.5 backdrop-blur-md">
+    <span class="w-2 h-2 rounded-full bg-ethereal rune-pulse"></span>
+    <span>Session 06 Ledger</span>
+  </button>
+
+  <!-- INTERACTIVE JAVASCRIPT LOGIC -->
+  <script>
+    // --- 1. Web Audio Micro-Haptics Procedural Engine ---
+    let audioCtx = null;
+    let isAudioEnabled = true;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function toggleAudio() {
+      isAudioEnabled = !isAudioEnabled;
+      const onIcon = document.getElementById('audioIconOn');
+      const offIcon = document.getElementById('audioIconOff');
+      if (isAudioEnabled) {
+        onIcon.classList.remove('hidden');
+        offIcon.classList.add('hidden');
+        playChimeSound();
+      } else {
+        onIcon.classList.add('hidden');
+        offIcon.classList.remove('hidden');
+      }
+    }
+
+    function playClickSound() {
+      if (!isAudioEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(180, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.045);
+
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.045);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start();
+      osc.stop(ctx.currentTime + 0.045);
+    }
+
+    function playChimeSound() {
+      if (!isAudioEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+
+      [587.33, 880].forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.04);
+        gain.gain.setValueAtTime(0.06, ctx.currentTime + idx * 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.04 + 0.22);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + idx * 0.04);
+        osc.stop(ctx.currentTime + idx * 0.04 + 0.22);
+      });
+    }
+
+    function playVoiceNoteSound() {
+      if (!isAudioEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+
+      [320, 440, 520, 640].forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.06);
+        gain.gain.setValueAtTime(0.05, ctx.currentTime + idx * 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.06 + 0.15);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + idx * 0.06);
+        osc.stop(ctx.currentTime + idx * 0.06 + 0.15);
+      });
+    }
+
+    // --- 2. Interactive Cubic Bézier Curve Editor ---
+    let currentCurve = { x1: 0.175, y1: 0.885, x2: 0.320, y2: 1.275 };
+
+    function applyCurvePreset(type) {
+      if (type === 'kowalski') {
+        currentCurve = { x1: 0.175, y1: 0.885, x2: 0.320, y2: 1.275 };
+      } else if (type === 'entrance') {
+        currentCurve = { x1: 0.160, y1: 1.000, x2: 0.300, y2: 1.000 };
+      } else if (type === 'exit') {
+        currentCurve = { x1: 0.400, y1: 0.000, x2: 1.000, y2: 1.000 };
+      }
+      updateCurveDisplay();
+      triggerCurveImpulse();
+      playClickSound();
+    }
+
+    function updateCurveDisplay() {
+      const { x1, y1, x2, y2 } = currentCurve;
+      const svgW = 240;
+      const svgH = 160;
+
+      const px1 = x1 * svgW;
+      const py1 = svgH - (y1 * svgH);
+      const px2 = x2 * svgW;
+      const py2 = svgH - (y2 * svgH);
+
+      document.getElementById('bezierCurvePath').setAttribute('d', `M 0 160 C ${px1} ${py1}, ${px2} ${py2}, 240 0`);
+      document.getElementById('arm1').setAttribute('x2', px1);
+      document.getElementById('arm1').setAttribute('y2', py1);
+      document.getElementById('arm2').setAttribute('x2', px2);
+      document.getElementById('arm2').setAttribute('y2', py2);
+
+      document.getElementById('cp1Circle').setAttribute('cx', px1);
+      document.getElementById('cp1Circle').setAttribute('cy', py1);
+      document.getElementById('cp2Circle').setAttribute('cx', px2);
+      document.getElementById('cp2Circle').setAttribute('cy', py2);
+
+      const str = `cubic-bezier(${x1.toFixed(3)}, ${y1.toFixed(3)}, ${x2.toFixed(3)}, ${y2.toFixed(3)})`;
+      document.getElementById('cssCurveVal').textContent = str;
+    }
+
+    function triggerCurveImpulse() {
+      const box = document.getElementById('physicsImpulseBox');
+      const text = document.getElementById('impulseStatusText');
+      const { x1, y1, x2, y2 } = currentCurve;
+
+      text.textContent = 'Impulse executed at 60 FPS';
+      text.style.color = 'var(--accent-mint)';
+
+      box.style.transition = `transform 0.45s cubic-bezier(${x1}, ${y1}, ${x2}, ${y2})`;
+      box.style.transform = 'scale(1.25) translateY(-8px)';
+
+      setTimeout(() => {
+        box.style.transform = 'scale(1) translateY(0)';
+      }, 450);
+    }
+
+    function copyCurveCss() {
+      const val = document.getElementById('cssCurveVal').textContent.trim();
+      navigator.clipboard.writeText(`transition-timing-function: ${val};`).then(() => {
+        const f = document.getElementById('copyCurveFeedback');
+        f.style.opacity = '1';
+        setTimeout(() => f.style.opacity = '0', 2000);
+        playChimeSound();
+      });
+    }
+
+    // --- 3. Component AST Tree Inspector Logic ---
+    const astNodeData = {
+      root: {
+        tag: '<DocumentRoot />',
+        compile: 'Compile: 0.38ms',
+        tokens: 'min-h-screen bg-[#070B08] text-[#E6E4DD] font-sans antialiased overflow-x-hidden selection:bg-[#2EE59D]',
+        contrast: '14.2:1 AAA',
+        squircle: 'Verified Master 28px'
+      },
+      hero: {
+        tag: '<HeroModule />',
+        compile: 'Compile: 0.42ms',
+        tokens: 'relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center',
+        contrast: '12.8:1 AAA',
+        squircle: 'Inner 20px'
+      },
+      bento: {
+        tag: '<BentoGrid />',
+        compile: 'Compile: 0.29ms',
+        tokens: 'grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto perspective-1000',
+        contrast: '10.5:1 AAA',
+        squircle: 'Concentric 16px'
+      },
+      squircle: {
+        tag: '<SquircleCard />',
+        compile: 'Compile: 0.18ms',
+        tokens: 'rounded-[20px] p-7 bg-[#111A14]/78 backdrop-blur-xl border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]',
+        contrast: '9.2:1 AAA',
+        squircle: 'R_in = 12px (Padding 16px)'
+      },
+      telemetry: {
+        tag: '<TelemetryPill />',
+        compile: 'Compile: 0.11ms',
+        tokens: 'inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#2EE59D]/15 text-[#2EE59D] font-mono text-[11px] font-semibold',
+        contrast: '8.4:1 AAA',
+        squircle: 'Rounded Full (9999px)'
+      }
+    };
+
+    function selectAstNode(nodeKey) {
+      document.querySelectorAll('.ast-node-btn').forEach(btn => {
+        btn.classList.remove('bg-ethereal/15', 'border-ethereal', 'text-ethereal', 'font-bold');
+        btn.classList.add('bg-white/5', 'border-white/10', 'text-white');
+      });
+
+      const activeBtn = document.getElementById(`nodeBtn${nodeKey.charAt(0).toUpperCase() + nodeKey.slice(1)}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-ethereal/15', 'border-ethereal', 'text-ethereal', 'font-bold');
+        activeBtn.classList.remove('bg-white/5', 'border-white/10', 'text-white');
+      }
+
+      const data = astNodeData[nodeKey];
+      if (data) {
+        document.getElementById('astDetailTag').textContent = data.tag;
+        document.getElementById('astDetailCompile').textContent = data.compile;
+        document.getElementById('astDetailTokens').textContent = data.tokens;
+        document.getElementById('astDetailContrast').textContent = data.contrast;
+        document.getElementById('astDetailSquircle').textContent = data.squircle;
+      }
+      playClickSound();
+    }
+
+    // --- 4. Real-Time Agency ROI Arbitrage Calculator ---
+    function updateArbitrage(val) {
+      const n = parseInt(val, 10);
+      document.getElementById('arbitrageProjectsLabel').textContent = `${n} Workstream${n > 1 ? 's' : ''}`;
+
+      const agencyAnnual = n * 12500 * 12;
+      const engineAnnual = (349 * 12) + (n * 0.04 * 12);
+      const savings = agencyAnnual - engineAnnual;
+
+      document.getElementById('agencyCostVal').textContent = `$${agencyAnnual.toLocaleString()}`;
+      document.getElementById('engineCostVal').textContent = `$${Math.round(engineAnnual).toLocaleString()}`;
+      document.getElementById('arbitrageSavingsVal').textContent = `$${Math.round(savings).toLocaleString()}`;
+    }
+
+    // --- 5. Interactive Figma Token <-> AST Split-Diff Drag Logic ---
+    let isDiffDragging = false;
+
+    function startDiffDrag(e) {
+      isDiffDragging = true;
+      updateDiffSplit(e);
+      playClickSound();
+    }
+
+    function updateDiffSplit(e) {
+      if (!isDiffDragging) return;
+      const container = document.getElementById('diffContainer');
+      const overlay = document.getElementById('diffOverlayPane');
+      const handle = document.getElementById('diffHandle');
+      const rect = container.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const offset = clientX - rect.left;
+      const percent = Math.max(5, Math.min(95, (offset / rect.width) * 100));
+
+      overlay.style.width = `${percent}%`;
+      handle.style.left = `${percent}%`;
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      if (isDiffDragging) updateDiffSplit(e);
+    });
+    window.addEventListener('touchmove', (e) => {
+      if (isDiffDragging) updateDiffSplit(e);
+    });
+    window.addEventListener('mouseup', () => {
+      if (isDiffDragging) {
+        isDiffDragging = false;
+        playClickSound();
+      }
+    });
+    window.addEventListener('touchend', () => {
+      if (isDiffDragging) {
+        isDiffDragging = false;
+        playClickSound();
+      }
+    });
+
+    // --- 6. Dynamic Multi-Theme Morphing Engine ---
+    const themeList = ['verdant', 'monastic', 'cyber', 'titanium'];
+    let currentThemeIdx = 0;
+
+    function cycleTheme() {
+      currentThemeIdx = (currentThemeIdx + 1) % themeList.length;
+      setTheme(themeList[currentThemeIdx]);
+    }
+
+    function setTheme(name) {
+      document.body.className = '';
+      const dot = document.getElementById('themeDot');
+      const lbl = document.getElementById('themeLabel');
+
+      if (name === 'verdant') {
+        dot.style.background = '#2EE59D';
+        lbl.textContent = 'Verdant';
+      } else if (name === 'monastic') {
+        document.body.classList.add('theme-monastic');
+        dot.style.background = '#E5C989';
+        lbl.textContent = 'Monastic';
+      } else if (name === 'cyber') {
+        document.body.classList.add('theme-cyber');
+        dot.style.background = '#06B6D4';
+        lbl.textContent = 'Cyber';
+      } else if (name === 'titanium') {
+        document.body.classList.add('theme-titanium');
+        dot.style.background = '#E2E8F0';
+        lbl.textContent = 'Titanium';
+      }
+      playChimeSound();
+    }
+
+    // --- 7. 60 FPS Particle Constellation Mesh Canvas ---
+    const meshCanvas = document.getElementById('meshCanvas');
+    const meshCtx = meshCanvas.getContext('2d');
+    let particles = [];
+    let mousePos = { x: -1000, y: -1000 };
+
+    function initMeshParticles() {
+      meshCanvas.width = window.innerWidth;
+      meshCanvas.height = window.innerHeight;
+      particles = [];
+      const count = Math.min(50, Math.floor(window.innerWidth / 30));
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * meshCanvas.width,
+          y: Math.random() * meshCanvas.height,
+          vx: (Math.random() - 0.5) * 0.7,
+          vy: (Math.random() - 0.5) * 0.7,
+          radius: Math.random() * 1.8 + 1
+        });
+      }
+    }
+    window.addEventListener('resize', initMeshParticles);
+
+    window.addEventListener('mousemove', (e) => {
+      mousePos.x = e.clientX;
+      mousePos.y = e.clientY;
+    });
+
+    function renderMesh() {
+      meshCtx.clearRect(0, 0, meshCanvas.width, meshCanvas.height);
+      const w = meshCanvas.width;
+      const h = meshCanvas.height;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0) p.x = w;
+        if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h;
+        if (p.y > h) p.y = 0;
+
+        const dx = p.x - mousePos.x;
+        const dy = p.y - mousePos.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 100) {
+          p.x += (dx / dist) * 1.2;
+          p.y += (dy / dist) * 1.2;
+        }
+
+        meshCtx.beginPath();
+        meshCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        meshCtx.fillStyle = 'rgba(46, 229, 157, 0.45)';
+        meshCtx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const d2 = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if (d2 < 110) {
+            meshCtx.beginPath();
+            meshCtx.moveTo(p.x, p.y);
+            meshCtx.lineTo(p2.x, p2.y);
+            meshCtx.strokeStyle = `rgba(46, 229, 157, ${0.2 * (1 - d2 / 110)})`;
+            meshCtx.lineWidth = 0.8;
+            meshCtx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(renderMesh);
+    }
+    initMeshParticles();
+    requestAnimationFrame(renderMesh);
+
+    // --- 8. Spotlight Pointer Tracking ---
+    document.addEventListener('pointermove', (e) => {
+      const surfaces = document.querySelectorAll('.spotlight-surface');
+      surfaces.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mouse-x', `${x}%`);
+        card.style.setProperty('--mouse-y', `${y}%`);
+      });
+    });
+
+    // --- 9. Multi-Agent Live Cursors Animation ---
+    let areAgentsActive = true;
+    const agentTargets = {
+      daedalus: { x: 25, y: 22, tx: 25, ty: 22 },
+      valerius: { x: 68, y: 55, tx: 68, ty: 55 },
+      justinian: { x: 35, y: 75, tx: 35, ty: 75 }
+    };
+
+    function updateAgentWaypoints() {
+      if (!areAgentsActive) return;
+      agentTargets.daedalus.tx = 15 + Math.random() * 65;
+      agentTargets.daedalus.ty = 15 + Math.random() * 60;
+      agentTargets.valerius.tx = 20 + Math.random() * 70;
+      agentTargets.valerius.ty = 30 + Math.random() * 55;
+      agentTargets.justinian.tx = 25 + Math.random() * 60;
+      agentTargets.justinian.ty = 40 + Math.random() * 45;
+    }
+    setInterval(updateAgentWaypoints, 3200);
+
+    function stepAgentCursors() {
+      if (areAgentsActive) {
+        ['daedalus', 'valerius', 'justinian'].forEach(name => {
+          const a = agentTargets[name];
+          a.x += (a.tx - a.x) * 0.04;
+          a.y += (a.ty - a.y) * 0.04;
+          const el = document.getElementById(`cursor${name.charAt(0).toUpperCase() + name.slice(1)}`);
+          if (el) {
+            el.style.left = `${a.x}%`;
+            el.style.top = `${a.y}%`;
+          }
+        });
+      }
+      requestAnimationFrame(stepAgentCursors);
+    }
+    requestAnimationFrame(stepAgentCursors);
+
+    function toggleAgentCursors() {
+      areAgentsActive = !areAgentsActive;
+      const btn = document.getElementById('agentToggleBtn');
+      const dot = document.getElementById('agentDot');
+      const daedalus = document.getElementById('cursorDaedalus');
+      const valerius = document.getElementById('cursorValerius');
+      const justinian = document.getElementById('cursorJustinian');
+
+      if (areAgentsActive) {
+        btn.querySelector('span:last-child').textContent = 'Agents Presence: ON';
+        dot.className = 'w-2 h-2 rounded-full bg-ethereal';
+        daedalus.style.display = 'flex';
+        valerius.style.display = 'flex';
+        justinian.style.display = 'flex';
+      } else {
+        btn.querySelector('span:last-child').textContent = 'Agents Presence: OFF';
+        dot.className = 'w-2 h-2 rounded-full bg-white/30';
+        daedalus.style.display = 'none';
+        valerius.style.display = 'none';
+        justinian.style.display = 'none';
+      }
+      playClickSound();
+    }
+
+    // --- 10. Kinetic Voice Concierge Waveform Canvas (Valerius) ---
+    const voiceCanvas = document.getElementById('voiceCanvas');
+    const voiceCtx = voiceCanvas.getContext('2d');
+    let isVoiceActive = false;
+    let wavePhase = 0;
+    let waveMode = 'both';
+
+    function renderVoiceWaveform() {
+      voiceCtx.clearRect(0, 0, voiceCanvas.width, voiceCanvas.height);
+      const w = voiceCanvas.width;
+      const h = voiceCanvas.height;
+      const centerY = h / 2;
+
+      wavePhase += isVoiceActive ? 0.12 : 0.03;
+
+      if (waveMode === 'both' || waveMode === 'spectrum') {
+        const numBars = 48;
+        const barWidth = (w / numBars) - 2;
+        for (let i = 0; i < numBars; i++) {
+          const x = i * (barWidth + 2);
+          const factor = Math.sin((i / numBars) * Math.PI);
+          const noise = isVoiceActive ? Math.random() * 45 : Math.random() * 8;
+          const barHeight = Math.max(4, (factor * (isVoiceActive ? 55 : 18)) + noise);
+          
+          voiceCtx.fillStyle = isVoiceActive 
+            ? 'rgba(245, 158, 11, 0.45)' 
+            : 'rgba(46, 229, 157, 0.18)';
+          voiceCtx.fillRect(x, centerY - barHeight / 2, barWidth, barHeight);
+        }
+      }
+
+      if (waveMode === 'both' || waveMode === 'sine') {
+        voiceCtx.beginPath();
+        voiceCtx.lineWidth = 2.5;
+        voiceCtx.strokeStyle = isVoiceActive ? '#F59E0B' : '#2EE59D';
+
+        for (let x = 0; x < w; x += 3) {
+          const normX = x / w;
+          const envelope = Math.sin(normX * Math.PI);
+          const amp = isVoiceActive ? 42 : 12;
+          const y = centerY + Math.sin(normX * 12 + wavePhase) * Math.cos(normX * 6 - wavePhase * 0.7) * amp * envelope;
+          if (x === 0) {
+            voiceCtx.moveTo(x, y);
+          } else {
+            voiceCtx.lineTo(x, y);
+          }
+        }
+        voiceCtx.stroke();
+      }
+
+      requestAnimationFrame(renderVoiceWaveform);
+    }
+    requestAnimationFrame(renderVoiceWaveform);
+
+    function simulateVoiceCall() {
+      isVoiceActive = true;
+      const statusText = document.getElementById('voiceStatusText');
+      const statusDot = document.getElementById('voiceStatusDot');
+      const btn = document.getElementById('voiceSimBtn');
+
+      statusText.textContent = 'VALERIUS LIVE &bull; ELEVENLABS MARCUS VOICE PTT ACTIVE';
+      statusText.className = 'text-amber-dragon font-bold animate-pulse';
+      statusDot.className = 'w-2.5 h-2.5 rounded-full bg-amber-dragon animate-ping';
+      btn.innerHTML = '<span>🔊 Transmitting Voice Stream...</span>';
+
+      playVoiceNoteSound();
+
+      setTimeout(() => {
+        isVoiceActive = false;
+        statusText.textContent = 'VALERIUS READY &bull; INBOUND TELEPHONY MONITORING';
+        statusText.className = 'text-amber-dragon font-semibold';
+        statusDot.className = 'w-2.5 h-2.5 rounded-full bg-amber-dragon rune-pulse';
+        btn.innerHTML = '<span>🎙️ Simulate Inbound Caller Note</span>';
+        playChimeSound();
+      }, 3500);
+    }
+
+    function toggleVoiceWaveMode() {
+      const modes = ['both', 'spectrum', 'sine'];
+      const currentIdx = modes.indexOf(waveMode);
+      waveMode = modes[(currentIdx + 1) % modes.length];
+      const lbl = document.getElementById('waveModeLabel');
+      if (waveMode === 'both') lbl.textContent = 'Spectrum + Wave';
+      if (waveMode === 'spectrum') lbl.textContent = 'Spectrum Only';
+      if (waveMode === 'sine') lbl.textContent = 'Continuous Sine';
+      playClickSound();
+    }
+
+    // --- 11. Live Generative Sandbox Presets ---
+    const presets = {
+      'B2B Autonomous Telephony & CRM Radar': {
+        title: 'B2B Autonomous Telephony & CRM Radar',
+        badge: 'VALERIUS THE HERALD ACTIVE',
+        copy: 'Deterministic agent synthesis complete. Voice streams, caller intent embeddings, and Google Calendar slots synchronized in real-time.',
+        stat1: '99.8%', label1: 'Inbound Qualification',
+        stat2: '142 Slots', label2: 'Calendar Bookings',
+        stat3: '100.0%', label3: 'Telemetry Integrity'
+      },
+      'SaaS Invoicing & Token Burn Ledger': {
+        title: 'Real-Time SaaS Token Ledger & Billing Cockpit',
+        badge: 'JUSTINIAN THE STEWARD ACTIVE',
+        copy: 'Continuous cryptographic token consumption audit across Gemini, Claude 3.5, and FLUX APIs with automated tier replenishment.',
+        stat1: '$0.04', label1: 'BOM Cost Per Screen',
+        stat2: '96.2%', label2: 'Platform Gross Margin',
+        stat3: '4.8x', label3: 'LTV to CAC Ratio'
+      }
+    };
+
+    function applyPreset(name) {
+      document.getElementById('promptInput').value = name;
+      runSynthesis();
+    }
+
+    function runSynthesis() {
+      const prompt = document.getElementById('promptInput').value.trim();
+      const overlay = document.getElementById('compileOverlay');
+      const label = document.getElementById('compileStepLabel');
+
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+
+      const steps = [
+        "CALCULATING CUBIC BÉZIER SPRING CONSTANTS...",
+        "SYNCHRONIZING MULTI-AGENT CURSOR VECTORS...",
+        "VERIFYING ZERO-DRIFT CHECKSUM (#8F42A1)...",
+        "DISPATCHING AST TO GPU COMPOSITOR..."
+      ];
+
+      let idx = 0;
+      const interval = setInterval(() => {
+        idx++;
+        if (idx < steps.length) {
+          label.textContent = steps[idx];
+        } else {
+          clearInterval(interval);
+          finishSynthesis(prompt);
+        }
+      }, 140);
+    }
+
+    function finishSynthesis(prompt) {
+      const overlay = document.getElementById('compileOverlay');
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+
+      const data = presets[prompt] || {
+        title: prompt,
+        badge: 'GENERATIVE SYNTHESIS COMPLETED',
+        copy: 'Custom generative UI block compiled with deterministic token safety, zero duplicate IDs, and Emil Kowalski springs.',
+        stat1: '40.2ms', label1: 'Compilation Latency',
+        stat2: '100%', label2: 'Accessibility Standard',
+        stat3: '60 FPS', label3: 'Animation Render Rate'
+      };
+
+      document.getElementById('mockTitle').textContent = data.title;
+      document.getElementById('mockBadge').textContent = data.badge;
+      document.getElementById('mockCopy').textContent = data.copy;
+      document.getElementById('statVal1').textContent = data.stat1;
+      document.getElementById('statLabel1').textContent = data.label1;
+      document.getElementById('statVal2').textContent = data.stat2;
+      document.getElementById('statLabel2').textContent = data.label2;
+      document.getElementById('statVal3').textContent = data.stat3;
+      document.getElementById('statLabel3').textContent = data.label3;
+
+      const lat = (38.8 + Math.random() * 3.0).toFixed(1);
+      document.getElementById('stageLatency').textContent = `${lat}ms`;
+
+      if (window.anime) {
+        anime.timeline({ easing: 'easeOutExpo', duration: 550 })
+          .add({
+            targets: '#mockBannerCard',
+            scale: [0.97, 1],
+            opacity: [0.4, 1]
+          })
+          .add({
+            targets: '.mock-card',
+            scale: [0.95, 1],
+            opacity: [0, 1],
+            delay: anime.stagger(60)
+          }, '-=350');
+      }
+
+      playChimeSound();
+    }
+
+    // --- 12. Viewport Switcher ---
+    function setViewport(mode, btn) {
+      document.querySelectorAll('.viewport-btn').forEach(b => {
+        b.classList.remove('active', 'text-ethereal', 'bg-white/10');
+        b.classList.add('text-text-muted');
+      });
+      if (btn) {
+        btn.classList.add('active', 'text-ethereal', 'bg-white/10');
+        btn.classList.remove('text-text-muted');
+      }
+
+      const frame = document.getElementById('stageFrame');
+      if (mode === 'desktop') {
+        frame.style.maxWidth = '100%';
+      } else if (mode === 'tablet') {
+        frame.style.maxWidth = '768px';
+      } else if (mode === 'mobile') {
+        frame.style.maxWidth = '390px';
+      }
+      playClickSound();
+    }
+
+    // --- 13. Command Palette Modal (Ctrl+K) ---
+    function toggleCmdk() {
+      const overlay = document.getElementById('cmdkOverlay');
+      overlay.classList.toggle('open');
+      if (overlay.classList.contains('open')) {
+        setTimeout(() => document.getElementById('cmdkInput').focus(), 50);
+        playClickSound();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        toggleCmdk();
+      }
+      if (e.key === 'Escape') {
+        const cmdk = document.getElementById('cmdkOverlay');
+        if (cmdk.classList.contains('open')) toggleCmdk();
+        const drawer = document.getElementById('drawerOverlay');
+        if (drawer.classList.contains('open')) toggleDrawer();
+        const code = document.getElementById('codeModalOverlay');
+        if (code.classList.contains('open')) closeCodeModal();
+      }
+    });
+
+    function filterCmdk(query) {
+      const q = query.toLowerCase();
+      const buttons = document.querySelectorAll('#cmdkList button');
+      buttons.forEach(btn => {
+        const text = btn.textContent.toLowerCase();
+        btn.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+    }
+
+    // --- 14. Drawer Toggle ---
+    function toggleDrawer() {
+      const drawer = document.getElementById('drawerOverlay');
+      drawer.classList.toggle('open');
+      playClickSound();
+    }
+
+    // --- 15. Code Modal Logic ---
+    function openCodeModal() {
+      document.getElementById('codeModalOverlay').classList.add('open');
+    }
+    function closeCodeModal() {
+      document.getElementById('codeModalOverlay').classList.remove('open');
+      playClickSound();
+    }
+    function copyCode() {
+      const text = document.getElementById('codeBlock').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const feedback = document.getElementById('copyFeedback');
+        feedback.style.opacity = '1';
+        setTimeout(() => feedback.style.opacity = '0', 2000);
+        playChimeSound();
+      });
+    }
+
+    
+    // --- SESSION 07: PROCEDURAL 8HZ ALPHA BINAURAL SOUNDSCAPE ---
+    let isBinauralActive = false;
+    let binauralOscLeft = null;
+    let binauralOscRight = null;
+    let binauralGain = null;
+
+    function toggleBinauralSoundscape() {
+      const ctx = getAudioContext();
+      if (!ctx) return;
+
+      const dot = document.getElementById('binauralDot');
+      const label = document.getElementById('binauralLabel');
+
+      if (isBinauralActive) {
+        if (binauralGain) {
+          binauralGain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.3);
+        }
+        setTimeout(() => {
+          try {
+            if (binauralOscLeft) binauralOscLeft.stop();
+            if (binauralOscRight) binauralOscRight.stop();
+          } catch(e) {}
+          binauralOscLeft = null;
+          binauralOscRight = null;
+        }, 350);
+        isBinauralActive = false;
+        label.textContent = '8Hz Alpha: OFF';
+        dot.className = 'w-2 h-2 rounded-full bg-white/30';
+        playClickSound();
+      } else {
+        if (ctx.state === 'suspended') ctx.resume();
+
+        binauralOscLeft = ctx.createOscillator();
+        binauralOscRight = ctx.createOscillator();
+
+        const panLeft = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+        const panRight = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(360, ctx.currentTime);
+        filter.Q.setValueAtTime(1.2, ctx.currentTime);
+
+        binauralGain = ctx.createGain();
+        binauralGain.gain.setValueAtTime(0.0001, ctx.currentTime);
+        binauralGain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 0.8);
+
+        // 216Hz Left, 224Hz Right -> 8Hz Alpha differential
+        binauralOscLeft.type = 'sine';
+        binauralOscLeft.frequency.setValueAtTime(216, ctx.currentTime);
+
+        binauralOscRight.type = 'sine';
+        binauralOscRight.frequency.setValueAtTime(224, ctx.currentTime);
+
+        if (panLeft && panRight) {
+          panLeft.pan.setValueAtTime(-1.0, ctx.currentTime);
+          panRight.pan.setValueAtTime(1.0, ctx.currentTime);
+          binauralOscLeft.connect(panLeft).connect(filter);
+          binauralOscRight.connect(panRight).connect(filter);
+        } else {
+          binauralOscLeft.connect(filter);
+          binauralOscRight.connect(filter);
+        }
+
+        filter.connect(binauralGain).connect(ctx.destination);
+
+        binauralOscLeft.start();
+        binauralOscRight.start();
+
+        isBinauralActive = true;
+        label.textContent = '8Hz Alpha: ON';
+        dot.className = 'w-2 h-2 rounded-full bg-ethereal rune-pulse';
+        playChimeSound();
+      }
+    }
+
+    // --- SESSION 07: INTERACTIVE REFRACTIVE LIQUID GLASS LENS ---
+    function updateLensScale(val) {
+      const v = parseFloat(val);
+      document.getElementById('lensScaleVal').textContent = `${v.toFixed(0)}px`;
+      const disp = document.getElementById('lensDisplacement');
+      if (disp) disp.setAttribute('scale', v);
+    }
+
+    function updateLensFreq(val) {
+      const v = parseFloat(val);
+      document.getElementById('lensFreqVal').textContent = v.toFixed(3);
+      const turb = document.getElementById('lensTurbulence');
+      if (turb) turb.setAttribute('baseFrequency', v);
+    }
+
+    function updateLensSpecular(val) {
+      const v = parseFloat(val);
+      document.getElementById('lensSpecularVal').textContent = v.toFixed(0);
+      const spec = document.querySelector('#liquidRefractFilter feSpecularLighting');
+      if (spec) spec.setAttribute('specularExponent', v);
+    }
+
+    function applyLensPreset(preset) {
+      const presets = {
+        clean: { scale: 10, freq: 0.020, spec: 30, eta: 'η = 1.50 (Silica)' },
+        hydro: { scale: 24, freq: 0.035, spec: 22, eta: 'η = 1.33 (Fluid)' },
+        mercury: { scale: 40, freq: 0.055, spec: 12, eta: 'η = 1.84 (Liquid Metal)' },
+        zero: { scale: 0, freq: 0.010, spec: 40, eta: 'η = 1.00 (Vacuum)' }
+      };
+      const p = presets[preset];
+      if (!p) return;
+
+      document.getElementById('lensScaleSlider').value = p.scale;
+      document.getElementById('lensFreqSlider').value = p.freq;
+      document.getElementById('lensSpecularSlider').value = p.spec;
+      document.getElementById('lensTelemetryEta').textContent = p.eta;
+
+      updateLensScale(p.scale);
+      updateLensFreq(p.freq);
+      updateLensSpecular(p.spec);
+      playClickSound();
+    }
+
+    function handleLensMouseMove(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const relX = e.clientX - rect.left;
+      const relY = e.clientY - rect.top;
+
+      const light = document.getElementById('lensPointLight');
+      if (light) {
+        light.setAttribute('x', relX);
+        light.setAttribute('y', relY);
+      }
+
+      const dx = ((relX / rect.width - 0.5) * 12).toFixed(1);
+      const dy = ((relY / rect.height - 0.5) * 12).toFixed(1);
+      const tele = document.getElementById('lensTelemetryVector');
+      if (tele) {
+        tele.textContent = `D(x, y) = [dx: ${dx >= 0 ? '+' : ''}${dx}px, dy: ${dy >= 0 ? '+' : ''}${dy}px]`;
+      }
+    }
+
+    // --- SESSION 07: SCALED MULTI-VIEWPORT DEVICE MATRIX ---
+    const deviceProfiles = {
+      desktop: { width: 1440, height: 900, dpr: '2x Retina', mq: '@media (min-width: 1024px)', shellClass: 'device-shell-desktop' },
+      tablet: { width: 834, height: 1112, dpr: '2x Liquid', mq: '@media (min-width: 768px)', shellClass: 'device-shell-tablet' },
+      mobile: { width: 393, height: 852, dpr: '3x Super Retina', mq: '@media (max-width: 640px)', shellClass: 'device-shell-bezel' },
+      wide: { width: 1920, height: 1080, dpr: '1x Studio', mq: '@media (min-width: 1536px)', shellClass: 'device-shell-desktop' }
+    };
+    let currentDeviceKey = 'desktop';
+    let isLandscape = false;
+
+    function setDeviceProfile(key) {
+      currentDeviceKey = key;
+      document.querySelectorAll('.dev-tab-btn').forEach(b => {
+        b.classList.remove('active', 'text-ethereal', 'bg-white/10');
+        b.classList.add('text-text-muted');
+      });
+      const activeBtn = document.getElementById(`devTab${key.charAt(0).toUpperCase() + key.slice(1)}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active', 'text-ethereal', 'bg-white/10');
+        activeBtn.classList.remove('text-text-muted');
+      }
+
+      const island = document.getElementById('deviceDynamicIsland');
+      if (key === 'mobile') {
+        island.classList.remove('hidden');
+      } else {
+        island.classList.add('hidden');
+      }
+
+      updateDeviceMatrixScale();
+      setChronoSession(8);
+      selectExportFormat("react");
+      playClickSound();
+    }
+
+    function toggleDeviceOrientation() {
+      isLandscape = !isLandscape;
+      document.getElementById('orientationLabel').textContent = isLandscape ? 'Landscape' : 'Portrait';
+      updateDeviceMatrixScale();
+      playClickSound();
+    }
+
+    function updateDeviceMatrixScale() {
+      const container = document.getElementById('deviceMatrixContainer');
+      const shell = document.getElementById('deviceShellFrame');
+      if (!container || !shell) return;
+
+      const profile = deviceProfiles[currentDeviceKey];
+      let targetW = isLandscape ? profile.height : profile.width;
+      let targetH = isLandscape ? profile.width : profile.height;
+
+      const availWidth = container.clientWidth - 32;
+      const scale = Math.min(1.0, Math.max(0.35, availWidth / targetW));
+
+      shell.className = `${profile.shellClass} bg-[#0A0E0C] border-2 border-white/20 relative shadow-2xl transition-all duration-300`;
+      shell.style.width = `${targetW}px`;
+      shell.style.height = `${targetH}px`;
+      shell.style.transform = `scale(${scale})`;
+      shell.style.transformOrigin = 'top center';
+
+      const scaledH = Math.ceil(targetH * scale);
+      container.style.height = `${scaledH + 32}px`;
+
+      document.getElementById('matrixTelemetryRes').textContent = `${targetW} × ${targetH}px`;
+      document.getElementById('matrixTelemetryScale').textContent = `${(scale * 100).toFixed(1)}%`;
+      document.getElementById('matrixTelemetryDpr').textContent = profile.dpr;
+      document.getElementById('matrixTelemetryMq').textContent = profile.mq;
+    }
+
+    window.addEventListener('resize', () => {
+      updateDeviceMatrixScale();
+    });
+
+    function toggleMiniAppBilling() {
+      const btn = document.getElementById('miniAppPriceVal');
+      const metric = document.getElementById('miniAppMetricVal');
+      if (btn.textContent.includes('349')) {
+        btn.textContent = '$269/mo (Annual)';
+        metric.textContent = 'Tier: Sovereign Pro Annual';
+      } else {
+        btn.textContent = '$349/mo';
+        metric.textContent = 'Tier: Enterprise Sovereign';
+      }
+      playClickSound();
+    }
+
+    // --- SESSION 07: PROMPT-TO-COMPONENT STREAMING SYNTHESIZER STUDIO ---
+    const synthPresets = {
+      1: {
+        prompt: 'Bento SaaS Pricing Tier with glowing annual discount badge & interactive billing cycle',
+        tokens: ['#070B08 (Void)', '#2EE59D (Mint)', 'Squircle-24px', 'Backdrop-20px', 'Spring: 450k/35c'],
+        code: `<SquircleCard variant="bento" radius={24} blur="20px">
+  <Badge variant="glow" color="#2EE59D">Most Popular</Badge>
+  <PricingHeader title="Sovereign Pro" price={billing === 'annual' ? 29 : 39} />
+  <BillingToggle value={billing} onChange={setBilling} />
+  <Button variant="emerald">Deploy AST</Button>
+</SquircleCard>`,
+        renderType: 'pricing'
+      },
+      2: {
+        prompt: 'Fintech Real-Time Telemetry Node with dynamic sparkline & airgap authorization',
+        tokens: ['#0B140E (Emerald Dark)', '#06B6D4 (Cyan)', 'Radius-18px', 'Sha-256 Airgap', 'Telemetry 60FPS'],
+        code: `<TelemetryNode status="airgap-secure" latency="0.38ms">
+  <Sparkline data={[12, 18, 15, 29, 34, 48, 52]} stroke="#06B6D4" />
+  <Metric delta="+18.4%" label="TVL Arbitrage" value="$48,290,140" />
+  <BiometricAuthButton level="HardwareKey">Authorize Airgap</BiometricAuthButton>
+</TelemetryNode>`,
+        renderType: 'fintech'
+      },
+      3: {
+        prompt: 'Audio Spectrum Oscilloscope with dual rotary gain dials & stereo peak meter',
+        tokens: ['#0E0F12 (Titanium)', '#F59E0B (Amber)', 'Web Audio API', 'FFT-48 Band', 'Continuous Sine'],
+        code: `<Oscilloscope bands={48} sampleRate={48000} mode="binaural">
+  <StereoMeter leftPeak="-1.2dB" rightPeak="-0.8dB" />
+  <RotaryKnob label="Alpha Beat" min={4} max={16} default={8} />
+  <GainSlider unit="dB" value={-6.0} />
+</Oscilloscope>`,
+        renderType: 'audio'
+      }
+    };
+
+    function selectSynthPreset(num) {
+      const p = synthPresets[num];
+      if (!p) return;
+      document.getElementById('synthPromptInput').value = p.prompt;
+      runSynthesizer(num);
+    }
+
+    let synthInterval = null;
+    function runSynthesizer(presetIndex = 1) {
+      if (synthInterval) clearInterval(synthInterval);
+
+      const p = synthPresets[presetIndex] || synthPresets[1];
+      const indicator = document.getElementById('synthPhaseIndicator');
+      const tokenBox = document.getElementById('synthTokenContainer');
+      const codeStream = document.getElementById('synthCodeStream');
+
+      indicator.textContent = 'Extracting Tokens...';
+      tokenBox.innerHTML = '';
+      codeStream.textContent = '';
+
+      playClickSound();
+
+      // Phase 1: Tokens Materialize with staggered delay
+      p.tokens.forEach((tok, i) => {
+        setTimeout(() => {
+          const span = document.createElement('span');
+          span.className = 'px-2.5 py-1 rounded-lg bg-ethereal/10 border border-ethereal/40 text-[11px] font-mono text-ethereal animate-pulse';
+          span.textContent = `Token: ${tok}`;
+          tokenBox.appendChild(span);
+          playClickSound();
+        }, i * 180);
+      });
+
+      // Phase 2: Progressive Code AST Stream
+      setTimeout(() => {
+        indicator.textContent = 'Streaming AST Code...';
+        const codeText = p.code;
+        let charIdx = 0;
+
+        synthInterval = setInterval(() => {
+          if (charIdx < codeText.length) {
+            codeStream.textContent += codeText[charIdx];
+            charIdx++;
+            if (charIdx % 8 === 0) playClickSound();
+          } else {
+            clearInterval(synthInterval);
+            indicator.textContent = 'Synthesis Complete';
+            finishComponentRender(p.renderType);
+          }
+        }, 18);
+      }, p.tokens.length * 180 + 100);
+    }
+
+    function finishComponentRender(type) {
+      const previewBox = document.getElementById('synthPreviewContainer');
+      playChimeSound();
+
+      if (type === 'fintech') {
+        previewBox.innerHTML = `
+          <div class="w-full max-w-sm p-6 rounded-[22px] bg-[#07130c]/90 backdrop-blur-xl border border-cyan-400/40 shadow-[0_0_30px_rgba(6,182,212,0.15)] space-y-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="px-2.5 py-0.5 rounded-full bg-cyan-400/20 text-cyan-300 font-mono text-[10px] font-bold uppercase tracking-wider">Airgap Secure</span>
+                <h4 class="text-xl font-heading font-extrabold text-white mt-2">Fintech Telemetry</h4>
+              </div>
+              <div class="text-right">
+                <div class="text-2xl font-black font-heading text-cyan-300">$48.2M</div>
+                <span class="text-[10px] text-ethereal font-mono">+18.4% 24h Delta</span>
+              </div>
+            </div>
+            <svg class="w-full h-12 stroke-cyan-400 fill-none stroke-[2]" viewBox="0 0 200 40">
+              <path d="M 0 30 Q 30 10, 60 25 T 120 15 T 160 8 T 200 12" />
+            </svg>
+            <button onclick="playChimeSound()" class="w-full py-2.5 rounded-xl bg-cyan-400 text-void font-heading font-extrabold text-xs uppercase tracking-wider hover:bg-cyan-300 transition-all">
+              Authorize Airgap Token &rarr;
+            </button>
+          </div>
+        `;
+      } else if (type === 'audio') {
+        previewBox.innerHTML = `
+          <div class="w-full max-w-sm p-6 rounded-[22px] bg-[#141009]/90 backdrop-blur-xl border border-amber-dragon/40 shadow-[0_0_30px_rgba(245,158,11,0.15)] space-y-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="px-2.5 py-0.5 rounded-full bg-amber-dragon/20 text-amber-dragon font-mono text-[10px] font-bold uppercase tracking-wider">48-Band Spectrum</span>
+                <h4 class="text-xl font-heading font-extrabold text-white mt-2">Oscilloscope Node</h4>
+              </div>
+              <div class="text-right">
+                <div class="text-2xl font-black font-heading text-amber-dragon">8.0 Hz</div>
+                <span class="text-[10px] text-gray-400 font-mono">Alpha Brainwave</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-around py-2">
+              <div class="text-center">
+                <div class="w-12 h-12 rounded-full border-2 border-amber-dragon flex items-center justify-center font-mono text-xs font-bold text-white">216</div>
+                <span class="text-[10px] font-mono text-gray-400 mt-1 block">Left Pan</span>
+              </div>
+              <div class="text-center">
+                <div class="w-12 h-12 rounded-full border-2 border-amber-dragon flex items-center justify-center font-mono text-xs font-bold text-white">224</div>
+                <span class="text-[10px] font-mono text-gray-400 mt-1 block">Right Pan</span>
+              </div>
+            </div>
+            <button onclick="playChimeSound()" class="w-full py-2.5 rounded-xl bg-amber-dragon text-void font-heading font-extrabold text-xs uppercase tracking-wider hover:bg-amber-400 transition-all">
+              Engage Binaural Waveform &rarr;
+            </button>
+          </div>
+        `;
+      } else {
+        // Default Pricing Card
+        previewBox.innerHTML = `
+          <div class="w-full max-w-sm p-6 rounded-[22px] bg-[#111A14]/90 backdrop-blur-xl border border-ethereal/40 shadow-[0_0_30px_rgba(46,229,157,0.15)] space-y-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="px-2.5 py-0.5 rounded-full bg-ethereal/20 text-ethereal font-mono text-[10px] font-bold uppercase tracking-wider">Most Popular</span>
+                <h4 class="text-xl font-heading font-extrabold text-white mt-2">Sovereign Pro</h4>
+              </div>
+              <div class="text-right">
+                <div class="synth-card-price text-3xl font-black font-heading text-white">${isSynthCardAnnual ? '$29' : '$39'}<span class="text-xs font-normal text-text-muted">/mo</span></div>
+                <span class="synth-card-badge text-[10px] text-ethereal font-mono">${isSynthCardAnnual ? 'Billed Annually (-25%)' : 'Billed Monthly'}</span>
+              </div>
+            </div>
+            <p class="text-xs text-text-muted leading-relaxed">
+              Continuous multi-agent UI generation, real-time AST compilation, and zero-drift Figma token export.
+            </p>
+            <div class="p-2 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
+              <span class="text-xs font-mono text-gray-300">Annual Discount:</span>
+              <button onclick="toggleSynthCardBilling()" class="px-3 py-1 rounded-lg bg-ethereal/20 text-ethereal text-xs font-mono font-bold hover:bg-ethereal/30 transition-all">
+                <span>${isSynthCardAnnual ? 'Active (25% OFF)' : 'Standard Monthly'}</span>
+              </button>
+            </div>
+            <button onclick="playChimeSound()" class="w-full py-2.5 rounded-xl bg-ethereal text-void font-heading font-extrabold text-xs uppercase tracking-wider hover:bg-[#34f5a8] transition-all">
+              Deploy Component AST &rarr;
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    let isSynthCardAnnual = true;
+    function toggleSynthCardBilling() {
+      isSynthCardAnnual = !isSynthCardAnnual;
+      const price = document.getElementById('synthCardPrice');
+      const badge = document.getElementById('synthCardBillingBadge');
+      const label = document.getElementById('synthCardToggleLabel');
+      if (price && badge && label) {
+        if (isSynthCardAnnual) {
+          price.innerHTML = '$29<span class="text-xs font-normal text-text-muted">/mo</span>';
+          badge.textContent = 'Billed Annually (-25%)';
+          badge.className = 'text-[10px] text-ethereal font-mono';
+          label.textContent = 'Active (25% OFF)';
+        } else {
+          price.innerHTML = '$39<span class="text-xs font-normal text-text-muted">/mo</span>';
+          badge.textContent = 'Billed Monthly';
+          badge.className = 'text-[10px] text-gray-400 font-mono';
+          label.textContent = 'Standard Monthly';
+        }
+      } else {
+        // If re-rendered through finishComponentRender
+        finishComponentRender('pricing');
+      }
+      playClickSound();
+    }
+
+    
+    // --- SESSION 08: CHRONO-ENGINE TIME-TRAVEL SCRUBBER ---
+    const chronoData = {
+      1: {
+        sha: 'commit 0x1A0F9B44',
+        date: '2026-09-17 16:00:00 UTC',
+        title: 'Session 01: Baseline Squircle Geometry & Anime.js Circuits',
+        desc: 'Established the Obsidian Verdant token architecture, Apple continuous curvature equations (R_in = R_out - P), and Anime.js v3.2 SVG drawing animation loops.',
+        astNodes: '+4 Nodes',
+        parity: '100.0%',
+        ids: '18 Unique',
+        badge: 'v1.0-BASE',
+        icon: '📐',
+        headline: 'Core Geometry Invariant',
+        sub: 'Continuous Squircle Law'
+      },
+      2: {
+        sha: 'commit 0x2B1E8C12',
+        date: '2026-09-17 17:00:00 UTC',
+        title: 'Session 02: Hardware-Accelerated Border Beams & Tailwind Integration',
+        desc: 'Implemented GPU-accelerated CSS @property conical rotating border beams, dark mode typography pairing, and responsive device viewport frames.',
+        astNodes: '+8 Nodes',
+        parity: '100.0%',
+        ids: '32 Unique',
+        badge: 'v2.0-STABLE',
+        icon: '💫',
+        headline: 'Conical Border Beams',
+        sub: 'CSS @property Hardware Spec'
+      },
+      3: {
+        sha: 'commit 0x3C2D7D9A',
+        date: '2026-09-17 18:00:00 UTC',
+        title: 'Session 03: Magic UI Animated Beams & Procedural Micro-Haptics',
+        desc: 'Engineered SVG animated beam conduit linking Daedalus & Valerius to compiled AST, zero-dependency Web Audio haptics, and Ctrl+K command palette.',
+        astNodes: '+12 Nodes',
+        parity: '100.0%',
+        ids: '46 Unique',
+        badge: 'v3.0-HAPTIC',
+        icon: '⚡',
+        headline: 'Animated Beams & Haptics',
+        sub: 'Native Web Audio API'
+      },
+      4: {
+        sha: 'commit 0x4D3C6E51',
+        date: '2026-09-17 19:00:00 UTC',
+        title: 'Session 04: Real-Time Multi-Agent OS & Voice Waveform Canvas',
+        desc: 'Deployed autonomous collaborative floating cursor avatars (Daedalus, Valerius, Justinian), Valerius 48-band voice concierge visualizer, and 3D gyroscopic bento tilt.',
+        astNodes: '+16 Nodes',
+        parity: '100.0%',
+        ids: '62 Unique',
+        badge: 'v4.0-MULTI',
+        icon: '🎙️',
+        headline: 'Multi-Agent Presence',
+        sub: '48-Band Voice Waveform'
+      },
+      5: {
+        sha: 'commit 0x5E4B5F33',
+        date: '2026-09-17 20:00:00 UTC',
+        title: 'Session 05: Visual Split-Diff Slider & Particle Constellation Mesh',
+        desc: 'Constructed draggable Figma Token vs compiled React AST split-diff comparison frame, 60 FPS Euclidean proximity particle mesh canvas, and 4-theme morphing engine.',
+        astNodes: '+18 Nodes',
+        parity: '100.0%',
+        ids: '75 Unique',
+        badge: 'v5.0-DIFF',
+        icon: '↔️',
+        headline: 'Figma-to-AST Split-Diff',
+        sub: '60 FPS Particle Mesh'
+      },
+      6: {
+        sha: 'commit 0x6F5A4072',
+        date: '2026-09-17 21:00:00 UTC',
+        title: 'Session 06: Cubic Bézier Curve Debugger & AST Tree Inspector',
+        desc: 'Engineered real-time parametric cubic Bézier curve visualizer with physical impulse bounce box, hierarchical JSX AST node tree inspector with WCAG AAA verification, and agency ROI arbitrage simulator.',
+        astNodes: '+22 Nodes',
+        parity: '100.0%',
+        ids: '81 Unique',
+        badge: 'v6.0-CURVES',
+        icon: '📐',
+        headline: 'Cubic Bézier Physics',
+        sub: 'WCAG AAA Tree Inspector'
+      },
+      7: {
+        sha: 'commit 0x7A6B31E9',
+        date: '2026-09-17 22:00:00 UTC',
+        title: 'Session 07: Refractive Liquid Glass Lens & Scaled Device Matrix',
+        desc: 'Built GPU-accelerated SVG feDisplacementMap liquid refraction shader with live cursor specular highlight, scaled multi-viewport device matrix with Apple Dynamic Island aperture, prompt-to-component streaming synthesizer, and 8Hz Alpha binaural soundscape.',
+        astNodes: '+26 Nodes',
+        parity: '100.0%',
+        ids: '135 Unique',
+        badge: 'v7.0-SPATIAL',
+        icon: '💧',
+        headline: 'Liquid Refraction Lens',
+        sub: 'Scaled Device Matrix Sandbox'
+      },
+      8: {
+        sha: 'commit 0x8B7C22E4',
+        date: '2026-09-17 23:00:00 UTC',
+        title: 'Session 08: Chrono-Engine, View Transitions Morphing & Codex Exporter',
+        desc: 'Introduced interactive time-travel revision scrubbing across 8 milestones, native View Transitions API shared element layout morphing, enterprise 5-language Codex token exporter suite, and tri-agent spatial voice radar.',
+        astNodes: '+30 Nodes',
+        parity: '100.0%',
+        ids: '148 Unique',
+        badge: 'v8.0-FLAGSHIP',
+        icon: '⏳',
+        headline: 'Chrono-Spatial OS',
+        sub: '8 Total Sessions Synchronized'
+      }
+    };
+
+    let currentChronoSession = 8;
+
+    function setChronoSession(sessionNum) {
+      currentChronoSession = Math.max(1, Math.min(8, sessionNum));
+      const data = chronoData[currentChronoSession];
+      if (!data) return;
+
+      // Update Slider and Detents
+      const progressPercent = ((currentChronoSession - 1) / 7) * 100;
+      document.getElementById('chronoProgressFill').style.width = `${progressPercent}%`;
+
+      const detents = document.querySelectorAll('.chrono-detent');
+      detents.forEach((d, idx) => {
+        const sNum = idx + 1;
+        if (sNum === currentChronoSession) {
+          d.className = 'chrono-detent pointer-events-auto w-5 h-5 rounded-full bg-ethereal chrono-dot-active border-2 border-void transition-all cursor-pointer';
+        } else if (sNum < currentChronoSession) {
+          d.className = 'chrono-detent pointer-events-auto w-4 h-4 rounded-full bg-ethereal/60 border border-ethereal/80 transition-all cursor-pointer';
+        } else {
+          d.className = 'chrono-detent pointer-events-auto w-4 h-4 rounded-full bg-white/20 border border-white/40 transition-all cursor-pointer';
+        }
+      });
+
+      // Update Card Telemetry
+      document.getElementById('chronoSessionBadge').textContent = `Session 0${currentChronoSession} ${currentChronoSession === 8 ? '(Current Flagship)' : 'Milestone'}`;
+      document.getElementById('chronoCommitSha').textContent = data.sha;
+      document.getElementById('chronoTimestamp').textContent = data.date;
+      document.getElementById('chronoTitle').textContent = data.title;
+      document.getElementById('chronoDescription').textContent = data.desc;
+      document.getElementById('chronoAstCount').textContent = data.astNodes;
+      document.getElementById('chronoParity').textContent = data.parity;
+      document.getElementById('chronoIdCount').textContent = data.ids;
+      document.getElementById('chronoSnapshotTag').textContent = data.badge;
+      document.getElementById('chronoSnapshotIcon').textContent = data.icon;
+      document.getElementById('chronoSnapshotHeadline').textContent = data.headline;
+      document.getElementById('chronoSnapshotSub').textContent = data.sub;
+
+      playClickSound();
+    }
+
+    function stepChrono(delta) {
+      setChronoSession(currentChronoSession + delta);
+    }
+
+    // --- SESSION 08: NATIVE VIEW TRANSITIONS API MORPHING ---
+    let currentLayoutMode = 'grid';
+
+    function switchViewTransitionLayout(mode) {
+      if (mode === currentLayoutMode) return;
+      currentLayoutMode = mode;
+
+      const updateDom = () => {
+        const container = document.getElementById('morphingLayoutContainer');
+        const btnGrid = document.getElementById('layoutBtnGrid');
+        const btnDetail = document.getElementById('layoutBtnDetail');
+        const btnCompact = document.getElementById('layoutBtnCompact');
+
+        [btnGrid, btnDetail, btnCompact].forEach(b => {
+          b.classList.remove('text-ethereal', 'bg-white/10', 'font-semibold');
+          b.classList.add('text-text-muted');
+        });
+
+        if (mode === 'grid') {
+          btnGrid.classList.add('text-ethereal', 'bg-white/10', 'font-semibold');
+          btnGrid.classList.remove('text-text-muted');
+          container.className = 'grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-300';
+        } else if (mode === 'detail') {
+          btnDetail.classList.add('text-ethereal', 'bg-white/10', 'font-semibold');
+          btnDetail.classList.remove('text-text-muted');
+          container.className = 'grid grid-cols-1 gap-4 transition-all duration-300';
+        } else if (mode === 'compact') {
+          btnCompact.classList.add('text-ethereal', 'bg-white/10', 'font-semibold');
+          btnCompact.classList.remove('text-text-muted');
+          container.className = 'grid grid-cols-1 sm:grid-cols-3 gap-3 transition-all duration-300';
+        }
+      };
+
+      if (document.startViewTransition) {
+        document.startViewTransition(updateDom);
+      } else {
+        updateDom();
+      }
+
+      playClickSound();
+    }
+
+    // --- SESSION 08: CODEX MULTI-FORMAT TOKEN EXPORTER SUITE ---
+    const codexExports = {
+      react: {
+        badge: 'React JSX + Tailwind v3.4',
+        lines: 'Lines: 32 • 1,540 bytes',
+        filename: 'SovereignCard.tsx',
+        code: `import React, { useState } from 'react';
+
+export interface SovereignCardProps {
+  title?: string;
+  priceAnnual?: number;
+  priceMonthly?: number;
+}
+
+export const SovereignCard: React.FC<SovereignCardProps> = ({
+  title = "Sovereign Pro",
+  priceAnnual = 29,
+  priceMonthly = 39,
+}) => {
+  const [isAnnual, setIsAnnual] = useState(true);
+
+  return (
+    <div className="w-full max-w-sm p-6 rounded-[22px] bg-[#111A14]/90 backdrop-blur-xl border border-[#2EE59D]/40 shadow-[0_0_30px_rgba(46,229,157,0.15)] space-y-4">
+      <div className="flex justify-between items-start">
+        <div>
+          <span className="px-2.5 py-0.5 rounded-full bg-[#2EE59D]/20 text-[#2EE59D] font-mono text-[10px] font-bold uppercase tracking-wider">
+            Most Popular
+          </span>
+          <h4 className="text-xl font-heading font-extrabold text-white mt-2">{title}</h4>
+        </div>
+        <div className="text-right">
+          <div className="text-3xl font-black font-heading text-white">
+            ${isAnnual ? priceAnnual : priceMonthly}<span className="text-xs font-normal text-gray-400">/mo</span>
+          </div>
+          <span className="text-[10px] text-[#2EE59D] font-mono">
+            {isAnnual ? "Billed Annually (-25%)" : "Billed Monthly"}
+          </span>
+        </div>
+      </div>
+      <button onClick={() => setIsAnnual(!isAnnual)} className="w-full py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-gray-300 hover:text-white">
+        Toggle Billing: {isAnnual ? "Annual (-25%)" : "Standard"}
+      </button>
+    </div>
+  );
+};`
+      },
+      css: {
+        badge: 'CSS Custom Properties (:root)',
+        lines: 'Lines: 24 • 980 bytes',
+        filename: 'tokens.css',
+        code: `:root {
+  /* Obsidian Verdant Sovereign Design System Tokens */
+  --bg-void: #070B08;
+  --bg-surface: #111A14;
+  --bg-surface-elevated: #16231B;
+  --bg-glass: rgba(17, 26, 20, 0.78);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+
+  /* Primary Accent & Gilded Brass */
+  --accent-mint: #2EE59D;
+  --accent-mint-glow: rgba(46, 229, 157, 0.35);
+  --accent-gold: #C5A059;
+  --accent-amber: #F59E0B;
+
+  /* Continuous Curvature Laws */
+  --radius-outer: 24px;
+  --padding-card: 16px;
+  --radius-inner: calc(var(--radius-outer) - var(--padding-card)); /* 8px continuous */
+
+  /* Emil Kowalski Spring Physics */
+  --spring-snappy: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --spring-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+}`
+      },
+      figma: {
+        badge: 'Figma Tokens Studio JSON',
+        lines: 'Lines: 36 • 1,220 bytes',
+        filename: 'tokens.json',
+        code: `{
+  "global": {
+    "color": {
+      "void": { "value": "#070B08", "type": "color" },
+      "surface": { "value": "#111A14", "type": "color" },
+      "mint": { "value": "#2EE59D", "type": "color" },
+      "brass": { "value": "#C5A059", "type": "color" },
+      "amber": { "value": "#F59E0B", "type": "color" }
+    },
+    "borderRadius": {
+      "squircle-master": { "value": "24px", "type": "borderRadius" },
+      "squircle-inner": { "value": "8px", "type": "borderRadius" },
+      "pill": { "value": "9999px", "type": "borderRadius" }
+    },
+    "boxShadow": {
+      "specular": {
+        "value": {
+          "x": "0", "y": "10", "blur": "30", "spread": "-10",
+          "color": "rgba(0,0,0,0.5)", "type": "dropShadow"
+        }
+      }
+    }
+  }
+}`
+      },
+      ts: {
+        badge: 'TypeScript Strict Types (as const)',
+        lines: 'Lines: 28 • 1,110 bytes',
+        filename: 'designTokens.ts',
+        code: `export const AethelgardTokens = {
+  colors: {
+    void: '#070B08',
+    surface: '#111A14',
+    surfaceElevated: '#16231B',
+    mint: '#2EE59D',
+    brass: '#C5A059',
+    amber: '#F59E0B',
+  },
+  radii: {
+    squircleMaster: 24,
+    squircleInner: 8,
+    pill: 9999,
+  },
+  physics: {
+    springKowalski: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+    springEntrance: 'cubic-bezier(0.16, 1, 0.3, 1)',
+    stiffness: 450,
+    damping: 35,
+  },
+} as const;
+
+export type DesignTokenColor = keyof typeof AethelgardTokens.colors;
+export type DesignTokenRadii = keyof typeof AethelgardTokens.radii;`
+      },
+      swift: {
+        badge: 'Apple SwiftUI Design Tokens',
+        lines: 'Lines: 30 • 1,310 bytes',
+        filename: 'AethelgardTokens.swift',
+        code: `import SwiftUI
+
+public struct AethelgardTokens {
+    public struct Colors {
+        public static let void = Color(hex: "#070B08")
+        public static let surface = Color(hex: "#111A14")
+        public static let mint = Color(hex: "#2EE59D")
+        public static let brass = Color(hex: "#C5A059")
+        public static let amber = Color(hex: "#F59E0B")
+    }
+
+    public struct Radii {
+        public static let squircleMaster: CGFloat = 24.0
+        public static let squircleInner: CGFloat = 8.0
+    }
+
+    public struct Animation {
+        public static let snappySpring = SwiftUI.Animation.interpolatingSpring(
+            mass: 0.8,
+            stiffness: 450,
+            damping: 35
+        )
+    }
+}`
+      }
+    };
+
+    let currentExportFormat = 'react';
+
+    function selectExportFormat(fmt) {
+      currentExportFormat = fmt;
+      document.querySelectorAll('.export-tab-btn').forEach(b => {
+        b.classList.remove('active', 'text-ethereal', 'bg-white/10');
+        b.classList.add('text-text-muted');
+      });
+      const activeBtn = document.getElementById(`exportTab${fmt.charAt(0).toUpperCase() + fmt.slice(1)}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active', 'text-ethereal', 'bg-white/10');
+        activeBtn.classList.remove('text-text-muted');
+      }
+
+      const d = codexExports[fmt];
+      if (d) {
+        document.getElementById('exportFormatBadge').textContent = d.badge;
+        document.getElementById('exportLineCount').textContent = d.lines;
+        document.getElementById('codexCodeViewer').querySelector('code').textContent = d.code;
+      }
+      playClickSound();
+    }
+
+    function copyExportedCode() {
+      const code = codexExports[currentExportFormat].code;
+      navigator.clipboard.writeText(code).then(() => {
+        const f = document.getElementById('exportCopyFeedback');
+        f.style.opacity = '1';
+        setTimeout(() => f.style.opacity = '0', 2000);
+        playChimeSound();
+      });
+    }
+
+    function downloadExportedCode() {
+      const d = codexExports[currentExportFormat];
+      const blob = new Blob([d.code], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = d.filename;
+      a.click();
+      URL.revokeObjectURL(url);
+      playChimeSound();
+    }
+
+    // --- 16. DOM Initialization ---
+    window.addEventListener('DOMContentLoaded', () => {
+      updateCurveDisplay();
+      updateArbitrage(1);
+      updateDeviceMatrixScale();
+    });
+  </script>
+</body>
+</html>
