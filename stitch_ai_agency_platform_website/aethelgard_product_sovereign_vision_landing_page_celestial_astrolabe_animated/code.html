@@ -1524,6 +1524,11 @@ Module {
       let proceduralFallbackGroup = null;
 
       const relicGlbCandidatePaths = [
+        'assets/models/celestial_clockwork_head.glb',
+        '../assets/models/celestial_clockwork_head.glb',
+        'stitch_ai_agency_platform_website/assets/models/celestial_clockwork_head.glb',
+        '/assets/models/celestial_clockwork_head.glb',
+        '/stitch_ai_agency_platform_website/assets/models/celestial_clockwork_head.glb',
         'assets/models/sovereign_celestial_relic_4k.glb',
         '../assets/models/sovereign_celestial_relic_4k.glb',
         'stitch_ai_agency_platform_website/assets/models/sovereign_celestial_relic_4k.glb',
@@ -1629,10 +1634,10 @@ Module {
               // Center model bounding box at masterKnightGroup origin (0, 0, 0)
               knightModel.position.set(-center.x * knightScale, -center.y * knightScale, -center.z * knightScale);
               
-              if (isRelic) {
-                knightModel.rotation.y = 0; // 4K Celestial Relic faces directly forward (+Z)
+              if (paths[idx].includes('sovereign_celestial_relic_4k')) {
+                knightModel.rotation.y = -Math.PI / 2; // Relic 4K oriented forward (+Z)
               } else {
-                knightModel.rotation.y = -Math.PI / 2; // Sovereign Knight oriented forward
+                knightModel.rotation.y = 0; // Celestial Clockwork Head oriented forward (+Z)
               }
 
               masterKnightGroup.position.set(0, 0, 0);
