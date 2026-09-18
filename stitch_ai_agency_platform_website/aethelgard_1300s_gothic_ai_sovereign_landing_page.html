@@ -1509,34 +1509,34 @@ Module {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(container.clientWidth || window.innerWidth, container.clientHeight || window.innerHeight);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 0.88;
+      renderer.toneMappingExposure = 1.18;
       renderer.shadowMap.enabled = false; // Disabled for ultra-smooth 120fps with 1.86M poly model
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(40, (container.clientWidth || window.innerWidth) / (container.clientHeight || window.innerHeight), 0.1, 1000);
       camera.position.set(0, 0.15, 5.6);
 
-      // Studio Lighting Rig: Radiant Celestial Chiaroscuro with Authentic Dark Metal & Moss Contrast
-      const ambientLight = new THREE.AmbientLight(0xfffaed, 0.35);
+      // Studio Lighting Rig: Radiant Celestial Chiaroscuro with Crisp 4K PBR Surface Definition
+      const ambientLight = new THREE.AmbientLight(0xfffaed, 0.9);
       scene.add(ambientLight);
 
       // Key Light: Warm Gilded Celestial Sunlight with Controlled Specular Highlights
-      const keyLight = new THREE.DirectionalLight(0xfff3db, 1.25);
+      const keyLight = new THREE.DirectionalLight(0xfff3db, 2.6);
       keyLight.position.set(5, 8, 7);
       scene.add(keyLight);
 
       // Rim Light: Pure Radiant Ivory (#F1E0D0) defining astrolabe crown, moss, and gears
-      const rimLight = new THREE.DirectionalLight(0xf1e0d0, 0.9);
+      const rimLight = new THREE.DirectionalLight(0xf1e0d0, 2.2);
       rimLight.position.set(-5, 7, -5);
       scene.add(rimLight);
 
       // Shield Aura Fill: Subtle Luminous Emerald-Mint (#2EE59D)
-      const shieldFill = new THREE.PointLight(0x2ee59d, 0.5, 15);
+      const shieldFill = new THREE.PointLight(0x2ee59d, 1.4, 15);
       shieldFill.position.set(-2.8, 0.5, 3.5);
       scene.add(shieldFill);
 
       // Gear Cavity Specular Light: Warm amber accent focused on exposed internal clockwork gears
-      const gearLight = new THREE.PointLight(0xf1d2a9, 0.7, 5);
+      const gearLight = new THREE.PointLight(0xf1d2a9, 1.8, 5);
       gearLight.position.set(0.6, -0.2, 0.8);
       scene.add(gearLight);
 
@@ -1698,9 +1698,13 @@ Module {
                 knightModel.rotation.y = 0; // Celestial Clockwork Head oriented forward (+Z)
               }
 
-              masterKnightGroup.position.set(0, 0, 0);
+              knightModel.traverse((child) => {
+                if (child.isMesh && child.material) {
+                  child.material.roughness = Math.max(child.material.roughness, 0.32);
+                  child.material.metalness = Math.min(child.material.metalness, 0.88);
+                }
+              });
 
-              // 100% Authentic baked materials preserved: deep weathered bronze, earthy moss, and dark antique metal
               masterKnightGroup.add(knightModel);
             },
             undefined,

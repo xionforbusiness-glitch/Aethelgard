@@ -269,14 +269,14 @@ class TestLandingPageElevation(unittest.TestCase):
         self.assertIn("masterKnightGroup.position.set(0, 0, 0);", self.content)
 
     def test_optimistic_glare_and_bloom(self):
-        """Verify authentic dark metal chiaroscuro, subtle corona sprite, and glare calibration."""
+        """Verify 4K PBR celestial chiaroscuro, subtle corona sprite, and glare calibration matching reference image 2."""
         self.assertIn("coronaSprite", self.content)
         self.assertIn("THREE.AdditiveBlending", self.content)
-        self.assertIn("renderer.toneMappingExposure = 0.88;", self.content)
-        self.assertIn("keyLight = new THREE.DirectionalLight(0xfff3db, 1.25);", self.content)
-        self.assertIn("rimLight = new THREE.DirectionalLight(0xf1e0d0, 0.9);", self.content)
-        self.assertIn("shieldFill = new THREE.PointLight(0x2ee59d, 0.5, 15);", self.content)
-        self.assertIn("gearLight = new THREE.PointLight(0xf1d2a9, 0.7, 5);", self.content)
+        self.assertIn("renderer.toneMappingExposure = 1.18;", self.content)
+        self.assertIn("keyLight = new THREE.DirectionalLight(0xfff3db, 2.6);", self.content)
+        self.assertIn("rimLight = new THREE.DirectionalLight(0xf1e0d0, 2.2);", self.content)
+        self.assertIn("shieldFill = new THREE.PointLight(0x2ee59d, 1.4, 15);", self.content)
+        self.assertIn("gearLight = new THREE.PointLight(0xf1d2a9, 1.8, 5);", self.content)
         self.assertIn("coronaSprite.scale.set(5.5, 5.5, 1);", self.content)
         self.assertIn("opacity: 0.35", self.content)
         self.assertNotIn("drop-shadow(0 0 35px", self.content)
@@ -399,15 +399,15 @@ class TestLandingPageElevation(unittest.TestCase):
         self.assertIn("chartWrapper.addEventListener('touchmove'", self.content)
 
     def test_lighting_and_material_integrity(self):
-        """Verify 100% preservation of authentic lighting and zero material overrides."""
-        self.assertIn("renderer.toneMappingExposure = 0.88;", self.content)
-        self.assertIn("ambientLight = new THREE.AmbientLight(0xfffaed, 0.35);", self.content)
-        self.assertIn("keyLight = new THREE.DirectionalLight(0xfff3db, 1.25);", self.content)
-        self.assertIn("rimLight = new THREE.DirectionalLight(0xf1e0d0, 0.9);", self.content)
-        self.assertIn("shieldFill = new THREE.PointLight(0x2ee59d, 0.5, 15);", self.content)
-        self.assertIn("gearLight = new THREE.PointLight(0xf1d2a9, 0.7, 5);", self.content)
-        self.assertNotIn("material.roughness =", self.content)
-        self.assertNotIn("material.metalness =", self.content)
+        """Verify 4K PBR lighting and specular traversal matching reference image 2."""
+        self.assertIn("renderer.toneMappingExposure = 1.18;", self.content)
+        self.assertIn("ambientLight = new THREE.AmbientLight(0xfffaed, 0.9);", self.content)
+        self.assertIn("keyLight = new THREE.DirectionalLight(0xfff3db, 2.6);", self.content)
+        self.assertIn("rimLight = new THREE.DirectionalLight(0xf1e0d0, 2.2);", self.content)
+        self.assertIn("shieldFill = new THREE.PointLight(0x2ee59d, 1.4, 15);", self.content)
+        self.assertIn("gearLight = new THREE.PointLight(0xf1d2a9, 1.8, 5);", self.content)
+        self.assertIn("child.material.roughness = Math.max(child.material.roughness, 0.32);", self.content)
+        self.assertIn("child.material.metalness = Math.min(child.material.metalness, 0.88);", self.content)
 
     def test_mobile_navigation_drawer_and_overlay(self):
         """Verify mobile navigation toggle button and backdrop-blurred quick-menu overlay."""
