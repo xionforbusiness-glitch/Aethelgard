@@ -16,3 +16,8 @@ venv/
 scratch/
 test_*.png
 *uncompressed.glb
+archive_heavy_models/
+node_modules/
+render_logo*.html
+generate_png_logos.js
+
