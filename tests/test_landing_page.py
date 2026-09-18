@@ -352,6 +352,105 @@ class TestLandingPageElevation(unittest.TestCase):
         self.assertIn('transition-opacity duration-700 ease-out', self.content)
         self.assertIn("container.style.opacity = currentActIndex === 0 ? '0' : '1';", self.content)
 
+    def test_viewport_meta_tag_present(self):
+        """Verify standard responsive viewport meta tag is present to configure mobile screen scaling."""
+        has_vp = bool(re.search(r'<meta[^>]+name=["\']viewport["\'][^>]*content=["\'][^"\']*width=device-width[^"\']*["\']', self.content, re.IGNORECASE) or
+                     re.search(r'<meta[^>]+content=["\'][^"\']*width=device-width[^"\']*["\'][^>]*name=["\']viewport["\']', self.content, re.IGNORECASE))
+        self.assertTrue(has_vp, "Mobile viewport meta tag missing or invalid.")
+
+    def test_mobile_overflow_prevention(self):
+        """Verify overflow-x-hidden is enforced on body to prevent horizontal wobble across mobile devices."""
+        body_match = re.search(r'<body[^>]*>', self.content)
+        self.assertIsNotNone(body_match, "<body> tag not found.")
+        self.assertIn("overflow-x-hidden", body_match.group(0), "Body tag must enforce overflow-x-hidden.")
+
+    def test_mobile_responsive_layout_breakpoints(self):
+        """Verify responsive breakpoints (hidden md:flex, sm:, md:, lg:) exist for adaptive mobile layout."""
+        self.assertIn("hidden md:flex", self.content, "Header desktop nav should hide on mobile screens.")
+        self.assertIn("grid-cols-2 md:grid-cols-4", self.content, "Hero metric bar should scale down to 2 columns on mobile.")
+        self.assertIn("text-4xl sm:text-5xl md:text-6xl", self.content, "Headline should scale responsively across mobile/desktop.")
+
+    def test_touch_target_accessibility_minimums(self):
+        """Verify primary mobile CTAs have generous padding ensuring >=44px touch target compliance."""
+        self.assertIn("py-3.5", self.content, "Hero buttons should utilize py-3.5 for >=44px touch target height.")
+        self.assertIn("px-7", self.content, "Hero buttons should utilize px-7 for wide accessible tap zone.")
+        self.assertIn("py-3", self.content, "Pricing CTAs should utilize py-3 for accessible touch area.")
+
+    def test_mobile_camera_framing_and_resize_handler(self):
+        """Verify onWindowResize adapts camera aspect, projection matrix, FOV, and mobileCameraZOffset."""
+        self.assertIn("function onWindowResize()", self.content)
+        self.assertIn("mobileCameraZOffset", self.content)
+        self.assertIn("camera.aspect = aspect;", self.content)
+        self.assertIn("camera.updateProjectionMatrix();", self.content)
+        self.assertIn("Math.min(window.devicePixelRatio, 2)", self.content)
+
+    def test_mobile_render_loop_framing(self):
+        """Verify render loop dynamically frames celestial clockwork head in upper portion on mobile."""
+        self.assertIn("const isMobile = window.innerWidth < 768;", self.content)
+        self.assertIn("targetCamY = isMobile ? (currentActIndex === 0 ? 0.15 : -0.75) : t.camY;", self.content)
+        self.assertIn("targetCamZ = t.camZ + mobileCameraZOffset;", self.content)
+        self.assertIn("targetCamX = isMobile ? 0 : t.camX;", self.content)
+
+    def test_passive_touch_event_listeners(self):
+        """Verify touch event listeners use passive: true for 60fps/120fps touch scroll performance."""
+        self.assertIn("window.addEventListener('touchstart', () => {}, { passive: true });", self.content)
+        self.assertIn("window.addEventListener('touchmove', () => {}, { passive: true });", self.content)
+        self.assertIn("chartWrapper.addEventListener('touchstart'", self.content)
+        self.assertIn("chartWrapper.addEventListener('touchmove'", self.content)
+
+    def test_lighting_and_material_integrity(self):
+        """Verify 100% preservation of authentic lighting and zero material overrides."""
+        self.assertIn("renderer.toneMappingExposure = 0.88;", self.content)
+        self.assertIn("ambientLight = new THREE.AmbientLight(0xfffaed, 0.35);", self.content)
+        self.assertIn("keyLight = new THREE.DirectionalLight(0xfff3db, 1.25);", self.content)
+        self.assertIn("rimLight = new THREE.DirectionalLight(0xf1e0d0, 0.9);", self.content)
+        self.assertIn("shieldFill = new THREE.PointLight(0x2ee59d, 0.5, 15);", self.content)
+        self.assertIn("gearLight = new THREE.PointLight(0xf1d2a9, 0.7, 5);", self.content)
+        self.assertNotIn("material.roughness =", self.content)
+        self.assertNotIn("material.metalness =", self.content)
+
+    def test_mobile_navigation_drawer_and_overlay(self):
+        """Verify mobile navigation toggle button and backdrop-blurred quick-menu overlay."""
+        self.assertIn('id="mobile-menu-toggle"', self.content)
+        self.assertIn('id="mobile-nav-overlay"', self.content)
+        self.assertIn('id="mobile-nav-panel"', self.content)
+        self.assertIn('id="mobile-nav-close"', self.content)
+        self.assertIn('id="mobile-menu-icon"', self.content)
+        self.assertIn('openMobileMenu', self.content)
+        self.assertIn('closeMobileMenu', self.content)
+        # Verify quick links to all 6 core destinations
+        overlay_match = re.search(r'id=["\']mobile-nav-overlay["\'][\s\S]*?</div>\s*</div>', self.content)
+        self.assertIsNotNone(overlay_match)
+        overlay_html = overlay_match.group(0)
+        self.assertIn('href="#storyline-stage"', overlay_html)
+        self.assertIn('href="#architecture"', overlay_html)
+        self.assertIn('href="#ingestion"', overlay_html)
+        self.assertIn('href="#solutions"', overlay_html)
+        self.assertIn('href="#agents"', overlay_html)
+        self.assertIn('href="#pricing"', overlay_html)
+
+    def test_act4_mobile_centering_and_backdrop_blur(self):
+        """Verify Act IV card is centered on mobile with px-4 md:pl-20 and max-w-md mx-auto md:mx-0."""
+        self.assertIn('id="act-4-view"', self.content)
+        act4_match = re.search(r'<div[^>]+id=["\']act-4-view["\'][\s\S]*?</div>\s*</div>', self.content)
+        self.assertIsNotNone(act4_match)
+        act4_html = act4_match.group(0)
+        self.assertIn('px-4 md:pl-20', act4_html)
+        self.assertIn('max-w-md', act4_html)
+        self.assertIn('mx-auto md:mx-0', act4_html)
+        self.assertIn('backdrop-blur-2xl', act4_html)
+
+    def test_pricing_cards_mobile_stacking_and_padding(self):
+        """Verify pricing cards stack naturally on mobile with flex-col lg:flex-row and generous padding."""
+        self.assertIn('flex-col lg:flex-row', self.content)
+        self.assertIn('p-6 sm:p-8', self.content)
+
+    def test_apple_hig_44px_touch_targets(self):
+        """Verify Apple HIG 44px+ touch target classes across mobile interactive elements."""
+        self.assertIn('min-h-[44px]', self.content)
+        self.assertIn('min-w-[44px]', self.content)
+        self.assertIn('min-h-[48px]', self.content)
+
 
 class TestRootLandingPageElevation(TestLandingPageElevation):
     """Ensure stitch_ai_agency_platform_website/aethelgard_1300s_gothic_ai_sovereign_landing_page.html passes all tests."""

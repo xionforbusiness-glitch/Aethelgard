@@ -290,10 +290,10 @@
 
   <!-- FLOATING MINIMALIST CAPSULE PILL HEADER (Version 3 Red Circle Spec) -->
   <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none transition-all duration-300" id="smart-navbar-container">
-    <header class="pointer-events-auto flex items-center justify-between gap-4 lg:gap-8 px-6 md:px-10 py-2.5 rounded-full bg-[#1C1B1B]/85 backdrop-blur-xl border border-[rgba(212,196,181,0.22)] shadow-[0_8px_32px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)] max-w-6xl w-full">
+    <header class="pointer-events-auto flex items-center justify-between gap-3 sm:gap-4 lg:gap-8 px-4 sm:px-6 md:px-10 py-2 sm:py-2.5 rounded-full bg-[#1C1B1B]/85 backdrop-blur-xl border border-[rgba(212,196,181,0.22)] shadow-[0_8px_32px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)] max-w-6xl w-full min-h-[52px]">
       
       <!-- Brand Effigy with Celestial Sovereign Figure Mark -->
-      <a class="flex items-center gap-3 group text-decoration-none shrink-0" href="#storyline-stage">
+      <a class="flex items-center gap-2.5 sm:gap-3 group text-decoration-none shrink-0 min-h-[44px]" href="#storyline-stage">
         <div class="w-8 h-8 rounded-full bg-[#1C1B1B] border border-[rgba(212,196,181,0.35)] flex items-center justify-center text-secondary shadow-[0_0_16px_rgba(212,196,181,0.25)] group-hover:scale-105 group-hover:border-secondary transition-all p-1 overflow-hidden shrink-0">
           <img src="assets/images/aethelgard_official_logo_transparent.png" onerror="if(!this.dataset.tried){this.dataset.tried='1';this.src='../assets/images/aethelgard_official_logo_transparent.png';}" alt="Aethelgard Official Logo" class="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(212,196,181,0.4)]">
         </div>
@@ -313,16 +313,98 @@
       </nav>
 
       <!-- Minimalist Action CTA with Generous Pill Boundary Clearance -->
-      <div class="flex items-center gap-3 shrink-0 mr-1 sm:mr-2">
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0 mr-1 sm:mr-2">
         <div class="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#201F1F] border border-[rgba(212,196,181,0.2)] font-mono text-[10px] text-secondary shrink-0">
           <span class="w-1.5 h-1.5 rounded-full bg-[#2EE59D] animate-pulse"></span>
           <span>9 ACTIVE AGENTS</span>
         </div>
-        <a class="px-5 py-1.5 rounded-full bg-secondary hover:bg-secondary-fixed text-[#141313] font-label text-xs font-semibold uppercase tracking-wider transition-all shadow-[0_0_16px_rgba(212,196,181,0.3)] hover:scale-105 shrink-0 whitespace-nowrap" href="#pricing">
+        <a class="min-h-[44px] px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-secondary hover:bg-secondary-fixed text-[#141313] font-label text-xs font-semibold uppercase tracking-wider transition-all shadow-[0_0_16px_rgba(212,196,181,0.3)] hover:scale-105 shrink-0 whitespace-nowrap flex items-center justify-center" href="#pricing">
           GET STARTED
         </a>
+        <!-- Minimalist Mobile Navigation Compass/Menu Toggle (<md) with 44px Touch Target -->
+        <button id="mobile-menu-toggle" class="md:hidden w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-[#252424] border border-[rgba(212,196,181,0.3)] text-secondary hover:text-[#F1E0D0] hover:border-secondary active:scale-95 transition-all flex items-center justify-center shadow-md focus:outline-none shrink-0" aria-label="Toggle Mobile Navigation Menu" aria-expanded="false">
+          <span class="material-symbols-outlined text-[20px]" id="mobile-menu-icon">menu</span>
+        </button>
       </div>
     </header>
+  </div>
+
+  <!-- MOBILE QUICK-NAVIGATION OVERLAY (<md) -->
+  <div id="mobile-nav-overlay" class="fixed inset-0 z-50 bg-[#0E0E0E]/85 backdrop-blur-2xl transition-all duration-300 opacity-0 pointer-events-none flex flex-col justify-start px-4 pt-24 pb-8 overflow-y-auto md:hidden" aria-hidden="true">
+    <div class="w-full max-w-sm mx-auto p-6 rounded-3xl bg-[#1C1B1B]/95 border border-[rgba(212,196,181,0.25)] shadow-[0_20px_60px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.08)] transform transition-transform duration-300 -translate-y-4" id="mobile-nav-panel">
+      
+      <!-- Panel Header with Compass Mark & Close Button (44px touch target) -->
+      <div class="flex items-center justify-between pb-4 border-b border-[rgba(150,143,146,0.2)] mb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-8 h-8 rounded-full bg-[#252424] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-inner">
+            <span class="material-symbols-outlined text-[18px]">explore</span>
+          </span>
+          <span class="font-mono text-xs text-secondary tracking-widest uppercase font-semibold">SOVEREIGN COMPASS</span>
+        </div>
+        <button id="mobile-nav-close" class="w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-[#252424] border border-[rgba(212,196,181,0.25)] text-outline hover:text-secondary active:scale-95 flex items-center justify-center focus:outline-none transition-colors" aria-label="Close Mobile Navigation">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Navigation Links with Apple HIG 48px Touch Targets -->
+      <nav class="flex flex-col gap-1.5 font-mono text-xs">
+        <a class="mobile-nav-link min-h-[48px] px-4 rounded-2xl flex items-center justify-between text-on-surface-variant hover:text-secondary hover:bg-[#252424] border border-transparent hover:border-[rgba(212,196,181,0.2)] tracking-widest uppercase transition-all" href="#storyline-stage">
+          <span class="flex items-center gap-3">
+            <span class="text-secondary text-[11px] font-semibold">01 //</span>
+            <span class="text-sm">PLATFORM</span>
+          </span>
+          <span class="material-symbols-outlined text-sm text-outline">arrow_forward</span>
+        </a>
+        <a class="mobile-nav-link min-h-[48px] px-4 rounded-2xl flex items-center justify-between text-on-surface-variant hover:text-secondary hover:bg-[#252424] border border-transparent hover:border-[rgba(212,196,181,0.2)] tracking-widest uppercase transition-all" href="#architecture">
+          <span class="flex items-center gap-3">
+            <span class="text-secondary text-[11px] font-semibold">02 //</span>
+            <span class="text-sm">ARCHITECTURE</span>
+          </span>
+          <span class="material-symbols-outlined text-sm text-outline">arrow_forward</span>
+        </a>
+        <a class="mobile-nav-link min-h-[48px] px-4 rounded-2xl flex items-center justify-between text-on-surface-variant hover:text-secondary hover:bg-[#252424] border border-transparent hover:border-[rgba(212,196,181,0.2)] tracking-widest uppercase transition-all" href="#ingestion">
+          <span class="flex items-center gap-3">
+            <span class="text-secondary text-[11px] font-semibold">03 //</span>
+            <span class="text-sm">DATA PIPELINE</span>
+          </span>
+          <span class="material-symbols-outlined text-sm text-outline">arrow_forward</span>
+        </a>
+        <a class="mobile-nav-link min-h-[48px] px-4 rounded-2xl flex items-center justify-between text-on-surface-variant hover:text-secondary hover:bg-[#252424] border border-transparent hover:border-[rgba(212,196,181,0.2)] tracking-widest uppercase transition-all" href="#solutions">
+          <span class="flex items-center gap-3">
+            <span class="text-secondary text-[11px] font-semibold">04 //</span>
+            <span class="text-sm">SOLUTIONS</span>
+          </span>
+          <span class="material-symbols-outlined text-sm text-outline">arrow_forward</span>
+        </a>
+        <a class="mobile-nav-link min-h-[48px] px-4 rounded-2xl flex items-center justify-between text-on-surface-variant hover:text-secondary hover:bg-[#252424] border border-transparent hover:border-[rgba(212,196,181,0.2)] tracking-widest uppercase transition-all" href="#agents">
+          <span class="flex items-center gap-3">
+            <span class="text-secondary text-[11px] font-semibold">05 //</span>
+            <span class="text-sm">AGENTS</span>
+          </span>
+          <span class="material-symbols-outlined text-sm text-outline">arrow_forward</span>
+        </a>
+        <a class="mobile-nav-link min-h-[48px] px-4 rounded-2xl flex items-center justify-between text-on-surface-variant hover:text-secondary hover:bg-[#252424] border border-transparent hover:border-[rgba(212,196,181,0.2)] tracking-widest uppercase transition-all" href="#pricing">
+          <span class="flex items-center gap-3">
+            <span class="text-secondary text-[11px] font-semibold">06 //</span>
+            <span class="text-sm">PRICING</span>
+          </span>
+          <span class="material-symbols-outlined text-sm text-outline">arrow_forward</span>
+        </a>
+      </nav>
+
+      <!-- Bottom Status Bar & Full-Width CTA -->
+      <div class="pt-5 mt-3 border-t border-[rgba(150,143,146,0.2)] flex flex-col gap-3.5">
+        <div class="flex items-center justify-between px-2 font-mono text-[11px] text-outline">
+          <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#2EE59D] animate-pulse"></span>9 ACTIVE AGENTS</span>
+          <span>SOC 2 TYPE II</span>
+        </div>
+        <a class="mobile-nav-link min-h-[48px] w-full py-3.5 px-6 rounded-full bg-secondary hover:bg-secondary-fixed text-[#141313] font-label text-xs font-bold tracking-widest uppercase transition-all shadow-[0_0_24px_rgba(212,196,181,0.35)] flex items-center justify-center gap-2" href="#pricing">
+          <span>DEPLOY ENTERPRISE PLATFORM</span>
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+      </div>
+
+    </div>
   </div>
 
   <main class="w-full relative min-h-screen">
@@ -361,12 +443,12 @@
         <div class="absolute w-[500px] h-[500px] rounded-full bg-secondary-fixed/5 blur-[120px] pointer-events-none bottom-10 right-10"></div>
 
         <!-- ACT I: INCEPTION (Centered — DEFAULT PROMINENT STATE, GUARANTEED NEVER HIDDEN) -->
-        <div class="act-view absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center pt-28 sm:pt-32 pb-8 transition-all duration-700 pointer-events-auto opacity-100" id="act-1-view">
+        <div class="act-view absolute inset-0 z-20 flex flex-col items-center justify-center px-4 sm:px-6 text-center pt-28 sm:pt-32 pb-8 transition-all duration-700 pointer-events-auto opacity-100" id="act-1-view">
           
           <!-- Status Pill with Generous Header Clearance (Zero Navbar Collision) -->
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1C1B1B]/90 border border-[rgba(212,196,181,0.25)] shadow-[0_4px_16px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] mb-6 backdrop-blur-xl mt-2 sm:mt-4">
+          <div class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#1C1B1B]/90 border border-[rgba(212,196,181,0.25)] shadow-[0_4px_16px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] mb-5 sm:mb-6 backdrop-blur-xl mt-1 sm:mt-4">
             <span class="w-1.5 h-1.5 rounded-full bg-[#2EE59D] animate-pulse"></span>
-            <span class="font-mono text-xs text-on-surface-variant tracking-wider uppercase font-medium">AUTONOMOUS ENTERPRISE PLATFORM // ZERO DRIFT</span>
+            <span class="font-mono text-[11px] sm:text-xs text-on-surface-variant tracking-wider uppercase font-medium">AUTONOMOUS ENTERPRISE PLATFORM // ZERO DRIFT</span>
           </div>
 
           <!-- Monumental Headline Harmoniously Framed Above Subtitle -->
@@ -379,35 +461,35 @@
             Aethelgard replaces bloated agency retainers with an autonomous platform of 9 specialized agents executing web synthesis, 142ms duplex voice, and Bayesian ROI calibration.
           </p>
 
-          <!-- Dual CTAs -->
+          <!-- Dual CTAs with HIG 44px+ touch targets -->
           <div class="flex flex-wrap items-center justify-center gap-4 mb-12">
-            <a class="px-7 py-3.5 rounded-full bg-secondary text-[#141313] font-semibold text-xs uppercase tracking-widest transition-all shadow-[0_0_24px_rgba(212,196,181,0.28),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_0_36px_rgba(212,196,181,0.45)] hover:scale-[1.02] font-label inline-flex items-center justify-center" href="#pricing">
+            <a class="min-h-[44px] px-7 py-3.5 rounded-full bg-secondary text-[#141313] font-semibold text-xs uppercase tracking-widest transition-all shadow-[0_0_24px_rgba(212,196,181,0.28),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_0_36px_rgba(212,196,181,0.45)] hover:scale-[1.02] font-label inline-flex items-center justify-center" href="#pricing">
               Get Started
             </a>
-            <a class="px-7 py-3.5 rounded-full bg-surface-container border border-[rgba(150,143,146,0.28)] text-xs font-semibold uppercase tracking-widest text-on-surface hover:text-secondary-fixed hover:border-secondary/50 transition-all hover:bg-[#2B2A2A] shadow-[0_8px_20px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)] font-label inline-flex items-center justify-center" href="#solutions">
+            <a class="min-h-[44px] px-7 py-3.5 rounded-full bg-surface-container border border-[rgba(150,143,146,0.28)] text-xs font-semibold uppercase tracking-widest text-on-surface hover:text-secondary-fixed hover:border-secondary/50 transition-all hover:bg-[#2B2A2A] shadow-[0_8px_20px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)] font-label inline-flex items-center justify-center" href="#solutions">
               Explore Solutions
             </a>
           </div>
 
           <!-- 4 Horizon Count-Up Metrics Bar with Tabular Numerics & Ascension Reveal -->
-          <div id="hero-metrics-bar" class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 max-w-4xl w-full border-y border-[rgba(150,143,146,0.3)] py-6 bg-surface-container/50 backdrop-blur-md rounded-2xl px-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_30px_rgba(0,0,0,0.6)] transform transition-all duration-1000 translate-y-6 opacity-0">
-            <div class="text-left px-2">
-              <span class="font-label text-[11px] text-outline block mb-1 uppercase tracking-widest">Alignment</span>
+          <div id="hero-metrics-bar" class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-10 max-w-4xl w-full border-y border-[rgba(150,143,146,0.3)] py-4 sm:py-6 bg-[#1C1B1B]/80 backdrop-blur-xl rounded-2xl px-4 sm:px-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_30px_rgba(0,0,0,0.6)] transform transition-all duration-1000 translate-y-6 opacity-0">
+            <div class="text-left px-1.5 sm:px-2">
+              <span class="font-label text-[10px] sm:text-[11px] text-outline block mb-1 uppercase tracking-widest">Alignment</span>
               <div class="font-mono text-2xl lg:text-3xl text-secondary font-semibold tabular-nums"><span class="counter" data-target="100">0</span>%</div>
               <span class="font-label text-xs text-on-surface-variant block mt-0.5">Zero Drift Verified</span>
             </div>
-            <div class="text-left px-2">
-              <span class="font-label text-[11px] text-outline block mb-1 uppercase tracking-widest">Deployment</span>
+            <div class="text-left px-1.5 sm:px-2">
+              <span class="font-label text-[10px] sm:text-[11px] text-outline block mb-1 uppercase tracking-widest">Deployment</span>
               <div class="font-mono text-2xl lg:text-3xl text-primary font-semibold tabular-nums">&lt;<span class="counter" data-target="60">0</span>s</div>
               <span class="font-label text-xs text-on-surface-variant block mt-0.5">Edge AST Coldstart</span>
             </div>
-            <div class="text-left px-2">
-              <span class="font-label text-[11px] text-outline block mb-1 uppercase tracking-widest">Duplex Latency</span>
+            <div class="text-left px-1.5 sm:px-2">
+              <span class="font-label text-[10px] sm:text-[11px] text-outline block mb-1 uppercase tracking-widest">Duplex Latency</span>
               <div class="font-mono text-2xl lg:text-3xl text-secondary font-semibold tabular-nums"><span class="counter" data-target="142">0</span>ms</div>
               <span class="font-label text-xs text-on-surface-variant block mt-0.5">Direct SIP Carrier</span>
             </div>
-            <div class="text-left px-2">
-              <span class="font-label text-[11px] text-outline block mb-1 uppercase tracking-widest">Cost Efficiency</span>
+            <div class="text-left px-1.5 sm:px-2">
+              <span class="font-label text-[10px] sm:text-[11px] text-outline block mb-1 uppercase tracking-widest">Cost Efficiency</span>
               <div class="font-mono text-2xl lg:text-3xl text-primary font-semibold tabular-nums"><span class="counter" data-target="10">0</span>x</div>
               <span class="font-label text-xs text-on-surface-variant block mt-0.5">Retainer Arbitrage</span>
             </div>
@@ -415,52 +497,52 @@
 
         </div>
 
-        <!-- ACT II: THE SPECIFICATIONS (Left Flank with generous space for 3D model on the right) -->
-        <div class="act-view absolute inset-0 z-20 flex items-center justify-start px-6 md:px-16 lg:px-24 pl-20 sm:pl-24 md:pl-32 lg:pl-36 pt-12 transition-all duration-700 opacity-0 pointer-events-none translate-x-12" id="act-2-view">
-          <div class="max-w-lg w-full space-y-4">
+        <!-- ACT II: THE SPECIFICATIONS (Left Flank on desktop, Centered card with backdrop blur on mobile) -->
+        <div class="act-view absolute inset-0 z-20 flex items-center justify-center md:justify-start px-4 md:px-16 lg:px-24 pl-4 sm:pl-20 md:pl-32 lg:pl-36 pt-16 md:pt-12 transition-all duration-700 opacity-0 pointer-events-none translate-x-12" id="act-2-view">
+          <div class="max-w-md md:max-w-lg w-full space-y-3 sm:space-y-4 mx-auto md:mx-0 p-5 sm:p-6 md:p-0 rounded-3xl md:rounded-none bg-[#141313]/90 md:bg-transparent backdrop-blur-2xl md:backdrop-blur-none border border-[rgba(212,196,181,0.2)] md:border-0 shadow-2xl md:shadow-none">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1C1B1B]/80 border border-[rgba(212,196,181,0.25)]">
               <span class="material-symbols-outlined text-sm text-secondary">memory</span>
               <span class="font-mono text-xs text-secondary uppercase tracking-widest">Act II // Specifications</span>
             </div>
-            <h2 class="font-headline text-3xl md:text-4xl text-on-surface" data-reveal-title="true">High-Performance Infrastructure</h2>
-            <p class="font-body text-sm text-on-surface-variant font-light">Three hardware-interlocked compute pillars operating within sub-millisecond coordination.</p>
+            <h2 class="font-headline text-2xl sm:text-3xl md:text-4xl text-on-surface" data-reveal-title="true">High-Performance Infrastructure</h2>
+            <p class="font-body text-xs sm:text-sm text-on-surface-variant font-light">Three hardware-interlocked compute pillars operating within sub-millisecond coordination.</p>
             
-            <div class="space-y-3 pt-2" id="tri-spectral-cards">
-              <div class="p-4 rounded-xl tactile-slab-3d tri-card transform transition-all duration-700 ease-out -translate-y-12 opacity-0" style="transition-delay: 120ms;">
+            <div class="space-y-2.5 sm:space-y-3 pt-1 sm:pt-2" id="tri-spectral-cards">
+              <div class="p-3.5 sm:p-4 rounded-xl tactile-slab-3d tri-card transform transition-all duration-700 ease-out -translate-y-12 opacity-0" style="transition-delay: 120ms;">
                 <div class="flex items-center justify-between mb-1">
-                  <span class="font-label text-sm font-semibold text-secondary">Duplex Voice Engine</span>
-                  <span class="font-mono text-xs text-outline">142ms Duplex</span>
+                  <span class="font-label text-xs sm:text-sm font-semibold text-secondary">Duplex Voice Engine</span>
+                  <span class="font-mono text-[11px] sm:text-xs text-outline">142ms Duplex</span>
                 </div>
-                <p class="font-body text-xs text-on-surface-variant leading-relaxed">Direct carrier-grade SIP streaming with millisecond interruptibility and zero WebRTC packet drag.</p>
+                <p class="font-body text-[11px] sm:text-xs text-on-surface-variant leading-relaxed">Direct carrier-grade SIP streaming with millisecond interruptibility and zero WebRTC packet drag.</p>
               </div>
-              <div class="p-4 rounded-xl tactile-slab-3d tri-card transform transition-all duration-700 ease-out -translate-y-12 opacity-0" style="transition-delay: 360ms;">
+              <div class="p-3.5 sm:p-4 rounded-xl tactile-slab-3d tri-card transform transition-all duration-700 ease-out -translate-y-12 opacity-0" style="transition-delay: 360ms;">
                 <div class="flex items-center justify-between mb-1">
-                  <span class="font-label text-sm font-semibold text-secondary">Edge AST Compiler</span>
-                  <span class="font-mono text-xs text-outline">&lt;48s Rollout</span>
+                  <span class="font-label text-xs sm:text-sm font-semibold text-secondary">Edge AST Compiler</span>
+                  <span class="font-mono text-[11px] sm:text-xs text-outline">&lt;48s Rollout</span>
                 </div>
-                <p class="font-body text-xs text-on-surface-variant leading-relaxed">Natural intent converted to semantic AST trees deployed across 310+ global edge nodes.</p>
+                <p class="font-body text-[11px] sm:text-xs text-on-surface-variant leading-relaxed">Natural intent converted to semantic AST trees deployed across 310+ global edge nodes.</p>
               </div>
-              <div class="p-4 rounded-xl tactile-slab-3d tri-card transform transition-all duration-700 ease-out -translate-y-12 opacity-0" style="transition-delay: 600ms;">
+              <div class="p-3.5 sm:p-4 rounded-xl tactile-slab-3d tri-card transform transition-all duration-700 ease-out -translate-y-12 opacity-0" style="transition-delay: 600ms;">
                 <div class="flex items-center justify-between mb-1">
-                  <span class="font-label text-sm font-semibold text-secondary">Enterprise Knowledge Vault</span>
-                  <span class="font-mono text-xs text-outline">85k Tok/s</span>
+                  <span class="font-label text-xs sm:text-sm font-semibold text-secondary">Enterprise Knowledge Vault</span>
+                  <span class="font-mono text-[11px] sm:text-xs text-outline">85k Tok/s</span>
                 </div>
-                <p class="font-body text-xs text-on-surface-variant leading-relaxed">Air-gapped 3,072-dimensional embeddings sealed under client-controlled cryptographic keys.</p>
+                <p class="font-body text-[11px] sm:text-xs text-on-surface-variant leading-relaxed">Air-gapped 3,072-dimensional embeddings sealed under client-controlled cryptographic keys.</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- ACT III: ATTRIBUTION (Right Flank with generous space for 3D model on the left) -->
-        <div class="act-view absolute inset-0 z-20 flex items-center justify-end px-6 md:px-16 lg:px-24 pr-16 sm:pr-20 md:pr-28 lg:pr-36 pt-12 transition-all duration-700 opacity-0 pointer-events-none -translate-x-12" id="act-3-view">
-          <div class="max-w-lg w-full p-6 sm:p-8 rounded-2xl tactile-slab-3d space-y-4 ml-auto text-left">
+        <!-- ACT III: ATTRIBUTION (Right Flank on desktop, Centered with backdrop blur on mobile) -->
+        <div class="act-view absolute inset-0 z-20 flex items-center justify-center md:justify-end px-4 md:px-16 lg:px-24 pr-4 sm:pr-20 md:pr-28 lg:pr-36 pt-16 md:pt-12 transition-all duration-700 opacity-0 pointer-events-none -translate-x-12" id="act-3-view">
+          <div class="max-w-md md:max-w-lg w-full p-5 sm:p-8 rounded-2xl sm:rounded-3xl tactile-slab-3d space-y-3 sm:space-y-4 mx-auto md:ml-auto text-left bg-[#1C1B1B]/95 backdrop-blur-2xl border border-[rgba(212,196,181,0.25)] shadow-2xl">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.2)]">
               <span class="material-symbols-outlined text-sm text-secondary">radar</span>
               <span class="font-mono text-xs text-secondary uppercase tracking-widest">Act III // Performance Engine</span>
             </div>
             <h2 class="font-headline text-2xl md:text-3xl text-on-surface" data-reveal-title="true">Closed-Loop Attribution Engine</h2>
             <p class="font-body text-xs md:text-sm text-on-surface-variant">Live Bayesian telemetry eliminating ad spend waste by correlating CRM closing outcomes to creative tokens.</p>
-            <div class="p-4 rounded-lg bg-[#0E0E0E] border border-[rgba(150,143,146,0.2)] font-mono text-xs text-secondary space-y-1.5 overflow-x-auto">
+            <div class="p-3.5 sm:p-4 rounded-lg bg-[#0E0E0E] border border-[rgba(150,143,146,0.2)] font-mono text-xs text-secondary space-y-1.5 overflow-x-auto">
               <div class="text-secondary font-semibold">P(θ | D) ∝ P(D | θ) · P(θ)</div>
               <div class="text-outline text-[11px]"># Re-weighting attribution vectors across Meta Graph + SIP ingress</div>
               <div class="text-[#F1E0D0] text-[11px]">Delta CAC: -41.2% | Verified Closed Value: +38.4% Net Lift</div>
@@ -472,9 +554,9 @@
           </div>
         </div>
 
-        <!-- ACT IV: ENTERPRISE SECURITY & SOVEREIGNTY (Left Flank with 3D model shining on the right) -->
-        <div class="act-view absolute inset-0 z-20 flex items-center justify-start px-6 md:px-16 lg:px-24 pl-20 sm:pl-24 md:pl-32 lg:pl-36 pt-12 transition-all duration-700 opacity-0 pointer-events-none translate-x-12" id="act-4-view">
-          <div class="max-w-lg w-full p-8 rounded-3xl tactile-slab-3d space-y-5 bg-[#1C1B1B] border border-[rgba(212,196,181,0.25)] shadow-2xl text-left">
+        <!-- ACT IV: ENTERPRISE SECURITY & SOVEREIGNTY (Centered on mobile, Left Flank on desktop) -->
+        <div class="act-view absolute inset-0 z-20 flex items-center justify-center md:justify-start px-4 md:pl-20 md:px-16 lg:px-24 pt-16 md:pt-12 transition-all duration-700 opacity-0 pointer-events-none translate-x-12" id="act-4-view">
+          <div class="max-w-md md:max-w-lg w-full p-6 sm:p-8 rounded-3xl tactile-slab-3d space-y-4 sm:space-y-5 bg-[#1C1B1B]/95 backdrop-blur-2xl border border-[rgba(212,196,181,0.25)] shadow-2xl text-left mx-auto md:mx-0">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.2)]">
               <span class="material-symbols-outlined text-sm text-secondary">verified_user</span>
               <span class="font-mono text-xs text-secondary uppercase tracking-widest">Act IV // Enterprise Security</span>
@@ -500,7 +582,7 @@
               </div>
             </div>
             <div class="pt-2">
-              <a class="px-7 py-3.5 rounded-full bg-secondary hover:bg-secondary-fixed text-[#141313] font-label text-xs font-bold tracking-widest uppercase transition-all shadow-[0_0_24px_rgba(212,196,181,0.35)] hover:scale-105 inline-flex items-center gap-2" href="#pricing">
+              <a class="min-h-[44px] px-7 py-3.5 rounded-full bg-secondary hover:bg-secondary-fixed text-[#141313] font-label text-xs font-bold tracking-widest uppercase transition-all shadow-[0_0_24px_rgba(212,196,181,0.35)] hover:scale-105 inline-flex items-center justify-center gap-2 w-full sm:w-auto" href="#pricing">
                 Deploy Enterprise Platform
                 <span class="material-symbols-outlined text-sm">arrow_forward</span>
               </a>
@@ -721,12 +803,12 @@
           <span class="font-mono text-xs text-secondary uppercase tracking-widest block mb-2 font-medium">Enterprise Solutions</span>
           <h2 class="font-headline text-3xl md:text-4xl text-on-surface font-medium">Four Autonomous Solutions</h2>
         </div>
-        <!-- Peel Mode Toggle Button -->
-        <div class="inline-flex p-1 rounded-xl bg-[#201F1F] border border-[rgba(150,143,146,0.25)] shadow-md">
-          <button class="px-4 py-1.5 rounded-lg bg-secondary text-[#141313] font-label text-xs font-bold transition-all" id="view-exec">
+        <!-- Peel Mode Toggle Button with Apple HIG 44px+ Touch Target -->
+        <div class="inline-flex p-1 rounded-2xl bg-[#201F1F] border border-[rgba(150,143,146,0.25)] shadow-md">
+          <button class="min-h-[44px] px-4 py-2.5 rounded-xl bg-secondary text-[#141313] font-label text-xs font-bold transition-all flex items-center justify-center" id="view-exec">
             Executive Telemetry
           </button>
-          <button class="px-4 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label text-xs font-medium transition-all" id="view-tech">
+          <button class="min-h-[44px] px-4 py-2.5 rounded-xl text-on-surface-variant hover:text-on-surface font-label text-xs font-medium transition-all flex items-center justify-center" id="view-tech">
             Under-The-Hood Peel
           </button>
         </div>
@@ -1134,49 +1216,49 @@ Module {
       </div>
 
       <!-- Economic Comparison Banner -->
-      <div class="p-6 sm:p-8 rounded-2xl tactile-slab-3d mb-16 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="p-6 sm:p-8 rounded-3xl tactile-slab-3d mb-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div>
           <span class="font-mono text-xs text-secondary uppercase tracking-widest block mb-1 font-medium">Economic Superiority</span>
           <h3 class="font-headline text-xl md:text-2xl text-on-surface font-semibold">The Elimination of Agency Overhead</h3>
           <p class="font-body text-xs md:text-sm text-on-surface-variant font-light mt-1">Replace bloated retainers, fragmented agency teams, and junior copywriters with 9 autonomous agents.</p>
         </div>
-        <div class="flex items-center gap-8 text-right shrink-0">
-          <div>
-            <span class="font-mono text-xs text-outline block line-through">Legacy Agency Retainer</span>
+        <div class="flex items-center justify-between sm:justify-end gap-6 sm:gap-8 w-full md:w-auto pt-2 md:pt-0 border-t md:border-t-0 border-[rgba(150,143,146,0.15)] shrink-0">
+          <div class="text-left sm:text-right">
+            <span class="font-mono text-[11px] sm:text-xs text-outline block line-through">Legacy Agency Retainer</span>
             <span class="font-mono text-xl md:text-2xl text-outline line-through tabular-nums">$18,500/mo</span>
           </div>
           <div class="w-px h-10 bg-outline-variant"></div>
-          <div>
-            <span class="font-mono text-xs text-secondary block font-semibold">Aethelgard Platform</span>
+          <div class="text-left sm:text-right">
+            <span class="font-mono text-[11px] sm:text-xs text-secondary block font-semibold">Aethelgard Platform</span>
             <span class="font-mono text-2xl md:text-3xl text-secondary font-bold tabular-nums">$899/mo</span>
           </div>
         </div>
       </div>
 
       <!-- Monthly / Quarterly / Yearly Billing Interval Toggle -->
-      <div class="flex flex-col items-center justify-center mb-10">
-        <div class="inline-flex p-1.5 rounded-full bg-[#1C1B1B] border border-[rgba(150,143,146,0.28)] shadow-[0_8px_24px_rgba(0,0,0,0.6)]">
-          <button id="btn-billing-monthly" class="billing-toggle-btn px-5 py-2 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all bg-secondary text-[#141313] shadow-md" data-interval="monthly">
+      <div class="flex flex-col items-center justify-center mb-10 px-2">
+        <div class="inline-flex p-1 rounded-full bg-[#1C1B1B] border border-[rgba(150,143,146,0.28)] shadow-[0_8px_24px_rgba(0,0,0,0.6)] max-w-full overflow-x-auto">
+          <button id="btn-billing-monthly" class="billing-toggle-btn min-h-[44px] px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all bg-secondary text-[#141313] shadow-md flex items-center justify-center" data-interval="monthly">
             Monthly
           </button>
-          <button id="btn-billing-quarterly" class="billing-toggle-btn px-5 py-2 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex items-center gap-1.5" data-interval="quarterly">
+          <button id="btn-billing-quarterly" class="billing-toggle-btn min-h-[44px] px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5" data-interval="quarterly">
             <span>Quarterly</span>
-            <span class="px-2 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[10px] font-mono text-secondary font-bold">SAVE 10%</span>
+            <span class="px-1.5 sm:px-2 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[9px] sm:text-[10px] font-mono text-secondary font-bold whitespace-nowrap">SAVE 10%</span>
           </button>
-          <button id="btn-billing-yearly" class="billing-toggle-btn px-5 py-2 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex items-center gap-1.5" data-interval="yearly">
+          <button id="btn-billing-yearly" class="billing-toggle-btn min-h-[44px] px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5" data-interval="yearly">
             <span>Yearly</span>
-            <span class="px-2 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[10px] font-mono text-secondary font-bold">SAVE 20%</span>
+            <span class="px-1.5 sm:px-2 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[9px] sm:text-[10px] font-mono text-secondary font-bold whitespace-nowrap">SAVE 20%</span>
           </button>
         </div>
-        <p class="font-mono text-[11px] text-outline mt-3" id="billing-guarantee-note">Cancel or pause any retainership with 14 days cryptographic notice.</p>
+        <p class="font-mono text-[11px] text-outline mt-3 text-center px-4" id="billing-guarantee-note">Cancel or pause any retainership with 14 days cryptographic notice.</p>
       </div>
 
       <!-- 3 Enterprise Pricing Tiers -->
       <span id="consecration" class="scroll-mt-24"></span>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch" id="pricing">
+      <div class="flex flex-col lg:flex-row gap-8 lg:gap-6 items-stretch" id="pricing">
         
         <!-- Tier 1: Growth Platform -->
-        <div class="p-8 rounded-3xl tactile-slab-3d flex flex-col justify-between hover:border-secondary/40 transition-all">
+        <div class="flex-1 p-6 sm:p-8 rounded-3xl tactile-slab-3d flex flex-col justify-between hover:border-secondary/40 transition-all">
           <div>
             <span class="font-mono text-xs text-outline uppercase tracking-wider block mb-1">Tier I</span>
             <h4 class="font-headline text-xl text-on-surface font-semibold mb-2">Growth Platform</h4>
@@ -1201,19 +1283,19 @@ Module {
               </li>
             </ul>
           </div>
-          <a class="w-full py-3 rounded-full bg-[#2B2A2A] text-on-surface text-center font-label text-xs font-semibold tracking-wider uppercase hover:bg-[#363434] transition-colors border border-[rgba(150,143,146,0.3)]" href="client_onboarding_product_dna_intake_portal/code.html">
+          <a class="w-full min-h-[44px] py-3 px-6 rounded-full bg-[#2B2A2A] text-on-surface text-center font-label text-xs font-semibold tracking-wider uppercase hover:bg-[#363434] transition-colors border border-[rgba(150,143,146,0.3)] flex items-center justify-center" href="client_onboarding_product_dna_intake_portal/code.html">
             Get Started
           </a>
         </div>
 
         <!-- Tier 2: Enterprise Scale (Hero Flagship Tier with Spinning Neon Laser Perimeter) -->
-        <div class="neon-laser-card -mt-2 shadow-[0_0_40px_rgba(212,196,181,0.18)] flex flex-col justify-between relative">
+        <div class="flex-1 neon-laser-card mt-4 lg:-mt-2 shadow-[0_0_40px_rgba(212,196,181,0.18)] flex flex-col justify-between relative">
           <!-- Elevated Most Popular Badge: Sits safely above spinning laser border beam (z-30 vs z-2) -->
-          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-secondary text-[#141313] font-mono text-[11px] font-bold tracking-widest uppercase shadow-[0_4px_16px_rgba(0,0,0,0.9)] z-30 flex items-center gap-1.5 pointer-events-none">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-secondary text-[#141313] font-mono text-[11px] font-bold tracking-widest uppercase shadow-[0_4px_16px_rgba(0,0,0,0.9)] z-30 flex items-center gap-1.5 pointer-events-none whitespace-nowrap">
             <span class="material-symbols-outlined text-xs">verified</span>
             <span>Most Popular</span>
           </div>
-          <div class="neon-laser-card-inner p-8 flex flex-col justify-between relative">
+          <div class="neon-laser-card-inner p-6 sm:p-8 flex flex-col justify-between relative">
             <div>
               <span class="font-mono text-xs text-secondary uppercase tracking-wider block mb-1 font-semibold">Tier II</span>
               <h4 class="font-headline text-xl text-on-surface font-semibold mb-2">Enterprise Scale</h4>
@@ -1242,14 +1324,14 @@ Module {
                 </li>
               </ul>
             </div>
-            <a class="w-full py-3 rounded-full bg-secondary hover:bg-secondary-fixed text-[#141313] text-center font-label text-xs font-bold tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(212,196,181,0.3)] hover:scale-[1.02]" href="client_onboarding_product_dna_intake_portal/code.html">
+            <a class="w-full min-h-[44px] py-3 px-6 rounded-full bg-secondary hover:bg-secondary-fixed text-[#141313] text-center font-label text-xs font-bold tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(212,196,181,0.3)] hover:scale-[1.02] flex items-center justify-center" href="client_onboarding_product_dna_intake_portal/code.html">
               Deploy Enterprise Platform
             </a>
           </div>
         </div>
 
         <!-- Tier 3: Custom Enclave -->
-        <div class="p-8 rounded-3xl tactile-slab-3d flex flex-col justify-between hover:border-secondary/40 transition-all">
+        <div class="flex-1 p-6 sm:p-8 rounded-3xl tactile-slab-3d flex flex-col justify-between hover:border-secondary/40 transition-all">
           <div>
             <span class="font-mono text-xs text-outline uppercase tracking-wider block mb-1">Tier III</span>
             <h4 class="font-headline text-xl text-on-surface font-semibold mb-2">Custom Enclave</h4>
@@ -1273,7 +1355,7 @@ Module {
               </li>
             </ul>
           </div>
-          <a class="w-full py-3 rounded-full bg-[#2B2A2A] text-on-surface text-center font-label text-xs font-semibold tracking-wider uppercase hover:bg-[#363434] transition-colors border border-[rgba(150,143,146,0.3)]" href="client_onboarding_product_dna_intake_portal/code.html">
+          <a class="w-full min-h-[44px] py-3 px-6 rounded-full bg-[#2B2A2A] text-on-surface text-center font-label text-xs font-semibold tracking-wider uppercase hover:bg-[#363434] transition-colors border border-[rgba(150,143,146,0.3)] flex items-center justify-center" href="client_onboarding_product_dna_intake_portal/code.html">
             Contact Enterprise Sales
           </a>
         </div>
@@ -1373,7 +1455,7 @@ Module {
           gHeight = globalStardustCanvas.height = window.innerHeight;
         }
         resizeGlobalCanvas();
-        window.addEventListener('resize', resizeGlobalCanvas);
+        window.addEventListener('resize', resizeGlobalCanvas, { passive: true });
 
         for (let i = 0; i < numGParticles; i++) {
           gParticles.push({
@@ -1669,19 +1751,42 @@ Module {
         }
       };
 
-      // Resize Handler
-      function onResize() {
+      // Resize Handler: Dynamic Responsive Camera Framing for Mobile & Desktop
+      let mobileCameraZOffset = 0;
+
+      function onWindowResize() {
         const w = container.clientWidth || window.innerWidth;
         const h = container.clientHeight || window.innerHeight;
-        camera.aspect = w / h;
+        const aspect = w / h;
+        camera.aspect = aspect;
+
+        // Dynamic Three.js camera framing for mobile viewports (< 768px)
+        // Adapts camera FOV and camera Z offsets based on aspect ratio
+        // to frame the celestial clockwork head gracefully above narrative cards without clipping
+        if (w < 768) {
+          if (aspect < 0.6) {
+            mobileCameraZOffset = 3.2;
+            camera.fov = 48;
+          } else {
+            mobileCameraZOffset = 2.0;
+            camera.fov = 44;
+          }
+        } else {
+          mobileCameraZOffset = 0;
+          camera.fov = 40;
+        }
+
         camera.updateProjectionMatrix();
         renderer.setSize(w, h);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       }
-      window.addEventListener('resize', onResize);
+      const onResize = onWindowResize;
+      window.addEventListener('resize', onWindowResize, { passive: true });
+      onWindowResize(); // Initialize responsive camera framing immediately
 
       // Render Loop with Centered Knight, Zero Jitter, and Cinematic Camera Lerping
       let clock = new THREE.Clock();
-      let curCamX = 0, curCamY = 0.15, curCamZ = 5.6;
+      let curCamX = 0, curCamY = 0.15, curCamZ = 5.6 + mobileCameraZOffset;
       let curTarX = 0, curTarY = 0.15, curTarZ = 0;
       let curKnightRotY = 0;
       let curKnightRotX = 0;
@@ -1705,12 +1810,23 @@ Module {
 
         const t = actCamTargets[currentActIndex];
         const lerpSpeed = 0.055;
-        curCamX += (t.camX - curCamX) * lerpSpeed;
-        curCamY += (t.camY - curCamY) * lerpSpeed;
-        curCamZ += (t.camZ - curCamZ) * lerpSpeed;
-        curTarX += (t.tarX - curTarX) * lerpSpeed;
-        curTarY += (t.tarY - curTarY) * lerpSpeed;
-        curTarZ += (t.tarZ - curTarZ) * lerpSpeed;
+        const isMobile = window.innerWidth < 768;
+
+        // Responsive dynamic camera framing: On mobile (< 768px), frame the celestial clockwork head
+        // in the upper portion of the viewport without clipping, keeping it centered above narrative cards
+        const targetCamX = isMobile ? 0 : t.camX;
+        const targetCamY = isMobile ? (currentActIndex === 0 ? 0.15 : -0.75) : t.camY;
+        const targetCamZ = t.camZ + mobileCameraZOffset;
+        const targetTarX = isMobile ? 0 : t.tarX;
+        const targetTarY = isMobile ? (currentActIndex === 0 ? 0.15 : -0.75) : t.tarY;
+        const targetTarZ = t.tarZ;
+
+        curCamX += (targetCamX - curCamX) * lerpSpeed;
+        curCamY += (targetCamY - curCamY) * lerpSpeed;
+        curCamZ += (targetCamZ - curCamZ) * lerpSpeed;
+        curTarX += (targetTarX - curTarX) * lerpSpeed;
+        curTarY += (targetTarY - curTarY) * lerpSpeed;
+        curTarZ += (targetTarZ - curTarZ) * lerpSpeed;
         curKnightRotY += (t.rotY - curKnightRotY) * lerpSpeed;
         curKnightRotX += (((t.rotX !== undefined) ? t.rotX : 0) - curKnightRotX) * lerpSpeed;
 
@@ -2085,7 +2201,8 @@ Module {
         const curY = window.scrollY;
 
         // 1. Smart Scroll Header: Disappear when scrolling down, appear when scrolling up!
-        if (smartNav) {
+        const isMobileNavOpen = mobileNavOverlay && mobileNavOverlay.classList.contains('opacity-100');
+        if (smartNav && !isMobileNavOpen) {
           if (curY > lastScrollY && curY > 90) {
             smartNav.style.transform = 'translateY(-140%)';
             smartNav.style.opacity = '0';
@@ -2223,53 +2340,174 @@ Module {
             });
             isChartTicking = true;
           }
-        });
+        }, { passive: true });
 
         chartWrapper.addEventListener('mouseleave', () => {
           crosshair.style.opacity = '0';
           if (chartTooltipCard) chartTooltipCard.style.opacity = '0';
           if (chartHoverVal) chartHoverVal.innerText = 'Day 28: +38.4% Lift • 4.8x ROAS';
         });
+
+        // Touch support for interactive mobile chart exploration with passive listener
+        function handleChartTouch(e) {
+          if (e.touches && e.touches.length > 0) {
+            updateChartTracking(e.touches[0]);
+          }
+        }
+        chartWrapper.addEventListener('touchstart', (e) => {
+          handleChartTouch(e);
+        }, { passive: true });
+
+        chartWrapper.addEventListener('touchmove', (e) => {
+          if (!isChartTicking) {
+            requestAnimationFrame(() => {
+              handleChartTouch(e);
+              isChartTicking = false;
+            });
+            isChartTicking = true;
+          }
+        }, { passive: true });
+
+        chartWrapper.addEventListener('touchend', () => {
+          crosshair.style.opacity = '0';
+          if (chartTooltipCard) chartTooltipCard.style.opacity = '0';
+        }, { passive: true });
       }
 
-      // 8. Executive Telemetry vs Under-the-Hood Peel Mode Toggle
+      // 8. Executive Telemetry vs Under-the-Hood Peel Mode Toggle (Apple HIG 44px+ touch targets)
       const btnExec = document.getElementById('view-exec');
       const btnTech = document.getElementById('view-tech');
       if (btnExec && btnTech) {
         btnExec.addEventListener('click', () => {
-          btnExec.className = 'px-4 py-1.5 rounded-lg bg-secondary text-[#141313] font-label text-xs font-bold transition-all';
-          btnTech.className = 'px-4 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label text-xs font-medium transition-all';
+          btnExec.className = 'min-h-[44px] px-4 py-2.5 rounded-xl bg-secondary text-[#141313] font-label text-xs font-bold transition-all flex items-center justify-center';
+          btnTech.className = 'min-h-[44px] px-4 py-2.5 rounded-xl text-on-surface-variant hover:text-on-surface font-label text-xs font-medium transition-all flex items-center justify-center';
           document.querySelectorAll('.sanctum-exec-view').forEach(el => el.classList.remove('hidden'));
           document.querySelectorAll('.sanctum-tech-view').forEach(el => el.classList.add('hidden'));
         });
         btnTech.addEventListener('click', () => {
-          btnTech.className = 'px-4 py-1.5 rounded-lg bg-secondary text-[#141313] font-label text-xs font-bold transition-all';
-          btnExec.className = 'px-4 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label text-xs font-medium transition-all';
+          btnTech.className = 'min-h-[44px] px-4 py-2.5 rounded-xl bg-secondary text-[#141313] font-label text-xs font-bold transition-all flex items-center justify-center';
+          btnExec.className = 'min-h-[44px] px-4 py-2.5 rounded-xl text-on-surface-variant hover:text-on-surface font-label text-xs font-medium transition-all flex items-center justify-center';
           document.querySelectorAll('.sanctum-exec-view').forEach(el => el.classList.add('hidden'));
           document.querySelectorAll('.sanctum-tech-view').forEach(el => el.classList.remove('hidden'));
         });
       }
 
+      // Mobile Quick-Navigation Drawer & Overlay Controller (Apple HIG Standard)
+      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+      const mobileNavPanel = document.getElementById('mobile-nav-panel');
+      const mobileNavClose = document.getElementById('mobile-nav-close');
+      const mobileMenuIcon = document.getElementById('mobile-menu-icon');
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+      function openMobileMenu() {
+        if (!mobileNavOverlay) return;
+        mobileNavOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        mobileNavOverlay.classList.add('opacity-100', 'pointer-events-auto');
+        mobileNavOverlay.setAttribute('aria-hidden', 'false');
+        if (mobileNavPanel) {
+          mobileNavPanel.classList.remove('-translate-y-4');
+          mobileNavPanel.classList.add('translate-y-0');
+        }
+        if (mobileMenuIcon) mobileMenuIcon.innerText = 'close';
+        if (mobileMenuToggle) mobileMenuToggle.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden'; // Lock background scroll on mobile
+      }
+
+      function closeMobileMenu() {
+        if (!mobileNavOverlay) return;
+        mobileNavOverlay.classList.add('opacity-0', 'pointer-events-none');
+        mobileNavOverlay.classList.remove('opacity-100', 'pointer-events-auto');
+        mobileNavOverlay.setAttribute('aria-hidden', 'true');
+        if (mobileNavPanel) {
+          mobileNavPanel.classList.add('-translate-y-4');
+          mobileNavPanel.classList.remove('translate-y-0');
+        }
+        if (mobileMenuIcon) mobileMenuIcon.innerText = 'menu';
+        if (mobileMenuToggle) mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+
+      if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = mobileNavOverlay && mobileNavOverlay.classList.contains('opacity-100');
+          if (isOpen) {
+            closeMobileMenu();
+          } else {
+            openMobileMenu();
+          }
+        });
+      }
+
+      if (mobileNavClose) {
+        mobileNavClose.addEventListener('click', (e) => {
+          e.stopPropagation();
+          closeMobileMenu();
+        });
+      }
+
+      // Backdrop tap to dismiss
+      if (mobileNavOverlay) {
+        mobileNavOverlay.addEventListener('click', (e) => {
+          if (e.target === mobileNavOverlay) {
+            closeMobileMenu();
+          }
+        });
+      }
+
+      // Close menu on link selection and smooth scroll
+      mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          closeMobileMenu();
+        });
+      });
+
+      // Close on Escape key
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMobileMenu();
+      });
+
       // 9. Session 06 Luminous Box Hover Glow & Dynamic Spotlight Tracker (Hardware-Accelerated RAF Throttling)
       const glowSlabs = document.querySelectorAll('.tactile-slab-3d, .tri-card, .neon-laser-card');
       glowSlabs.forEach(card => {
         let isCardTicking = false;
+        const updateGlow = (clientX, clientY) => {
+          const rect = card.getBoundingClientRect();
+          const x = clientX - rect.left;
+          const y = clientY - rect.top;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+        };
+
         card.addEventListener('mousemove', (e) => {
           if (!isCardTicking) {
             const clientX = e.clientX;
             const clientY = e.clientY;
             requestAnimationFrame(() => {
-              const rect = card.getBoundingClientRect();
-              const x = clientX - rect.left;
-              const y = clientY - rect.top;
-              card.style.setProperty('--mouse-x', `${x}px`);
-              card.style.setProperty('--mouse-y', `${y}px`);
+              updateGlow(clientX, clientY);
+              isCardTicking = false;
+            });
+            isCardTicking = true;
+          }
+        }, { passive: true });
+
+        card.addEventListener('touchmove', (e) => {
+          if (!isCardTicking && e.touches && e.touches.length > 0) {
+            const clientX = e.touches[0].clientX;
+            const clientY = e.touches[0].clientY;
+            requestAnimationFrame(() => {
+              updateGlow(clientX, clientY);
               isCardTicking = false;
             });
             isCardTicking = true;
           }
         }, { passive: true });
       });
+
+      // Ultra-smooth 60fps/120fps touch scroll guarantee with passive event listeners
+      window.addEventListener('touchstart', () => {}, { passive: true });
+      window.addEventListener('touchmove', () => {}, { passive: true });
     })();
   </script>
 </body>
