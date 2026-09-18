@@ -269,17 +269,22 @@ class TestLandingPageElevation(unittest.TestCase):
         self.assertIn("masterKnightGroup.position.set(0, 0, 0);", self.content)
 
     def test_optimistic_glare_and_bloom(self):
-        """Verify glare calibration, clean canvas styling, and celestial corona sprite."""
+        """Verify authentic dark metal chiaroscuro, subtle corona sprite, and glare calibration."""
         self.assertIn("coronaSprite", self.content)
         self.assertIn("THREE.AdditiveBlending", self.content)
-        self.assertIn("renderer.toneMappingExposure = 1.18;", self.content)
-        self.assertIn("keyLight = new THREE.DirectionalLight(0xfff3db, 2.6);", self.content)
-        self.assertIn("rimLight = new THREE.DirectionalLight(0xf1e0d0, 2.2);", self.content)
-        self.assertIn("shieldFill = new THREE.PointLight(0x2ee59d, 1.4, 15);", self.content)
-        self.assertIn("gearLight = new THREE.PointLight(0xf1d2a9, 1.8, 5);", self.content)
+        self.assertIn("renderer.toneMappingExposure = 0.88;", self.content)
+        self.assertIn("keyLight = new THREE.DirectionalLight(0xfff3db, 1.25);", self.content)
+        self.assertIn("rimLight = new THREE.DirectionalLight(0xf1e0d0, 0.9);", self.content)
+        self.assertIn("shieldFill = new THREE.PointLight(0x2ee59d, 0.5, 15);", self.content)
+        self.assertIn("gearLight = new THREE.PointLight(0xf1d2a9, 0.7, 5);", self.content)
         self.assertIn("coronaSprite.scale.set(5.5, 5.5, 1);", self.content)
         self.assertIn("opacity: 0.35", self.content)
         self.assertNotIn("drop-shadow(0 0 35px", self.content)
+
+    def test_official_brand_logo(self):
+        """Verify official company logo and favicon integration."""
+        self.assertIn("aethelgard_official_logo_transparent.png", self.content)
+        self.assertIn("aethelgard_favicon_64.png", self.content)
 
     def test_bottom_feathering_mask(self):
         """Verify sticky stage has linear gradient bottom feathering mask."""
