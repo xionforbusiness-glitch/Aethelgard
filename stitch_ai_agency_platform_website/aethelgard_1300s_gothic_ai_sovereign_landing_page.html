@@ -254,6 +254,12 @@
       opacity: 0.5 !important;
       transform: scale(1.4);
     }
+
+    /* Modern Web Performance: Offscreen content visibility and paint containment */
+    .perf-contain {
+      content-visibility: auto;
+      contain-intrinsic-size: 1px 1000px;
+    }
   </style>
 </head>
 
@@ -521,7 +527,7 @@
     </section>
 
     <!-- SECTION 2: ARCHITECTURAL INFRASTRUCTURE -->
-    <section class="relative z-30 w-full px-6 md:px-12 max-w-7xl mx-auto py-24" id="architecture">
+    <section class="relative z-30 w-full px-6 md:px-12 max-w-7xl mx-auto py-24 perf-contain" id="architecture">
       <div class="text-center max-w-2xl mx-auto mb-16">
         <span class="font-mono text-xs text-secondary uppercase tracking-widest block mb-2 font-medium">Enterprise Foundation</span>
         <h2 class="font-headline text-3xl md:text-4xl text-on-surface font-medium">Architectural Infrastructure</h2>
@@ -594,7 +600,7 @@
     </section>
 
     <!-- SECTION 3: ENTERPRISE DATA PIPELINE -->
-    <section class="relative z-30 w-full px-6 md:px-12 max-w-7xl mx-auto py-16" id="ingestion">
+    <section class="relative z-30 w-full px-6 md:px-12 max-w-7xl mx-auto py-16 perf-contain" id="ingestion">
       <div class="p-8 md:p-14 rounded-3xl tactile-slab-3d">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
@@ -723,7 +729,7 @@
     </section>
 
     <!-- SECTION 4: FOUR AUTONOMOUS SOLUTIONS (Interactive Bento Grid & Shadcn Area Chart) -->
-    <section class="relative z-30 w-full px-6 md:px-12 max-w-7xl mx-auto py-20" id="solutions">
+    <section class="relative z-30 w-full px-6 md:px-12 max-w-7xl mx-auto py-20 perf-contain" id="solutions">
       <span id="sanctums" class="scroll-mt-24"></span>
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
         <div>
@@ -1054,7 +1060,7 @@ Module {
     </section>
 
     <!-- SECTION 5: SPECIALIZED ENTERPRISE AGENTS -->
-    <section class="relative z-30 w-full px-6 md:px-12 max-w-7xl mx-auto py-20" id="agents">
+    <section class="relative z-30 w-full px-6 md:px-12 max-w-7xl mx-auto py-20 perf-contain" id="agents">
       <span id="pantheon" class="scroll-mt-24"></span>
       <div class="text-center max-w-2xl mx-auto mb-16">
         <span class="font-mono text-xs text-secondary uppercase tracking-widest block mb-2 font-medium">Autonomous Workforce</span>
@@ -1321,7 +1327,7 @@ Module {
           </p>
           <div class="font-mono text-[11px] text-secondary flex items-center gap-1.5 pt-2">
             <span class="material-symbols-outlined text-sm">verified</span>
-            <span>ENTERPRISE PLATFORM 2025</span>
+            <span>ENTERPRISE PLATFORM 2026</span>
           </div>
         </div>
 
@@ -1349,18 +1355,21 @@ Module {
           <span class="font-mono text-xs text-on-surface block uppercase tracking-widest font-semibold">Security Enclave</span>
           <div class="p-4 rounded-xl bg-[#1C1B1B] border border-[rgba(150,143,146,0.18)] space-y-2">
             <div class="flex items-center justify-between font-mono text-[11px]">
-              <span class="text-secondary font-semibold">STATUS: SECURE</span>
-              <span class="text-outline">ENCLAVE #0941</span>
+              <span class="text-secondary font-semibold flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse inline-block"></span>
+                STATUS: OPERATIONAL 99.99%
+              </span>
+              <span class="text-outline">SOC-2 PROD 2026</span>
             </div>
             <p class="font-mono text-[11px] text-outline leading-relaxed">
-              Zero algorithmic drift verified across all autonomous dispatch channels.
+              Zero algorithmic drift verified across all autonomous dispatch channels. AWS GovCloud &amp; Cloudflare V8 Enclave #0941.
             </p>
           </div>
         </div>
       </div>
 
       <div class="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-[rgba(150,143,146,0.12)] gap-4 font-mono text-[11px] text-outline">
-        <div>© 2025 AETHELGARD TECHNOLOGIES INC. ALL RIGHTS RESERVED.</div>
+        <div>&copy; 2026 AETHELGARD TECHNOLOGIES INC. ALL RIGHTS RESERVED.</div>
         <div class="flex items-center gap-6">
           <a class="hover:text-secondary transition-colors" href="#">PRIVACY POLICY</a>
           <a class="hover:text-secondary transition-colors" href="#">SECURITY ENCLAVE</a>
@@ -1403,6 +1412,10 @@ Module {
 
         let gTime = 0;
         function animateGlobalStardust() {
+          if (document.hidden) {
+            requestAnimationFrame(animateGlobalStardust);
+            return;
+          }
           gCtx.clearRect(0, 0, gWidth, gHeight);
           gTime += 0.03;
 
@@ -1693,8 +1706,21 @@ Module {
       let curKnightRotY = 0;
       let curKnightRotX = 0;
 
+      // High-performance stage visibility tracking: Pause WebGL render loop when stage is offscreen
+      let isStageVisible = true;
+      const stageContainerEl = document.getElementById('storyline-stage');
+      if ('IntersectionObserver' in window && stageContainerEl) {
+        const stageVisibilityObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            isStageVisible = entry.isIntersecting;
+          });
+        }, { root: null, rootMargin: '150px 0px 150px 0px', threshold: 0 });
+        stageVisibilityObserver.observe(stageContainerEl);
+      }
+
       function animate() {
         requestAnimationFrame(animate);
+        if (!isStageVisible || document.hidden) return;
         const elapsed = clock.getElapsedTime();
 
         const t = actCamTargets[currentActIndex];
@@ -2244,16 +2270,25 @@ Module {
         });
       }
 
-      // 9. Session 06 Luminous Box Hover Glow & Dynamic Spotlight Tracker
+      // 9. Session 06 Luminous Box Hover Glow & Dynamic Spotlight Tracker (Hardware-Accelerated RAF Throttling)
       const glowSlabs = document.querySelectorAll('.tactile-slab-3d, .tri-card, .neon-laser-card');
       glowSlabs.forEach(card => {
+        let isCardTicking = false;
         card.addEventListener('mousemove', (e) => {
-          const rect = card.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          card.style.setProperty('--mouse-x', `${x}px`);
-          card.style.setProperty('--mouse-y', `${y}px`);
-        });
+          if (!isCardTicking) {
+            const clientX = e.clientX;
+            const clientY = e.clientY;
+            requestAnimationFrame(() => {
+              const rect = card.getBoundingClientRect();
+              const x = clientX - rect.left;
+              const y = clientY - rect.top;
+              card.style.setProperty('--mouse-x', `${x}px`);
+              card.style.setProperty('--mouse-y', `${y}px`);
+              isCardTicking = false;
+            });
+            isCardTicking = true;
+          }
+        }, { passive: true });
       });
     })();
   </script>
