@@ -1,0 +1,24 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/stitch_ai_agency_platform_website/aethelgard_1300s_gothic_ai_sovereign_landing_page.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)\\.(glb|gltf)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}
