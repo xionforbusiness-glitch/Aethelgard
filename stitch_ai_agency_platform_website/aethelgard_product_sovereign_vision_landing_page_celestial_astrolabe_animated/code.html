@@ -267,39 +267,62 @@
       contain-intrinsic-size: 1px 1000px;
     }
 
-    /* ─── MOBILE: ACT CARDS STACK BELOW THE 3D FIGURE ─────────────────────── */
-    /* On mobile, the canvas fills the top 58% and cards sit in the bottom 42% */
+    /* ─── MOBILE (< 768px): 3D DISABLED — GLASS CARD STORYTELLING ─────────── */
     @media (max-width: 767px) {
-      /* 3D canvas: top half of viewport */
+      /* Hide the 3D WebGL canvas entirely — no rendering cost on mobile */
       #threejs-spatial-stage {
-        top: 0 !important;
-        height: 58% !important;
-        align-items: flex-start !important;
+        display: none !important;
       }
-      /* All act views: anchor to bottom of viewport, auto height, not inset-0 */
-      .act-view {
-        top: auto !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        height: 44% !important;
-        align-items: flex-end !important;
-        justify-content: center !important;
-        padding: 0 1rem 1rem !important;
-        overflow-y: auto;
-      }
-      /* Act I stays centered (hero text should remain full-screen on mobile) */
+
+      /* ACT I — HERO: Restore natural full-screen layout, fix button/text overlap */
       #act-1-view {
-        top: 0 !important;
-        height: 100% !important;
+        /* Remove the inset-0 absolute stacking so content flows naturally */
+        position: relative !important;
+        top: auto !important; bottom: auto !important;
+        left: auto !important; right: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        min-height: 100vh !important;
+        padding: 5.5rem 1.25rem 2rem !important;
+        overflow-y: auto !important;
+      }
+
+      /* ACTS II / III / IV — centered full-screen glass card, no 3D behind */
+      #act-2-view,
+      #act-3-view,
+      #act-4-view {
         align-items: center !important;
         justify-content: center !important;
-        padding: 5rem 1rem 2rem !important;
+        padding: 5rem 1.25rem 2rem !important;
       }
-      /* Make act cards compact on mobile */
-      .act-view > div {
-        max-height: 42vh;
-        overflow-y: auto;
+      /* Center the inner card on mobile */
+      #act-2-view > div,
+      #act-3-view > div,
+      #act-4-view > div {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        max-width: 100% !important;
+        max-height: 80vh !important;
+        overflow-y: auto !important;
+      }
+
+      /* PRICING TABS — prevent "Yearly" from overflowing off-screen */
+      .billing-toggle-container {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        justify-content: flex-start !important;
+      }
+      #btn-billing-monthly,
+      #btn-billing-quarterly,
+      #btn-billing-yearly {
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
       }
     }
   </style>
@@ -1276,7 +1299,7 @@ Module {
 
       <!-- Monthly / Quarterly / Yearly Billing Interval Toggle -->
       <div class="flex flex-col items-center justify-center mb-10 px-2">
-        <div class="inline-flex p-1 rounded-full bg-[#1C1B1B] border border-[rgba(150,143,146,0.28)] shadow-[0_8px_24px_rgba(0,0,0,0.6)] max-w-full overflow-x-auto">
+        <div class="billing-toggle-container inline-flex p-1 rounded-full bg-[#1C1B1B] border border-[rgba(150,143,146,0.28)] shadow-[0_8px_24px_rgba(0,0,0,0.6)] max-w-full overflow-x-auto">
           <button id="btn-billing-monthly" class="billing-toggle-btn min-h-[44px] px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all bg-secondary text-[#141313] shadow-md flex items-center justify-center" data-interval="monthly">
             Monthly
           </button>
@@ -1547,6 +1570,36 @@ Module {
       const canvas = document.getElementById('gothic-astrarium-canvas');
       const container = document.getElementById('threejs-spatial-stage');
       if (!canvas || !container) return;
+
+      // ── MOBILE GUARD: Skip all WebGL on small screens for performance ──────
+      // The 3D canvas is hidden via CSS on mobile. We define a lightweight
+      // setAethelgardAct that still drives the CSS act transitions.
+      if (window.innerWidth < 768) {
+        let _mobileActIndex = 0;
+        window.setAethelgardAct = function(actIdx) {
+          if (actIdx < 0 || actIdx > 3) return;
+          _mobileActIndex = actIdx;
+          // Drive CSS transitions for the act views without 3D
+          document.querySelectorAll('.act-view').forEach(function(el, i) {
+            if (i === actIdx) {
+              el.style.opacity = '1';
+              el.style.pointerEvents = 'auto';
+            } else {
+              el.style.opacity = '0';
+              el.style.pointerEvents = 'none';
+            }
+          });
+          // Update side-rail dots
+          document.querySelectorAll('.act-nav .indicator-bar').forEach(function(bar, i) {
+            bar.className = 'indicator-bar w-1.5 rounded-full transition-all duration-300 ' +
+              (i === actIdx
+                ? 'h-6 bg-[#D4C4B5] shadow-[0_0_12px_rgba(212,196,181,0.8)]'
+                : 'h-2 bg-outline-variant');
+          });
+        };
+        return; // ← Skip all WebGL, lighting, model loading, animate loop
+      }
+      // ── END MOBILE GUARD ───────────────────────────────────────────────────
 
       const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
