@@ -5,6 +5,9 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>Aethelgard — Autonomous Intelligence Cast in Sovereign Loyalty</title>
   <link rel="icon" type="image/png" href="assets/images/aethelgard_favicon_64.png"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
   
   <!-- Fonts & Material Symbols -->
   <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -534,8 +537,8 @@
         </div>
 
         <!-- ACT III: ATTRIBUTION (Right Flank on desktop, Centered with backdrop blur on mobile) -->
-        <div class="act-view absolute inset-0 z-20 flex items-center justify-center md:justify-end px-4 md:px-16 lg:px-24 pr-4 sm:pr-20 md:pr-28 lg:pr-36 pt-16 md:pt-12 transition-all duration-700 opacity-0 pointer-events-none -translate-x-12" id="act-3-view">
-          <div class="max-w-md md:max-w-lg w-full p-5 sm:p-8 rounded-2xl sm:rounded-3xl tactile-slab-3d space-y-3 sm:space-y-4 mx-auto md:ml-auto text-left bg-[#1C1B1B]/95 backdrop-blur-2xl border border-[rgba(212,196,181,0.25)] shadow-2xl">
+        <div class="act-view absolute inset-0 z-20 flex items-center justify-center md:justify-end px-4 sm:px-6 md:px-10 lg:px-16 pt-16 md:pt-12 transition-all duration-700 opacity-0 pointer-events-none -translate-x-12" id="act-3-view">
+          <div class="max-w-md md:max-w-md lg:max-w-lg w-full p-5 sm:p-7 rounded-2xl sm:rounded-3xl tactile-slab-3d space-y-3 sm:space-y-4 mx-auto md:mr-0 md:ml-auto text-left bg-[#1C1B1B]/95 backdrop-blur-2xl border border-[rgba(212,196,181,0.25)] shadow-2xl">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.2)]">
               <span class="material-symbols-outlined text-sm text-secondary">radar</span>
               <span class="font-mono text-xs text-secondary uppercase tracking-widest">Act III // Performance Engine</span>
@@ -1582,16 +1585,16 @@ Module {
       let proceduralFallbackGroup = null;
 
       const relicGlbCandidatePaths = [
-        'assets/models/celestial_clockwork_head.glb',
-        '../assets/models/celestial_clockwork_head.glb',
-        'stitch_ai_agency_platform_website/assets/models/celestial_clockwork_head.glb',
-        '/assets/models/celestial_clockwork_head.glb',
-        '/stitch_ai_agency_platform_website/assets/models/celestial_clockwork_head.glb',
-        'assets/models/sovereign_celestial_relic_4k.glb',
-        '../assets/models/sovereign_celestial_relic_4k.glb',
-        'stitch_ai_agency_platform_website/assets/models/sovereign_celestial_relic_4k.glb',
-        '/assets/models/sovereign_celestial_relic_4k.glb',
-        '/stitch_ai_agency_platform_website/assets/models/sovereign_celestial_relic_4k.glb'
+        'assets/models/celestial_clockwork_head.glb?v=4k',
+        '../assets/models/celestial_clockwork_head.glb?v=4k',
+        'stitch_ai_agency_platform_website/assets/models/celestial_clockwork_head.glb?v=4k',
+        '/assets/models/celestial_clockwork_head.glb?v=4k',
+        '/stitch_ai_agency_platform_website/assets/models/celestial_clockwork_head.glb?v=4k',
+        'assets/models/sovereign_celestial_relic_4k.glb?v=4k',
+        '../assets/models/sovereign_celestial_relic_4k.glb?v=4k',
+        'stitch_ai_agency_platform_website/assets/models/sovereign_celestial_relic_4k.glb?v=4k',
+        '/assets/models/sovereign_celestial_relic_4k.glb?v=4k',
+        '/stitch_ai_agency_platform_website/assets/models/sovereign_celestial_relic_4k.glb?v=4k'
       ];
       const knightGlbCandidatePaths = relicGlbCandidatePaths;
       const glbCandidatePaths = relicGlbCandidatePaths;
