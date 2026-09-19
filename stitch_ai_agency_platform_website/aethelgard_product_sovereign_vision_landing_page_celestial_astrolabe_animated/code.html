@@ -266,6 +266,42 @@
       content-visibility: auto;
       contain-intrinsic-size: 1px 1000px;
     }
+
+    /* ─── MOBILE: ACT CARDS STACK BELOW THE 3D FIGURE ─────────────────────── */
+    /* On mobile, the canvas fills the top 58% and cards sit in the bottom 42% */
+    @media (max-width: 767px) {
+      /* 3D canvas: top half of viewport */
+      #threejs-spatial-stage {
+        top: 0 !important;
+        height: 58% !important;
+        align-items: flex-start !important;
+      }
+      /* All act views: anchor to bottom of viewport, auto height, not inset-0 */
+      .act-view {
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 44% !important;
+        align-items: flex-end !important;
+        justify-content: center !important;
+        padding: 0 1rem 1rem !important;
+        overflow-y: auto;
+      }
+      /* Act I stays centered (hero text should remain full-screen on mobile) */
+      #act-1-view {
+        top: 0 !important;
+        height: 100% !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 5rem 1rem 2rem !important;
+      }
+      /* Make act cards compact on mobile */
+      .act-view > div {
+        max-height: 42vh;
+        overflow-y: auto;
+      }
+    }
   </style>
 </head>
 
@@ -1451,7 +1487,8 @@ Module {
         const gCtx = globalStardustCanvas.getContext('2d');
         let gWidth = 0, gHeight = 0;
         const gParticles = [];
-        const numGParticles = 80;
+        // Fewer particles on mobile to share GPU budget with WebGL 3D
+        const numGParticles = window.innerWidth < 768 ? 40 : 80;
 
         function resizeGlobalCanvas() {
           gWidth = globalStardustCanvas.width = window.innerWidth;
@@ -1474,11 +1511,14 @@ Module {
         }
 
         let gTime = 0;
-        function animateGlobalStardust() {
-          if (document.hidden) {
-            requestAnimationFrame(animateGlobalStardust);
-            return;
-          }
+        let gLastFrameTime = 0;
+        const G_FRAME_BUDGET = 1000 / 30; // 30fps for stardust — purely decorative
+        function animateGlobalStardust(gTimestamp) {
+          requestAnimationFrame(animateGlobalStardust);
+          if (document.hidden) return;
+          // Throttle stardust to 30fps — saves GPU time for the 3D model
+          if (gTimestamp - gLastFrameTime < G_FRAME_BUDGET) return;
+          gLastFrameTime = gTimestamp;
           gCtx.clearRect(0, 0, gWidth, gHeight);
           gTime += 0.03;
 
@@ -1486,6 +1526,7 @@ Module {
             const p = gParticles[i];
             p.x += p.vx;
             p.y += p.vy;
+
 
             // Wrap around screen boundaries
             if (p.y < 0) { p.y = gHeight; p.x = Math.random() * gWidth; }
@@ -1498,9 +1539,8 @@ Module {
             gCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
             gCtx.fill();
           }
-          requestAnimationFrame(animateGlobalStardust);
         }
-        animateGlobalStardust();
+        animateGlobalStardust(0);
       }
 
       // 1. Initial 3D Setup: 1300s Gothic AI Celestial Astrarium & Armillary Core
@@ -1810,9 +1850,17 @@ Module {
         stageVisibilityObserver.observe(stageContainerEl);
       }
 
-      function animate() {
+      // 60fps frame cap — prevents GPU overload on mobile & integrated graphics
+      let lastFrameTime = 0;
+      const FRAME_BUDGET_MS = 1000 / 60; // 16.67ms = 60fps
+
+      function animate(timestamp) {
         requestAnimationFrame(animate);
         if (!isStageVisible || document.hidden) return;
+        // Throttle to 60fps max
+        if (timestamp - lastFrameTime < FRAME_BUDGET_MS) return;
+        lastFrameTime = timestamp;
+
         const elapsed = clock.getElapsedTime();
 
         const t = actCamTargets[currentActIndex];
@@ -1858,7 +1906,8 @@ Module {
 
         renderer.render(scene, camera);
       }
-      animate();
+      animate(0);
+
 
       // Letter-by-Letter Typography Reveal Animation
       function triggerLetterReveal(containerEl) {

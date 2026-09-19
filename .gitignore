@@ -24,3 +24,29 @@ generate_png_logos.js
 # Agent working files
 .agents/
 
+# Study suite & non-landing-page artifacts
+mesh/
+parts/
+design_engine/
+design_engine_saas/
+design_engine_knowledge/
+Tripo3d_Blender_Bridge/
+01_*/
+02_*/
+03_*/
+04_*/
+05_*/
+06_*/
+07_*/
+*.mp4
+netlify.toml
+wrangler.jsonc
+start_server.bat
+stitch_vision_prompt_guide.html
+ORIGINAL_REQUEST.md
+CLAUDE.md
+DESIGN_ENGINE_RESEARCH_LOG.md
+STITCH_VISION_AND_UIUX_MASTER_PROMPT.md
+_headers
+_redirects
+index.html
