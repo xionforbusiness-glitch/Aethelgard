@@ -296,12 +296,12 @@
         width: 100% !important;
       }
 
-      /* Pricing pills: compact, responsive, fit all mobile screens with zero clipping */
+      /* Pricing pills: 3-column equal segmented control on mobile */
       .billing-toggle-container {
-        width: auto !important;
-        max-width: 100% !important;
-        justify-content: center !important;
-        flex-wrap: nowrap !important;
+        width: 100% !important;
+        max-width: 23rem !important;
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
       }
     }
   </style>
@@ -864,7 +864,7 @@
           <div class="sanctum-exec-view space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                <div class="w-10 h-10 min-w-[40px] min-h-[40px] shrink-0 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
                   <span class="material-symbols-outlined text-[18px]">phone_in_talk</span>
                 </div>
                 <div>
@@ -956,7 +956,7 @@ a=rtpmap:111 opus/48000/2 | useinbandfec=1 | ptime=20</pre>
           <div class="sanctum-exec-view space-y-4">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                <div class="w-10 h-10 min-w-[40px] min-h-[40px] shrink-0 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
                   <span class="material-symbols-outlined text-[18px]">developer_mode</span>
                 </div>
                 <div>
@@ -1041,7 +1041,7 @@ Module {
           <div>
             <div class="flex items-center justify-between mb-6">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                <div class="w-10 h-10 min-w-[40px] min-h-[40px] shrink-0 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
                   <span class="material-symbols-outlined text-lg">shield</span>
                 </div>
                 <div>
@@ -1076,17 +1076,17 @@ Module {
         <!-- Solution IV: Attribution Analytics Radar (7 cols) with Shadcn/ui Area Chart -->
         <div class="lg:col-span-7 p-6 sm:p-8 rounded-3xl tactile-slab-3d flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between mb-6">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+            <div class="flex flex-wrap items-start sm:items-center justify-between gap-3 mb-6">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-10 h-10 min-w-[40px] min-h-[40px] shrink-0 rounded-xl bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] flex items-center justify-center text-secondary shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
                   <span class="material-symbols-outlined text-lg">query_stats</span>
                 </div>
-                <div>
-                  <h3 class="font-headline text-lg sm:text-xl text-on-surface font-semibold">Solution IV: Attribution Analytics Radar</h3>
+                <div class="min-w-0">
+                  <h3 class="font-headline text-lg sm:text-xl text-on-surface font-semibold leading-tight">Solution IV: Attribution Analytics Radar</h3>
                   <span class="font-mono text-xs text-outline">Bayesian Spend Optimization</span>
                 </div>
               </div>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 shrink-0">
                 <span class="w-2 h-2 rounded-full bg-[#2EE59D] animate-pulse"></span>
                 <span class="font-mono text-xs text-[#2EE59D] font-semibold">-41.2% SPEND WASTE</span>
               </div>
@@ -1147,18 +1147,18 @@ Module {
                 </div>
               </div>
 
-              <!-- Chart X-Axis Legend -->
-              <div class="flex items-center justify-between font-mono text-[10px] text-outline mt-2 pt-2 border-t border-[rgba(150,143,146,0.1)]">
-                <span>Day 0 (Baseline)</span>
-                <span>Day 7 (SIP Calibrated)</span>
-                <span>Day 14 (AST Rollout)</span>
-                <span>Day 21 (Bayesian Convergence)</span>
-                <span class="text-secondary font-semibold">Day 30 (Sovereign Scale)</span>
+              <!-- Chart X-Axis Legend (Clean concise milestones on mobile, full descriptors on desktop) -->
+              <div class="flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-outline mt-2 pt-2 border-t border-[rgba(150,143,146,0.1)]">
+                <span>Day 0<span class="hidden sm:inline"> (Baseline)</span></span>
+                <span>Day 7<span class="hidden sm:inline"> (SIP Calibrated)</span></span>
+                <span>Day 14<span class="hidden sm:inline"> (AST Rollout)</span></span>
+                <span>Day 21<span class="hidden sm:inline"> (Convergence)</span></span>
+                <span class="text-secondary font-semibold">Day 30<span class="hidden sm:inline"> (Sovereign Scale)</span></span>
               </div>
             </div>
           </div>
 
-          <div class="mt-6 pt-4 border-t border-[rgba(150,143,146,0.15)] flex items-center justify-between font-mono text-xs">
+          <div class="mt-6 pt-4 border-t border-[rgba(150,143,146,0.15)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1.5 sm:gap-0 font-mono text-xs">
             <span class="text-outline">Bayesian Recalibration: Every 30m</span>
             <span class="text-secondary font-medium">Meta Graph Interlocked</span>
           </div>
@@ -1277,18 +1277,18 @@ Module {
       </div>
 
       <!-- Monthly / Quarterly / Yearly Billing Interval Toggle -->
-      <div class="flex flex-col items-center justify-center mb-10 px-2">
-        <div class="billing-toggle-container inline-flex p-1 rounded-full bg-[#1C1B1B] border border-[rgba(150,143,146,0.28)] shadow-[0_8px_24px_rgba(0,0,0,0.6)] w-auto max-w-full justify-center items-center">
-          <button id="btn-billing-monthly" class="billing-toggle-btn min-h-[44px] px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-label text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all bg-secondary text-[#141313] shadow-md flex items-center justify-center" data-interval="monthly">
-            Monthly
+      <div class="flex flex-col items-center justify-center mb-10 px-2 sm:px-4">
+        <div class="billing-toggle-container w-full max-w-sm sm:max-w-md p-1 rounded-full bg-[#1C1B1B] border border-[rgba(150,143,146,0.28)] shadow-[0_8px_24px_rgba(0,0,0,0.6)] grid grid-cols-3 gap-1">
+          <button id="btn-billing-monthly" class="billing-toggle-btn min-h-[44px] px-2 sm:px-4 py-2 sm:py-2.5 rounded-full font-label text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all bg-secondary text-[#141313] shadow-md flex items-center justify-center" data-interval="monthly">
+            <span>Monthly</span>
           </button>
-          <button id="btn-billing-quarterly" class="billing-toggle-btn min-h-[44px] px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-full font-label text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1 sm:gap-1.5" data-interval="quarterly">
+          <button id="btn-billing-quarterly" class="billing-toggle-btn min-h-[44px] px-1.5 sm:px-4 py-2 sm:py-2.5 rounded-full font-label text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5" data-interval="quarterly">
             <span>Quarterly</span>
-            <span class="px-1.5 sm:px-2 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[8px] sm:text-[10px] font-mono text-secondary font-bold whitespace-nowrap">SAVE 10%</span>
+            <span class="billing-badge px-1.5 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[8px] sm:text-[9px] font-mono text-secondary font-bold whitespace-nowrap">SAVE 10%</span>
           </button>
-          <button id="btn-billing-yearly" class="billing-toggle-btn min-h-[44px] px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-full font-label text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1 sm:gap-1.5" data-interval="yearly">
+          <button id="btn-billing-yearly" class="billing-toggle-btn min-h-[44px] px-1.5 sm:px-4 py-2 sm:py-2.5 rounded-full font-label text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5" data-interval="yearly">
             <span>Yearly</span>
-            <span class="px-1.5 sm:px-2 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[8px] sm:text-[10px] font-mono text-secondary font-bold whitespace-nowrap">SAVE 20%</span>
+            <span class="billing-badge px-1.5 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[8px] sm:text-[9px] font-mono text-secondary font-bold whitespace-nowrap">SAVE 20%</span>
           </button>
         </div>
         <p class="font-mono text-[11px] text-outline mt-3 text-center px-4" id="billing-guarantee-note">Cancel or pause any retainership with 14 days cryptographic notice.</p>
@@ -2185,16 +2185,33 @@ Module {
 
       if (billingButtons.length > 0) {
         billingButtons.forEach(btn => {
-          btn.addEventListener('click', () => {
+          function selectBillingInterval(e) {
+            if (e && e.type === 'touchend') {
+              btn._touchFired = true;
+            } else if (e && e.type === 'click' && btn._touchFired) {
+              btn._touchFired = false;
+              return;
+            }
+
             const interval = btn.getAttribute('data-interval');
 
-            // Toggle active button appearance
+            // Toggle active button appearance & badge contrast
             billingButtons.forEach(b => {
               b.classList.remove('bg-secondary', 'text-[#141313]', 'shadow-md');
               b.classList.add('text-on-surface-variant');
+              const badge = b.querySelector('.billing-badge');
+              if (badge) {
+                badge.classList.remove('bg-[#141313]', 'text-secondary');
+                badge.classList.add('bg-[#2B2A2A]', 'text-secondary');
+              }
             });
             btn.classList.add('bg-secondary', 'text-[#141313]', 'shadow-md');
             btn.classList.remove('text-on-surface-variant');
+            const activeBadge = btn.querySelector('.billing-badge');
+            if (activeBadge) {
+              activeBadge.classList.remove('bg-[#2B2A2A]');
+              activeBadge.classList.add('bg-[#141313]', 'text-secondary');
+            }
 
             let t1Target = 349, t2Target = 899;
             if (interval === 'monthly') {
@@ -2244,7 +2261,10 @@ Module {
               animatePriceDeceleration(tier2PriceEl, currentTier2Price, t2Target);
               currentTier2Price = t2Target;
             }
-          });
+          }
+
+          btn.addEventListener('click', selectBillingInterval);
+          btn.addEventListener('touchend', selectBillingInterval, { passive: true });
         });
       }
 
