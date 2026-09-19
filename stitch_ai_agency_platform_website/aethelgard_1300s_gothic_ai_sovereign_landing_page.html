@@ -267,62 +267,41 @@
       contain-intrinsic-size: 1px 1000px;
     }
 
-    /* ─── MOBILE (< 768px): 3D DISABLED — GLASS CARD STORYTELLING ─────────── */
+    /* ─── MOBILE (< 768px): 3D DISABLED — SNAPPY GLASS CARD STORYTELLING ──── */
     @media (max-width: 767px) {
-      /* Hide the 3D WebGL canvas entirely — no rendering cost on mobile */
+      /* Hide the 3D WebGL canvas entirely — zero GPU load on mobile */
       #threejs-spatial-stage {
         display: none !important;
       }
 
-      /* ACT I — HERO: Restore natural full-screen layout, fix button/text overlap */
-      #act-1-view {
-        /* Remove the inset-0 absolute stacking so content flows naturally */
-        position: relative !important;
-        top: auto !important; bottom: auto !important;
-        left: auto !important; right: auto !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        min-height: 100vh !important;
-        padding: 5.5rem 1.25rem 2rem !important;
-        overflow-y: auto !important;
-      }
-
-      /* ACTS II / III / IV — centered full-screen glass card, no 3D behind */
-      #act-2-view,
-      #act-3-view,
-      #act-4-view {
+      /* Storyline acts: Centered full-screen glass card storytelling */
+      .act-view {
         align-items: center !important;
         justify-content: center !important;
-        padding: 5rem 1.25rem 2rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-top: 4.75rem !important;
+        padding-bottom: 1.5rem !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch;
       }
-      /* Center the inner card on mobile */
+
+      /* Center cards horizontally on mobile with glass styling */
       #act-2-view > div,
       #act-3-view > div,
       #act-4-view > div {
         margin-left: auto !important;
         margin-right: auto !important;
-        max-width: 100% !important;
-        max-height: 80vh !important;
-        overflow-y: auto !important;
+        max-width: 26rem !important;
+        width: 100% !important;
       }
 
-      /* PRICING TABS — prevent "Yearly" from overflowing off-screen */
+      /* Pricing pills: compact, responsive, fit all mobile screens with zero clipping */
       .billing-toggle-container {
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
+        width: auto !important;
         max-width: 100% !important;
-        width: 100% !important;
-        justify-content: flex-start !important;
-      }
-      #btn-billing-monthly,
-      #btn-billing-quarterly,
-      #btn-billing-yearly {
-        white-space: nowrap !important;
-        flex-shrink: 0 !important;
-        padding-left: 0.75rem !important;
-        padding-right: 0.75rem !important;
+        justify-content: center !important;
+        flex-wrap: nowrap !important;
       }
     }
   </style>
@@ -505,36 +484,36 @@
         <div class="absolute w-[500px] h-[500px] rounded-full bg-secondary-fixed/5 blur-[120px] pointer-events-none bottom-10 right-10"></div>
 
         <!-- ACT I: INCEPTION (Centered — DEFAULT PROMINENT STATE, GUARANTEED NEVER HIDDEN) -->
-        <div class="act-view absolute inset-0 z-20 flex flex-col items-center justify-center px-4 sm:px-6 text-center pt-28 sm:pt-32 pb-8 transition-all duration-700 pointer-events-auto opacity-100" id="act-1-view">
+        <div class="act-view absolute inset-0 z-20 flex flex-col items-center justify-center px-4 sm:px-6 text-center pt-20 sm:pt-32 pb-6 sm:pb-8 transition-all duration-700 pointer-events-auto opacity-100" id="act-1-view">
           
           <!-- Status Pill with Generous Header Clearance (Zero Navbar Collision) -->
-          <div class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#1C1B1B]/90 border border-[rgba(212,196,181,0.25)] shadow-[0_4px_16px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] mb-5 sm:mb-6 backdrop-blur-xl mt-1 sm:mt-4">
+          <div class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#1C1B1B]/90 border border-[rgba(212,196,181,0.25)] shadow-[0_4px_16px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.08)] mb-3 sm:mb-6 backdrop-blur-xl mt-0 sm:mt-4">
             <span class="w-1.5 h-1.5 rounded-full bg-[#2EE59D] animate-pulse"></span>
-            <span class="font-mono text-[11px] sm:text-xs text-on-surface-variant tracking-wider uppercase font-medium">AUTONOMOUS ENTERPRISE PLATFORM // ZERO DRIFT</span>
+            <span class="font-mono text-[10px] sm:text-xs text-on-surface-variant tracking-wider uppercase font-medium">AUTONOMOUS ENTERPRISE PLATFORM // ZERO DRIFT</span>
           </div>
 
           <!-- Monumental Headline Harmoniously Framed Above Subtitle -->
-          <h1 class="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-on-surface max-w-4xl leading-[1.12] drop-shadow-sm mb-5" data-reveal-title="true">
+          <h1 class="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-on-surface max-w-4xl leading-[1.15] drop-shadow-sm mb-3 sm:mb-5" data-reveal-title="true">
             Autonomous Intelligence.
           </h1>
 
           <!-- Clean Open Subtitle with Zero 3D Occlusion & Pristine Investor Readability -->
-          <p class="font-body text-base md:text-lg text-on-surface-variant max-w-2xl mx-auto font-light leading-relaxed mb-8">
+          <p class="font-body text-xs sm:text-base md:text-lg text-on-surface-variant max-w-2xl mx-auto font-light leading-relaxed mb-4 sm:mb-8">
             Aethelgard replaces bloated agency retainers with an autonomous platform of 9 specialized agents executing web synthesis, 142ms duplex voice, and Bayesian ROI calibration.
           </p>
 
           <!-- Dual CTAs with HIG 44px+ touch targets -->
-          <div class="flex flex-wrap items-center justify-center gap-4 mb-12">
-            <a class="min-h-[44px] px-7 py-3.5 rounded-full bg-secondary text-[#141313] font-semibold text-xs uppercase tracking-widest transition-all shadow-[0_0_24px_rgba(212,196,181,0.28),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_0_36px_rgba(212,196,181,0.45)] hover:scale-[1.02] font-label inline-flex items-center justify-center" href="#pricing">
+          <div class="flex flex-row flex-wrap sm:flex-nowrap items-center justify-center gap-3 sm:gap-4 mb-5 sm:mb-12 w-full max-w-sm sm:max-w-none">
+            <a class="min-h-[44px] px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full bg-secondary text-[#141313] font-semibold text-xs uppercase tracking-widest transition-all shadow-[0_0_24px_rgba(212,196,181,0.28),inset_0_1px_0_rgba(255,255,255,0.4)] hover:shadow-[0_0_36px_rgba(212,196,181,0.45)] hover:scale-[1.02] font-label inline-flex items-center justify-center shrink-0" href="#pricing">
               Get Started
             </a>
-            <a class="min-h-[44px] px-7 py-3.5 rounded-full bg-surface-container border border-[rgba(150,143,146,0.28)] text-xs font-semibold uppercase tracking-widest text-on-surface hover:text-secondary-fixed hover:border-secondary/50 transition-all hover:bg-[#2B2A2A] shadow-[0_8px_20px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)] font-label inline-flex items-center justify-center" href="#solutions">
+            <a class="min-h-[44px] px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full bg-surface-container border border-[rgba(150,143,146,0.28)] text-xs font-semibold uppercase tracking-widest text-on-surface hover:text-secondary-fixed hover:border-secondary/50 transition-all hover:bg-[#2B2A2A] shadow-[0_8px_20px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.06)] font-label inline-flex items-center justify-center shrink-0" href="#solutions">
               Explore Solutions
             </a>
           </div>
 
           <!-- 4 Horizon Count-Up Metrics Bar with Tabular Numerics & Ascension Reveal -->
-          <div id="hero-metrics-bar" class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-10 max-w-4xl w-full border-y border-[rgba(150,143,146,0.3)] py-4 sm:py-6 bg-[#1C1B1B]/80 backdrop-blur-xl rounded-2xl px-4 sm:px-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_30px_rgba(0,0,0,0.6)] transform transition-all duration-1000 translate-y-6 opacity-0">
+          <div id="hero-metrics-bar" class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 md:gap-10 max-w-4xl w-full border-y border-[rgba(150,143,146,0.3)] py-3 sm:py-6 bg-[#1C1B1B]/80 backdrop-blur-xl rounded-2xl px-3 sm:px-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_30px_rgba(0,0,0,0.6)] transform transition-all duration-1000 translate-y-6 opacity-0">
             <div class="text-left px-1.5 sm:px-2">
               <span class="font-label text-[10px] sm:text-[11px] text-outline block mb-1 uppercase tracking-widest">Alignment</span>
               <div class="font-mono text-2xl lg:text-3xl text-secondary font-semibold tabular-nums"><span class="counter" data-target="100">0</span>%</div>
@@ -1299,17 +1278,17 @@ Module {
 
       <!-- Monthly / Quarterly / Yearly Billing Interval Toggle -->
       <div class="flex flex-col items-center justify-center mb-10 px-2">
-        <div class="billing-toggle-container inline-flex p-1 rounded-full bg-[#1C1B1B] border border-[rgba(150,143,146,0.28)] shadow-[0_8px_24px_rgba(0,0,0,0.6)] max-w-full overflow-x-auto">
-          <button id="btn-billing-monthly" class="billing-toggle-btn min-h-[44px] px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all bg-secondary text-[#141313] shadow-md flex items-center justify-center" data-interval="monthly">
+        <div class="billing-toggle-container inline-flex p-1 rounded-full bg-[#1C1B1B] border border-[rgba(150,143,146,0.28)] shadow-[0_8px_24px_rgba(0,0,0,0.6)] w-auto max-w-full justify-center items-center">
+          <button id="btn-billing-monthly" class="billing-toggle-btn min-h-[44px] px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-label text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all bg-secondary text-[#141313] shadow-md flex items-center justify-center" data-interval="monthly">
             Monthly
           </button>
-          <button id="btn-billing-quarterly" class="billing-toggle-btn min-h-[44px] px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5" data-interval="quarterly">
+          <button id="btn-billing-quarterly" class="billing-toggle-btn min-h-[44px] px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-full font-label text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1 sm:gap-1.5" data-interval="quarterly">
             <span>Quarterly</span>
-            <span class="px-1.5 sm:px-2 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[9px] sm:text-[10px] font-mono text-secondary font-bold whitespace-nowrap">SAVE 10%</span>
+            <span class="px-1.5 sm:px-2 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[8px] sm:text-[10px] font-mono text-secondary font-bold whitespace-nowrap">SAVE 10%</span>
           </button>
-          <button id="btn-billing-yearly" class="billing-toggle-btn min-h-[44px] px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-label text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1.5" data-interval="yearly">
+          <button id="btn-billing-yearly" class="billing-toggle-btn min-h-[44px] px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-full font-label text-[11px] sm:text-xs font-semibold uppercase tracking-wider transition-all text-on-surface-variant hover:text-on-surface flex items-center justify-center gap-1 sm:gap-1.5" data-interval="yearly">
             <span>Yearly</span>
-            <span class="px-1.5 sm:px-2 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[9px] sm:text-[10px] font-mono text-secondary font-bold whitespace-nowrap">SAVE 20%</span>
+            <span class="px-1.5 sm:px-2 py-0.5 rounded-full bg-[#2B2A2A] border border-[rgba(212,196,181,0.3)] text-[8px] sm:text-[10px] font-mono text-secondary font-bold whitespace-nowrap">SAVE 20%</span>
           </button>
         </div>
         <p class="font-mono text-[11px] text-outline mt-3 text-center px-4" id="billing-guarantee-note">Cancel or pause any retainership with 14 days cryptographic notice.</p>
@@ -1571,36 +1550,12 @@ Module {
       const container = document.getElementById('threejs-spatial-stage');
       if (!canvas || !container) return;
 
-      // ── MOBILE GUARD: Skip all WebGL on small screens for performance ──────
-      // The 3D canvas is hidden via CSS on mobile. We define a lightweight
-      // setAethelgardAct that still drives the CSS act transitions.
-      if (window.innerWidth < 768) {
-        let _mobileActIndex = 0;
-        window.setAethelgardAct = function(actIdx) {
-          if (actIdx < 0 || actIdx > 3) return;
-          _mobileActIndex = actIdx;
-          // Drive CSS transitions for the act views without 3D
-          document.querySelectorAll('.act-view').forEach(function(el, i) {
-            if (i === actIdx) {
-              el.style.opacity = '1';
-              el.style.pointerEvents = 'auto';
-            } else {
-              el.style.opacity = '0';
-              el.style.pointerEvents = 'none';
-            }
-          });
-          // Update side-rail dots
-          document.querySelectorAll('.act-nav .indicator-bar').forEach(function(bar, i) {
-            bar.className = 'indicator-bar w-1.5 rounded-full transition-all duration-300 ' +
-              (i === actIdx
-                ? 'h-6 bg-[#D4C4B5] shadow-[0_0_12px_rgba(212,196,181,0.8)]'
-                : 'h-2 bg-outline-variant');
-          });
-        };
-        return; // ← Skip all WebGL, lighting, model loading, animate loop
-      }
-      // ── END MOBILE GUARD ───────────────────────────────────────────────────
+      // ── MOBILE GUARD: Skip WebGL on small screens. setAethelgardAct defined below.
+      // ALL other JS (billing, navbar, peel, scroll) continues regardless.
+      const isMobileDevice = window.innerWidth < 768;
 
+      if (!isMobileDevice) {
+        // ── DESKTOP/TABLET: Full Three.js WebGL pipeline ──────────────────────
       const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(container.clientWidth || window.innerWidth, container.clientHeight || window.innerHeight);
@@ -1903,17 +1858,9 @@ Module {
         stageVisibilityObserver.observe(stageContainerEl);
       }
 
-      // 60fps frame cap — prevents GPU overload on mobile & integrated graphics
-      let lastFrameTime = 0;
-      const FRAME_BUDGET_MS = 1000 / 60; // 16.67ms = 60fps
-
-      function animate(timestamp) {
+      function animate() {
         requestAnimationFrame(animate);
         if (!isStageVisible || document.hidden) return;
-        // Throttle to 60fps max
-        if (timestamp - lastFrameTime < FRAME_BUDGET_MS) return;
-        lastFrameTime = timestamp;
-
         const elapsed = clock.getElapsedTime();
 
         const t = actCamTargets[currentActIndex];
@@ -1959,8 +1906,9 @@ Module {
 
         renderer.render(scene, camera);
       }
-      animate(0);
+      animate();
 
+      } // ── END if(!isMobileDevice) — WebGL block ends here ─────────────────
 
       // Letter-by-Letter Typography Reveal Animation
       function triggerLetterReveal(containerEl) {
@@ -2304,19 +2252,28 @@ Module {
       let lastScrollY = window.scrollY;
       const smartNav = document.getElementById('smart-navbar-container');
       const sideRail = document.getElementById('storyline-side-rail');
+      const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
       let isScrollTicking = false;
 
       function onScrollPerform() {
         const curY = window.scrollY;
+        const scrollDelta = curY - lastScrollY;
 
         // 1. Smart Scroll Header: Disappear when scrolling down, appear when scrolling up!
         const isMobileNavOpen = mobileNavOverlay && mobileNavOverlay.classList.contains('opacity-100');
         if (smartNav && !isMobileNavOpen) {
-          if (curY > lastScrollY && curY > 90) {
-            smartNav.style.transform = 'translateY(-140%)';
+          if (curY <= 40) {
+            // Near top of screen: always visible
+            smartNav.style.transform = 'translateY(0)';
+            smartNav.style.opacity = '1';
+            smartNav.style.pointerEvents = 'auto';
+          } else if (scrollDelta > 6 && curY > 80) {
+            // Scrolling down: hide header
+            smartNav.style.transform = 'translateY(-150%)';
             smartNav.style.opacity = '0';
             smartNav.style.pointerEvents = 'none';
-          } else {
+          } else if (scrollDelta < -6) {
+            // Scrolling up: reveal header
             smartNav.style.transform = 'translateY(0)';
             smartNav.style.opacity = '1';
             smartNav.style.pointerEvents = 'auto';
@@ -2487,23 +2444,29 @@ Module {
       const btnExec = document.getElementById('view-exec');
       const btnTech = document.getElementById('view-tech');
       if (btnExec && btnTech) {
-        btnExec.addEventListener('click', () => {
-          btnExec.className = 'min-h-[44px] px-4 py-2.5 rounded-xl bg-secondary text-[#141313] font-label text-xs font-bold transition-all flex items-center justify-center';
-          btnTech.className = 'min-h-[44px] px-4 py-2.5 rounded-xl text-on-surface-variant hover:text-on-surface font-label text-xs font-medium transition-all flex items-center justify-center';
-          document.querySelectorAll('.sanctum-exec-view').forEach(el => el.classList.remove('hidden'));
-          document.querySelectorAll('.sanctum-tech-view').forEach(el => el.classList.add('hidden'));
-        });
-        btnTech.addEventListener('click', () => {
-          btnTech.className = 'min-h-[44px] px-4 py-2.5 rounded-xl bg-secondary text-[#141313] font-label text-xs font-bold transition-all flex items-center justify-center';
-          btnExec.className = 'min-h-[44px] px-4 py-2.5 rounded-xl text-on-surface-variant hover:text-on-surface font-label text-xs font-medium transition-all flex items-center justify-center';
-          document.querySelectorAll('.sanctum-exec-view').forEach(el => el.classList.add('hidden'));
-          document.querySelectorAll('.sanctum-tech-view').forEach(el => el.classList.remove('hidden'));
-        });
+        function setPeelMode(mode) {
+          if (mode === 'exec') {
+            btnExec.classList.add('bg-secondary', 'text-[#141313]', 'font-bold');
+            btnExec.classList.remove('text-on-surface-variant', 'font-medium');
+            btnTech.classList.remove('bg-secondary', 'text-[#141313]', 'font-bold');
+            btnTech.classList.add('text-on-surface-variant', 'font-medium');
+            document.querySelectorAll('.sanctum-exec-view').forEach(el => el.classList.remove('hidden'));
+            document.querySelectorAll('.sanctum-tech-view').forEach(el => el.classList.add('hidden'));
+          } else {
+            btnTech.classList.add('bg-secondary', 'text-[#141313]', 'font-bold');
+            btnTech.classList.remove('text-on-surface-variant', 'font-medium');
+            btnExec.classList.remove('bg-secondary', 'text-[#141313]', 'font-bold');
+            btnExec.classList.add('text-on-surface-variant', 'font-medium');
+            document.querySelectorAll('.sanctum-exec-view').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.sanctum-tech-view').forEach(el => el.classList.remove('hidden'));
+          }
+        }
+        btnExec.addEventListener('click', () => setPeelMode('exec'));
+        btnTech.addEventListener('click', () => setPeelMode('tech'));
       }
 
       // Mobile Quick-Navigation Drawer & Overlay Controller (Apple HIG Standard)
       const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-      const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
       const mobileNavPanel = document.getElementById('mobile-nav-panel');
       const mobileNavClose = document.getElementById('mobile-nav-close');
       const mobileMenuIcon = document.getElementById('mobile-menu-icon');
